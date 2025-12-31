@@ -1,3 +1,43 @@
+# # @misc{example_misc, 
+#     author = {Nachname, Vorname},
+#     title = {Title}, 
+#     year = {2000},
+#     url = {https://www.example.com},
+# }
+
+# @article{example_article, 
+#     author = {Nachname, Vorname},
+#     title = {Title}, 
+#     year = {2000},
+#     doi = {10.1000/exampledoi},
+# }
+
+# @online{example_online, 
+#     author = {Nachname, Vorname},
+#     title = {Title}, 
+#     url = {https://www.example.com},
+#     urldate = {2000-01-01},
+#     year = {2000},
+# }
+
+# @software{example_software, 
+#     author = {Nachname, Vorname}, 
+#     title = {Title}, 
+#     year = {2000}, 
+#     url = {https://www.example.com}
+# }
+
+# @thesis{example_thesis, 
+#     author = {Nachname, Vorname}, 
+#     title = {Title}, 
+#     type = {Bachelorthesis}, 
+#     school = {University XYZ}, 
+#     year = {2000}, 
+#     url = {https://www.example.com}
+# }
+
+
+
 import csv
 from datetime import datetime
 
@@ -106,6 +146,8 @@ def format_bib_entry(row, bib_type):
     return entry
 
 
+entry_count = 0
+
 with open(csv_file, newline="", encoding="utf-8") as csvfile, open(bib_file, "w", encoding="utf-8") as bib:
     reader = csv.DictReader(csvfile)
     for row in reader:
@@ -113,5 +155,7 @@ with open(csv_file, newline="", encoding="utf-8") as csvfile, open(bib_file, "w"
         bib_type = type_mapping.get(typ, "misc")
         bib_entry = format_bib_entry(row, bib_type)
         bib.write(bib_entry)
+        entry_count += 1
 
 print(f"BibTeX-Datei '{bib_file}' erfolgreich erstellt.")
+print(f"Anzahl erstellter Quellen: {entry_count}")

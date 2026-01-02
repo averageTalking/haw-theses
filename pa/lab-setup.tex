@@ -1,2 +1,83 @@
+%%%%% MAKE THIS BETTER
+  % "Reinstall Systems [Reasoning]"
+%%%%%
 \section{Lab Setup}
-  This is a test.
+  The laboratory setup was designed to establish a consistent and reproducible environment for both system 
+  configuration and experimental execution, ensuring all devices, software, and development workflows were properly 
+  prepared prior to conducting experiments.
+
+  \subsection{System Setup}
+    % Github Setup
+    The initial configuration of the laboratory environment involved setting up the necessary repositories for development 
+    and documentation. A dedicated \textit{GitHub} repository was created for coding purposes on all 
+    \hyperref[tab:experimental-setups]{test devices}, which contained the experimental programs, ported and adapted code, 
+    and the main software required for running the experiments. In addition, separate repositories were established for 
+    managing \textit{Obsidian} markdown files and \textit{LaTeX} documents related to the thesis work. The Obsidian repository 
+    was used to maintain a glossary, track status updates, organize the table of contents, and store key points in a structured 
+    manner. The \textit{LaTeX} repository served as the location for the fully elaborated final version of the thesis document.
+    \\
+    % Pi Setup
+    For the Raspberry Pi systems, both public and private keys were generated for \textit{WireGuard} and \textit{\gls{ssh}} connections. 
+    The corresponding public keys were transmitted to enable secure access on all devices. Functionality tests 
+    were conducted to ensure all hosts and systems were operational. Direct access from the laptop to the Pi systems 
+    was established by placing the authorized keys in the \texttt{.ssh/authorized\_keys} file on each device. All relevant IP 
+    addresses were added to the \texttt{/etc/hosts} file on the laptop. \textit{Visual Studio Code} was configured with the 
+    Remote \textit{\gls{ssh}} extension, alongside additional extensions for \textit{Python}, \textit{C}, and other required languages.
+    \\
+    % Reinstall Systems [Reasoning]
+    System reinstallation was performed due to limitations in executing kernel modules and the absence of flush 
+    instructions on ARMv7. This reinstallation enabled deterministic cache-line invalidation, ensuring that every 
+    subsequent memory access is served from DRAM. It also eliminated reliance on undocumented cache-replacement policies, 
+    thereby increasing experimental reliability, and simplified setup by avoiding eviction-set construction and 
+    timing-based profiling.
+    % Reinstall Systems [Requirements]
+    The hardware required for this process included a Raspberry Pi, a desktop computer, network cables, USB-C cables, 
+    Micro HDMI to HDMI adapters, a mouse, a keyboard, a laptop, and a micro SD card with an adapter. Software 
+    requirements consisted of the Raspberry Imager [165] installed on the laptop and backups of the Raspberry Pi, including 
+    programs, boot files, \texttt{.ssh/authorized\_keys}, \texttt{/etc/wireguard/wg0.conf}, and the \gls{motd} 
+    configuration.
+    \\
+    % Reinstall Systems [Workflow]
+    The installation workflow began by inserting the micro SD card into the laptop and launching the Raspberry Imager 
+    program. The device model and desired operating system were selected, followed by the micro SD card. Configuration 
+    settings were edited to specify the hostname, username, password, disable WiFi since all Raspberry Pis were 
+    connected via \gls{lan}, set the timezone to Berlin, configure the keyboard layout to German, and enable \gls{ssh} with public 
+    key authentication using the pre-existing \texttt{authorized\_keys} file. The micro SD card was then flashed and inserted 
+    into the Raspberry Pi again, which was powered on for automatic boot. Connectivity was verified via ping commands from the 
+    laptop.
+    \\
+    Subsequently, the Raspberry Pi was updated and upgraded using \texttt{sudo apt update} and \texttt{sudo apt upgrade}, followed by a 
+    reboot. The root password was set, and the \gls{ssh} configuration for root access was restored from backup. \gls{ssh} access 
+    from the laptop to both user and root accounts on the Pi was verified. The \gls{motd} was configured by emptying the 
+    existing file, creating a new executable script, and inserting backup content. Differences in user and root shell 
+    configurations were resolved by backing up \texttt{.bashrc} files, copying the user shell configuration to root, and sourcing 
+    the new configuration.
+    \\
+    WireGuard installation and configuration were completed on the Raspberry Pi, enabling the \gls{vpn} service, verifying 
+    its status, and ensuring connectivity from the laptop. Internet connectivity was enforced over HTTPS by modifying 
+    the apt configuration and sources list files, followed by updating package information. Essential tools, including 
+    \texttt{git}, \texttt{linux-perf}, \texttt{tmux}, and \texttt{i2c-tools}, were installed. The \textit{GitHub} repositories 
+    were cloned, and \textit{Git} configuration was initialized with the appropriate username and email.
+    \\
+    % Requirements & Automated Setup
+    For Python development, a virtual environment was created, and all additional dependencies were installed.
+
+  \subsection{Experiment Setup \& Automation}
+    For long-term experiments, the \gls{tmux} tool was installed to address the challenge of maintaining continuous processes on the 
+    Raspberry Pi systems while allowing the user to disconnect from the \gls{ssh} session. \gls{tmux} is a terminal multiplexer that enables 
+    multiple terminal sessions to be created, accessed, and controlled independently within a single \gls{ssh} connection. New 
+    sessions were initiated using \texttt{tmux new -s <session\_name>}, allowing experiments to be executed within an isolated session. 
+    Detachment from a session, performed with \texttt{Ctrl+B} followed by \texttt{D}, permitted the experiment to continue running in the background 
+    even if the \gls{ssh} connection was closed. Detached sessions could later be reattached using \texttt{tmux a -t <session\_name>}, and 
+    sessions that were no longer needed could be terminated with \texttt{tmux kill-session -t <session\_name>}. This setup ensured reliable 
+    and uninterrupted execution of long-duration experiments while maintaining full control over multiple concurrent tasks.
+    \\
+    Automated scripts were developed to streamline experiment management. The ping\_pis.sh script checked the reachability 
+    of all HammerPi hosts and summarized the results. The \texttt{start\_pis.sh} script verified host connectivity, opened terminal 
+    tabs for each reachable host, and initiated \gls{ssh} connections while keeping terminals open after session closure. 
+    The \texttt{build\_session.sh} script required a \gls{tmux} session name as an argument, verified host connectivity, skipped hosts 
+    with existing sessions, and created new \gls{tmux} sessions on reachable hosts. The \texttt{kill\_session.sh} script terminated 
+    specified \gls{tmux} sessions across hosts, skipping any hosts without the target session. The \texttt{show\_session.sh} script listed 
+    all \gls{tmux} sessions per reachable host, provided the total session count, and indicated if no sessions were found. Finally, 
+    the \texttt{connect\_with\_session.sh} script attached \gls{ssh} connections to existing \gls{tmux} sessions on reachable hosts, opening a 
+    new terminal tab for each host and skipping hosts without the specified session.

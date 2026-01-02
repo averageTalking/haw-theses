@@ -1,11 +1,114 @@
+%%%%% MAKE THIS BETTER
+  % "Non-functional Requirements"
+    % Lege dich auf eine Programmiersprache fest
+%%%%%
 \section{Methodology}
+  This chapter describes the methodological framework applied in this thesis. It outlines the overall 
+  research design, the selected test devices, the employed data sources, as well as the procedures for 
+  data collection, analysis, and evaluation. Furthermore, it specifies the functional and non-functional 
+  requirements that guided the implementation of the experimental setup.
+
   \subsection{Research Design}
-    This is a test.
+    % Research Type && -Objective && Methodological Approach
+    The research conducted in this thesis follows a quantitative study design based on experimental 
+    testing, with the aim of confirming or refuting predefined hypotheses. The primary research objective 
+    is to assess the susceptibility of various \hyperref[tab:experimental-setups]{Raspberry Pi models} to Rowhammer attacks. \\
+    From a methodological perspective, the study primarily adopts a deductive approach. Existing 
+    Rowhammer theories are tested on Raspberry Pi platforms by starting from established theoretical 
+    foundations, formulating hypotheses derived from these theories, and subsequently validating or 
+    refuting them through controlled experiments. In general, this deductive approach is characterized by 
+    the investigation of an existing theory, followed by the derivation of hypotheses, the execution of 
+    experiments, and the confirmation or falsification of the proposed assumptions. \\
+    In addition to the deductive core, the methodology incorporates an inductive approach in a supporting 
+    role. Experimental observations obtained during testing may reveal unexpected system behavior. Based 
+    on these measured results, new hypotheses or insights can be derived. In general terms, the inductive 
+    approach involves the derivation of theory from empirical research by identifying patterns in 
+    observations and formulating new hypotheses or theoretical considerations. Overall, the study is 
+    classified as predominantly deductive, complemented by inductive elements that emerge from experimental 
+    findings. 
+    \\
+    % Test Devices
+    \begin{table}[h!]
+      \centering
+      \caption{Experimental setups}
+      \label{tab:experimental-setups}
+      \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Platform} & \textbf{Architecture} & \textbf{SoC} & \textbf{DRAM} \\ \hline
+        Raspberry Pi 4B & ARMv8 & Broadcom BCM2711 & 4 GB LPDDR4 \\ \hline
+        Raspberry Pi 4B & ARMv8 & Broadcom BCM2711 & 8 GB LPDDR4 \\ \hline
+        Raspberry Pi 5 & ARMv8 & Broadcom BCM2712 & 4 GB LPDDR4x \\ \hline
+        Raspberry Pi 5 & ARMv8 & Broadcom BCM2712 & 8 GB LPDDR4x \\ \hline
+        Raspberry Pi 5 & ARMv8 & Broadcom BCM2712 & 16 GB LPDDR4x \\ \hline
+      \end{tabular}
+    \end{table}
+
+    The experimental evaluation is conducted on multiple Raspberry Pi devices, as illustrated in 
+    Table~\ref{tab:experimental-setups}. The tested hardware includes Raspberry Pi 4 models with 4 GB and 8 GB of 
+    RAM, as well as Raspberry Pi 5 models with 4 GB, 8 GB, and 16 GB of RAM. \\
+    The Raspberry Pi 4 is based on a quad-core ARMv8 Cortex-A72 CPU clocked at 1.8 GHz. Each core is equipped
+    with an L1 cache consisting of 32 KB data cache and 48 KB instruction cache, and all cores share a 1 MB 
+    L2 cache. This configuration makes the Raspberry Pi 4 approximately 50\% faster than the Raspberry Pi 3B 
+    [64]. 
+    \\
+    The Raspberry Pi 5 features a quad-core ARMv8 Cortex-A76 CPU operating at 2.4 GHz. Each core provides a 
+    64 KB L1 cache for both data and instructions, a dedicated 512 KB L2 cache, and a shared 2 MB L3 cache. 
+    In aggregate, the architectural improvements introduced with the BCM2712 result in a performance uplift 
+    of approximately two to three times compared to the Raspberry Pi 4 for common CPU- or I/O-intensive 
+    workloads [64]. 
+    \\
+    % Data Sources
+    The study is based on multiple data sources that support both the theoretical foundation and the 
+    experimental validation of the research hypotheses. These sources include related academic publications 
+    from established conferences such as \textit{ACM} and \textit{IEEE}, as well as technical documentation, datasheets, and 
+    glossaries relevant to Raspberry Pi platforms and Rowhammer attacks. In addition, publicly available \textit{GitHub} 
+    repositories providing Rowhammer proof-of-concept implementations are used, which are adapted and applied 
+    to the target devices. Beyond existing resources, own experiments are implemented and executed specifically 
+    for this study in order to verify the formulated hypotheses through direct empirical evaluation. 
+    \\
+    % Data Collection
+    Data collection is performed through the experimental execution of Rowhammer attacks on each Raspberry 
+    Pi model. During these experiments, system behavior is observed and relevant outcomes are recorded and 
+    logged. The collected data serves as the basis for drawing conclusions from the observed results and for 
+    formulating further hypotheses. All data is obtained directly from experiments conducted on the Raspberry 
+    Pi devices. 
+    \\
+    % Data Analysis
+    The analysis of the collected data is supported by automated scripts and the generation of plots using 
+    Python. Experimental results are logged using multiple formats, including standard \texttt{.log} files, structured 
+    JSON logs, and \texttt{.dat} files. This combination of logging mechanisms enables systematic evaluation and 
+    comparison of experimental outcomes.
+
   \subsection{Evaluation}
-    Tis is a test.
+    To ensure the reliability and validity of the results, experiments are repeated to verify the consistency 
+    of observations. All tests are conducted in a controlled environment to minimize external interference. 
+    Where applicable, statistical tests are applied to support the evaluation of the experimental data.
+
   \subsection{Requirements}
-    This is a test.
+    To ensure a structured and reliable experimental evaluation of Rowhammer attacks on Raspberry Pi platforms, 
+    a set of technical, and ethical requirements is defined. These requirements guide the design, 
+    implementation, execution, and evaluation of the experimental framework and ensure that the results are 
+    reproducible, and meaningful.
+
     \subsubsection{Functional requirements}
-      This is a test.
+      The experimental setup must support a configurable system with adjustable parameters, including the 
+      selection of different hammering techniques such as single-sided, double-sided, one-location, and if feasible 
+      many-sided hammering. It must allow configuration of the number of iterations and hammer cycles, automatically detect 
+      the memory page size, and support configurable initialization patterns, for example using \texttt{0} or \texttt{1}. The amount 
+      of allocated RAM must be adjustable as a percentage of the available memory, and the framework must 
+      incorporate bit masks and bank addressing functions. Automatic detection of hardware characteristics, 
+      including the Raspberry Pi model, RAM size, and architecture, is required. Furthermore, the system must 
+      support cache bypass mechanisms, virtual-to-physical-to-DRAM address mapping, and, if feasible, mitigation 
+      bypass techniques. Hammering operations must include bit flip detection and classification, such as 
+      distinguishing between \texttt{0→1} and \texttt{1→0} transitions, as well as verification of detected bit flips. Experimental 
+      output must be logged to the terminal, with all measurements recorded in JSON format and individual 
+      measurements additionally stored in \texttt{.log} files.
+      
     \subsubsection{Non-functional requirements}
-      This is a test.
+      The implementation must be realized using \textit{C}, \textit{C++}, or \textit{Python} and executed with root privileges in user space. 
+      All \hyperref[tab:experimental-setups]{Raspberry Pi 4 and Raspberry Pi 5 devices} must operate in ARMv8 (AArch64) mode. The 
+      system must meet requirements regarding performance and efficiency and include robust error-handling mechanisms. 
+      Reproducibility is essential, such that repeated measurements yield similar results under comparable conditions. Ethical 
+      considerations are explicitly addressed by conducting all experiments in isolated environments to prevent 
+      accidental harm and by emphasizing the responsible use of security attack techniques, ensuring that findings 
+      are not applied to production systems.

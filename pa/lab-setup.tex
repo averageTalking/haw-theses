@@ -19,7 +19,7 @@
     were conducted to ensure all hosts and systems were operational. Direct access from the laptop to the Pi systems 
     was established by placing the authorized keys in the \texttt{.ssh/authorized\_keys} file on each device. All relevant IP 
     addresses were added to the \texttt{/etc/hosts} file on the laptop. \textit{Visual Studio Code} was configured with the 
-    Remote \textit{\gls{ssh}} extension, alongside additional extensions for \textit{Python}, \textit{C}, and other required languages.
+    Remote \textit{\gls{ssh}} extension, alongside additional extensions for \textit{Python}, \textit{C}, and other required languagesecs.
     \\
     % Unequal Versions of Header and Kernel
     Following the completion of system setup, multiple Raspberry Pi platforms with varying hardware configurations were 
@@ -57,8 +57,8 @@
     Pi devices. The reinstall was motivated by several factors. First, the inability to execute kernel modules reliably 
     hindered further experimentation. Second, the absence of cache flush instructions on ARMv7 systems prevented the 
     required cache management functionality. Reinstalling the systems would provide deterministic cache-line invalidation, 
-    ensuring that every subsequent memory access is served from \gls{dram}, as discussed in more detail in the section on 
-    uncached execution. Finally, a clean reinstallation reduced setup complexity by avoiding the need for eviction-set 
+    ensuring that every subsequent memory access is served from \gls{dram}, as discussed in more detail in the 
+    section~\hyperref[sec:flush-cache]{Uncached}. Finally, a clean reinstallation reduced setup complexity by avoiding the need for eviction-set 
     construction and timing-based profiling, thereby establishing a consistent and reliable experimental environment 
     across all platforms.
     \\
@@ -98,7 +98,7 @@
     All newly deployed systems are based on Raspberry Pi OS Lite 64-bit running on the aarch64 architecture. The Raspberry 
     Pi 4 uses kernel version \texttt{6.12.47+rpt-rpi-v8}, while the Raspberry Pi 5 runs kernel version \texttt{6.12.47+rpt-rpi-2712}. As a 
     result of this setup, all test systems now operate on the same operating system, have access to all maintenance 
-    instructions that are relevant in Section \hyperref[sec:flush-cache]{Uncached}, and are capable of executing kernel modules.
+    instructions that are relevant in Section~\hyperref[sec:flush-cache]{Uncached}, and are capable of executing kernel modules.
     This unified system configuration provides several additional advantages. It ensures improved comparability of 
     experimental results, as all Raspberry Pi devices run on an identical software stack.
 

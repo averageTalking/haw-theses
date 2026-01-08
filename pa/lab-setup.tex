@@ -1,12 +1,9 @@
-%%%%% MAKE THIS BETTER
-  % "Reinstall Systems [Reasoning]"
-%%%%%
-\section{Lab Setup}
+\section{Lab Setup} \label{sec:lab-setup}
   The laboratory setup was designed to establish a consistent and reproducible environment for both system 
   configuration and experimental execution, ensuring all devices, software, and development workflows were properly 
   prepared prior to conducting experiments.
 
-  \subsection{System Setup}
+  \subsection{System Setup} \label{sec:system-setup}
     % Github Setup
     The initial configuration of the laboratory environment involved setting up the necessary repositories for development 
     and documentation. A dedicated \textit{GitHub} repository was created for coding purposes on all 
@@ -24,12 +21,47 @@
     addresses were added to the \texttt{/etc/hosts} file on the laptop. \textit{Visual Studio Code} was configured with the 
     Remote \textit{\gls{ssh}} extension, alongside additional extensions for \textit{Python}, \textit{C}, and other required languages.
     \\
-    % Reinstall Systems [Reasoning]
-    System reinstallation was performed due to limitations in executing kernel modules and the absence of flush 
-    instructions on ARMv7. This reinstallation enabled deterministic cache-line invalidation, ensuring that every 
-    subsequent memory access is served from DRAM. It also eliminated reliance on undocumented cache-replacement policies, 
-    thereby increasing experimental reliability, and simplified setup by avoiding eviction-set construction and 
-    timing-based profiling.
+    % Unequal Versions of Header and Kernel
+    Following the completion of system setup, multiple Raspberry Pi platforms with varying hardware configurations were 
+    prepared for experimentation. Table~\ref{tab:experimental-setups} summarizes the experimental setups used in this 
+    work, including the platform, processor architecture, \gls{soc}, and available \gls{dram}. All platforms were based on the ARMv8 architecture, 
+    providing a common architectural baseline while differing in memory capacity and \gls{soc} generation.
+    At the outset of the project, the test systems did not contain the data referenced in Table~\ref{tab:experimental-setups}, and the test 
+    environments were based on different operating systems. In addition, software versions and system architectures 
+    varied across the platforms, resulting in Raspberry Pi devices that were not aligned with each other. These 
+    discrepancies affected the consistency of the experimental setup.
+    On the Raspberry Pi 4 devices, older system installations were used. These systems ran Arch Linux ARM and reported 
+    a CPU identified as an ARMv7 Processor revision 3 (v7l) on all Raspberry Pis 4. The kernel versions differed between 
+    the devices, with version \texttt{6.12.25-1-rpi} on the 4 GB model and version \texttt{6.12.21-1-rpi} on the 8 GB model. 
+    Kernel modules can be successfully run on Raspberry Pi 4 devices. However, the system architecture was armv7l. 
+    In this configuration, user-mode execution lacks certain cache maintenance instructions, such as \texttt{dc civac}, \texttt{dc cvac}, 
+    and \texttt{dc zva}. This limitation is inherent to the ARMv7-A architecture, where cache maintenance instructions are 
+    restricted to privileged modes.
+    The Raspberry Pi 5 devices also initially ran older system installations based on Arch Linux ARM. These systems 
+    reported an ARMv8 Processor revision 1 (v8l) and used the aarch64 architecture. The kernel version installed was 
+    \texttt{6.12.47.1-rpi-16k}. During initial testing, discrepancies were observed between the kernel and header versions on 
+    the Raspberry Pi 5 systems. This mismatch led to complications when attempting to build and insert kernel modules. 
+    Due to this incompatibility, kernel modules could not be fully compiled or loaded, as successful compilation 
+    requires header files that exactly match the running kernel version.
+    The objective at this stage was to align the kernel and header versions on the Raspberry Pi 5 systems. However, 
+    a persistent version mismatch was encountered. After performing a full system upgrade using the command
+    \texttt{pacman -Syu linux-rpi-16k linux-rpi-16k-headers}, the kernel was updated, but no corresponding newer header 
+    package was available. As a result, the kernel and headers remained at different versions. Attempts to manually 
+    downgrade the kernel were also unsuccessful. Installing a cached kernel package (\texttt{linux-rpi-16k-6.12.46-1}) via 
+    \texttt{pacman -U} and rebooting did not result in the expected kernel version, even though the package was present on 
+    the system. Other kernel versions could be installed successfully, but still without matching header versions. 
+    Furthermore, a repository inconsistency was observed. Although the kernel appeared outdated on the systems, the 
+    kernel and headers shared the same version in the repositories. This discrepancy may have been caused by mirrors 
+    lagging behind the Arch Linux ARM website.
+    After all attempted approaches failed, a final decision was made to align the systems by reinstalling all Raspberry 
+    Pi devices. The reinstall was motivated by several factors. First, the inability to execute kernel modules reliably 
+    hindered further experimentation. Second, the absence of cache flush instructions on ARMv7 systems prevented the 
+    required cache management functionality. Reinstalling the systems would provide deterministic cache-line invalidation, 
+    ensuring that every subsequent memory access is served from \gls{dram}, as discussed in more detail in the section on 
+    uncached execution. Finally, a clean reinstallation reduced setup complexity by avoiding the need for eviction-set 
+    construction and timing-based profiling, thereby establishing a consistent and reliable experimental environment 
+    across all platforms.
+    \\
     % Reinstall Systems [Requirements]
     The hardware required for this process included a Raspberry Pi, a desktop computer, network cables, USB-C cables, 
     Micro HDMI to HDMI adapters, a mouse, a keyboard, a laptop, and a micro SD card with an adapter. Software 
@@ -61,8 +93,16 @@
     \\
     % Requirements & Automated Setup
     For Python development, a virtual environment was created, and all additional dependencies were installed.
+    \\
+    % Outcome
+    All newly deployed systems are based on Raspberry Pi OS Lite 64-bit running on the aarch64 architecture. The Raspberry 
+    Pi 4 uses kernel version \texttt{6.12.47+rpt-rpi-v8}, while the Raspberry Pi 5 runs kernel version \texttt{6.12.47+rpt-rpi-2712}. As a 
+    result of this setup, all test systems now operate on the same operating system, have access to all maintenance 
+    instructions that are relevant in Section \hyperref[sec:flush-cache]{Uncached}, and are capable of executing kernel modules.
+    This unified system configuration provides several additional advantages. It ensures improved comparability of 
+    experimental results, as all Raspberry Pi devices run on an identical software stack.
 
-  \subsection{Experiment Setup \& Automation}
+  \subsection{Experiment Setup} \label{sec:experiment-setup}
     For long-term experiments, the \gls{tmux} tool was installed to address the challenge of maintaining continuous processes on the 
     Raspberry Pi systems while allowing the user to disconnect from the \gls{ssh} session. \gls{tmux} is a terminal multiplexer that enables 
     multiple terminal sessions to be created, accessed, and controlled independently within a single \gls{ssh} connection. New 
@@ -71,7 +111,8 @@
     even if the \gls{ssh} connection was closed. Detached sessions could later be reattached using \texttt{tmux a -t <session\_name>}, and 
     sessions that were no longer needed could be terminated with \texttt{tmux kill-session -t <session\_name>}. This setup ensured reliable 
     and uninterrupted execution of long-duration experiments while maintaining full control over multiple concurrent tasks.
-    \\
+  
+  \subsection{Automated Scripts} \label{sec:automated-scripts}
     Automated scripts were developed to streamline experiment management. The ping\_pis.sh script checked the reachability 
     of all HammerPi hosts and summarized the results. The \texttt{start\_pis.sh} script verified host connectivity, opened terminal 
     tabs for each reachable host, and initiated \gls{ssh} connections while keeping terminals open after session closure. 

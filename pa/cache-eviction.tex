@@ -139,15 +139,15 @@
         \\
         \textbf{\gls{pipt}} caches use the physical address for both index and tag. 
         This approach avoids duplication of shared memory in the cache, but it is slower because address 
-        translation via the \textbf{\gls{tlb}} is required before cache access.
+        translation via the \gls{tlb} is required before cache access.
         \\
         \textbf{\gls{pivt}} caches use the physical address for indexing and the virtual 
         address for tagging. This design provides no practical benefit, as it still requires address translation 
         while retaining the disadvantage of non-unique virtual tags, allowing shared memory to be duplicated.
         \\
         \textbf{\gls{vipt}} caches use the virtual address for indexing and the physical 
-        address for tagging. This approach offers lower latency than \textbf{\gls{pipt}} caches because index lookup can proceed 
-        in parallel with \textbf{\gls{tlb}} translation, although tag comparison must still wait for the physical address.
+        address for tagging. This approach offers lower latency than \gls{pipt} caches because index lookup can proceed 
+        in parallel with \gls{tlb} translation, although tag comparison must still wait for the physical address.
         \\
         On the Raspberry Pi 4, the L1 instruction cache, L1 data cache, and L2 cache behave as \gls{pipt} caches [172, 123]. 
         On the Raspberry Pi 5, the L1 instruction and L1 data caches are \gls{vipt}, but they behave effectively as \gls{pipt}

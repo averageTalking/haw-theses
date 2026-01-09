@@ -61,8 +61,7 @@
     Pi devices. The reinstall was motivated by several factors. First, the inability to execute kernel modules reliably 
     hindered further experimentation. Second, the absence of cache flush instructions on ARMv7 systems prevented the 
     required cache management functionality. Reinstalling the systems would provide deterministic cache-line invalidation, 
-    ensuring that every subsequent memory access is served from \gls{dram}, as discussed in more detail in the 
-    section~\hyperref[subsec:flush-cache]{Uncached}. Finally, a clean reinstallation reduced setup complexity by avoiding the need for eviction-set 
+    ensuring that every subsequent memory access is served from \gls{dram}. Finally, a clean reinstallation reduced setup complexity by avoiding the need for eviction-set 
     construction and timing-based profiling, thereby establishing a consistent and reliable experimental environment 
     across all platforms.
     \\

@@ -3,7 +3,7 @@
   configuration and experimental execution, ensuring all devices, software, and development workflows were properly 
   prepared prior to conducting experiments.
 
-  \subsection{System Setup} \label{sec:system-setup}
+  \subsection{System Setup} \label{subsec:system-setup}
     % Github Setup
     The initial configuration of the laboratory environment involved setting up the necessary repositories for development 
     and documentation. A dedicated \textit{GitHub} repository was created for coding purposes on all 
@@ -102,7 +102,7 @@
     This unified system configuration provides several additional advantages. It ensures improved comparability of 
     experimental results, as all Raspberry Pi devices run on an identical software stack.
 
-  \subsection{Experiment Setup} \label{sec:experiment-setup}
+  \subsection{Experiment Setup} \label{subsec:experiment-setup}
     For long-term experiments, the \gls{tmux} tool was installed to address the challenge of maintaining continuous processes on the 
     Raspberry Pi systems while allowing the user to disconnect from the \gls{ssh} session. \gls{tmux} is a terminal multiplexer that enables 
     multiple terminal sessions to be created, accessed, and controlled independently within a single \gls{ssh} connection. New 
@@ -112,7 +112,7 @@
     sessions that were no longer needed could be terminated with \texttt{tmux kill-session -t <session\_name>}. This setup ensured reliable 
     and uninterrupted execution of long-duration experiments while maintaining full control over multiple concurrent tasks.
   
-  \subsection{Automated Scripts} \label{sec:automated-scripts}
+  \subsection{Automated Scripts} \label{subsec:automated-scripts}
     Automated scripts were developed to streamline experiment management. The ping\_pis.sh script checked the reachability 
     of all HammerPi hosts and summarized the results. The \texttt{start\_pis.sh} script verified host connectivity, opened terminal 
     tabs for each reachable host, and initiated \gls{ssh} connections while keeping terminals open after session closure. 

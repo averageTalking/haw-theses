@@ -2,13 +2,13 @@
   % "Non-functional Requirements"
     % Lege dich auf eine Programmiersprache fest
 %%%%%
-\section{Methodology}
+\section{Methodology} \label{sec:methodology}
   This chapter describes the methodological framework applied in this thesis. It outlines the overall 
   research design, the selected test devices, the employed data sources, as well as the procedures for 
   data collection, analysis, and evaluation. Furthermore, it specifies the functional and non-functional 
   requirements that guided the implementation of the experimental setup.
 
-  \subsection{Research Design}
+  \subsection{Research Design} \label{subsec:research-design}
     % Research Type && -Objective && Methodological Approach
     The research conducted in this thesis follows a quantitative study design based on experimental 
     testing, with the aim of confirming or refuting predefined hypotheses. The primary research objective 
@@ -79,18 +79,18 @@
     JSON logs, and \texttt{.dat} files. This combination of logging mechanisms enables systematic evaluation and 
     comparison of experimental outcomes.
 
-  \subsection{Evaluation}
+  \subsection{Evaluation} \label{subsec:evaluation}
     To ensure the reliability and validity of the results, experiments are repeated to verify the consistency 
     of observations. All tests are conducted in a controlled environment to minimize external interference. 
     Where applicable, statistical tests are applied to support the evaluation of the experimental data.
 
-  \subsection{Requirements}
+  \subsection{Requirements} \label{subsec:requirements}
     To ensure a structured and reliable experimental evaluation of Rowhammer attacks on Raspberry Pi platforms, 
     a set of technical, and ethical requirements is defined. These requirements guide the design, 
     implementation, execution, and evaluation of the experimental framework and ensure that the results are 
     reproducible, and meaningful.
 
-    \subsubsection{Functional requirements}
+    \subsubsection{Functional requirements} \label{subsubsec:functional-requirements}
       The experimental setup must support a configurable system with adjustable parameters, including the 
       selection of different hammering techniques such as single-sided, double-sided, one-location, and if feasible 
       many-sided hammering. It must allow configuration of the number of iterations and hammer cycles, automatically detect 
@@ -104,7 +104,7 @@
       output must be logged to the terminal, with all measurements recorded in JSON format and individual 
       measurements additionally stored in \texttt{.log} files.
       
-    \subsubsection{Non-functional requirements}
+    \subsubsection{Non-functional requirements} \label{subsubsec:non-functional-requirements}
       The implementation must be realized using \textit{C}, \textit{C++}, or \textit{Python} and executed with root privileges in user space. 
       All \hyperref[tab:experimental-setups]{Raspberry Pi 4 and Raspberry Pi 5 devices} must operate in ARMv8 (AArch64) mode. The 
       system must meet requirements regarding performance and efficiency and include robust error-handling mechanisms. 

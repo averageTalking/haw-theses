@@ -1,17 +1,17 @@
 %%%%% MAKE THIS BETTER
   % ADD: Quellen
 %%%%%
-\section{Attack Primitives}
+\section{Attack Primitives} \label{sec:attack-primitives}
   For Rowhammer attacks to be feasible, three fundamental prerequisites must be satisfied, commonly referred
   to as attack primitives [106, 58]. These primitives define the necessary properties of memory accesses that 
   enable the electrical disturbance of \gls{dram} cells required for inducing bit flips.
   \begin{itemize}
-    \item \textbf{P1.} Uncached \label{prim:uncached}
-    \item \textbf{P2.} Fast \label{prim:fast}
-    \item \textbf{P3.} Targeted \label{prim:targeted}
+    \item \hyperref[sec:uncached]{\textbf{P1.} Uncached} \label{prim:uncached}
+    \item \hyperref[sec:fast]{\textbf{P2.} Fast} \label{prim:fast}
+    \item \hyperref[sec:targeted]{\textbf{P3.} Targeted} \label{prim:targeted}
   \end{itemize}
   
-  The first prerequisite, denoted as \textbf{\hyperref[prim:uncached]{P1. Uncached}}, requires that memory accesses bypass 
+  The first prerequisite, denoted as \textbf{\hyperref[sec:uncached]{P1. Uncached}}, requires that memory accesses bypass 
   the \gls{cpu} cache and reach the \gls{dram} directly. \gls{dram} cells are only electrically stressed when the memory controller opens 
   and closes the corresponding \gls{dram} row, which occurs exclusively on accesses that are not served by the cache. 
   Ensuring that each memory access physically toggles \gls{dram} cells, rather than being handled by the \gls{cpu} cache, 
@@ -21,7 +21,7 @@
   adjacent cells. Consequently, forcing cache misses or using uncached memory regions is mandatory to generate 
   the required activation frequency.
   \\
-  The second prerequisite, \textbf{\hyperref[prim:fast]{P2. Fast}}, demands that memory accesses occur at a rate that outpaces 
+  The second prerequisite, \textbf{\hyperref[sec:fast]{P2. Fast}}, demands that memory accesses occur at a rate that outpaces 
   the \gls{dram} refresh mechanism. The attack fundamentally depends on hammering aggressor rows faster than refresh cycles can restore 
   the electrical charge in adjacent victim cells. Achieving this requires a high access throughput to the same 
   \gls{dram} rows with minimal delay between consecutive activations. In practice, this also implies that mitigation 
@@ -29,17 +29,9 @@
   or an increased refresh rate - often need to be bypassed. Without overcoming such defenses, the hammering 
   intensity remains insufficient to reliably induce bit flips.
   \\
-  The third prerequisite, \textbf{\hyperref[prim:targeted]{P3. Targeted}}, specifies that memory accesses must be directed to 
+  The third prerequisite, \textbf{\hyperref[sec:targeted]{P3. Targeted}}, specifies that memory accesses must be directed to 
   precisely chosen physical \gls{dram} rows. To accomplish this, an attacker must determine how virtual addresses are mapped onto the 
   underlying physical \gls{dram} structures in order to identify aggressor rows that surround a specific victim row. 
   This process requires reconstructing the \gls{dram} address mapping scheme. Only with accurate knowledge of this 
   mapping can hammering be focused such that specific adjacent rows are repeatedly activated. Without correct 
   targeting, hammering becomes largely probabilistic and rarely, if ever, results in disturbances of victim data.
-
-  
-  
-  \input{pa/uncached}
-
-  \input{pa/fast}
-  
-  \input{pa/targeted}

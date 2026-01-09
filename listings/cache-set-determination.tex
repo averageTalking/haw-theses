@@ -1,0 +1,6 @@
+\begin{lstlisting}[language=c,caption=\texttt{Cache set determination}, label=lst:cache-set-determination]
+size_t libflush_eviction_get_set_index(libflush_session_t* session, void* address) {
+	uintptr_t physical_address = libflush_get_physical_address(session, (uintptr_t) address);
+	return (physical_address >> LINE_LENGTH_LOG2) % NUMBER_OF_SETS;
+}
+\end{lstlisting}

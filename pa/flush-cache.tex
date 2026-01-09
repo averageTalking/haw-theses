@@ -1,11 +1,123 @@
 \subsection{Flush cache} \label{subsec:flush-cache}
-    This is a test.
+    This method for bypassing the cache is recommended because it explicitly invalidates a specific cache 
+    line, ensuring that the next access must be served from \gls{dram}. ARMv8 provides explicit cache maintenance 
+    instructions for this purpose, most notably the DC CIVAC instruction [Quote of ~159]. By directly 
+    targeting individual cache lines, this approach provides deterministic cache-line invalidation, which 
+    guarantees predictable behavior whereby every subsequent access is fetched from \gls{dram}. 
+    It should be noted that these instructions are no longer available in an unprivileged context but require 
+    privileged execution. However, this restriction is acceptable for our project. Overall, this technique 
+    avoids reliance on undocumented cache-replacement policies, thereby increasing experimental reliability, and 
+    simplifies the setup by eliminating the need for eviction-set construction and timing-based profiling that 
+    are typical of cache eviction based approaches.
 
     \subsubsection{Instruction Types} \label{subsubsec:instruction-types}
-        This is a test.
+        The original Rowhammer approach targeting the x86 architecture relies on the unprivileged 
+        \texttt{CLFLUSH} instruction to flush the data associated with a given address from the cache hierarchy 
+        [~Flipping Bits]. While cache management instructions in ARMv7-A, referred to as cache maintenance 
+        instructions, are privileged in all ARMv7-A processors, they have been exposed to userspace since 
+        ARMv8-A. Consequently, it becomes feasible to apply Rowhammer techniques similar to the original 
+        CLFLUSH-based approach on systems using ARMv8-A processors [~Triggering RH].
+        \begin{figure}[htbp]
+            \centering
+            \frame{\includegraphics[width=\linewidth]{img/flush-instructions.pdf}}
+            \caption{Flush instructions on x86 and ARM}
+            \label{fig:flush-instructions}
+        \end{figure}
+
+        In the Intel x86 architecture, the \texttt{CLFLUSH} instruction invalidates the cache line containing the 
+        specified address from all levels of the cache hierarchy, including both data and instruction caches [72]. 
+        If the cache line is dirty at any level of the hierarchy, meaning it contains modified data, it is written 
+        back to memory before being invalidated [151, 150, Cache Attacks and Rowhammer]. Both \texttt{CLFLUSH} and 
+        its related instructions are unprivileged and therefore accessible from userspace 
+        [150, Cache Attacks and Rowhammer].
+        \\
+        ARMv8-A defines several cache maintenance instructions with distinct semantics. The DC CIVAC 
+        instruction cleans and invalidates a data cache by address to \gls{poc} [152], while DC CVAC 
+        cleans a data cache line by address to the \gls{poc} without invalidation [153].
+        In addition, ARMv8-A introduces the DC ZVA instruction, which 
+        is designed to efficiently zero out a block of memory [~Triggering RH]. This instruction zeros a 
+        naturally aligned block of N bytes [166]. As described in [Raspberry Pi 3B+], “The ability to preload the data cache 
+        with zero values using the DC ZVA instruction is new in ARMv8-A. Cache line zeroing behaves in a similar fashion 
+        to a prefetch, as a way of hinting to the processor that certain addresses are likely to be used in the future. 
+        However, a zeroing operation can be much quicker as there is no need to wait for external memory 
+        accesses to complete [~Triggering RH]."
+        \\
+        When using DC ZVA in the context of cache bypassing or Rowhammer-style experiments, a crucial requirement 
+        is that the memory blocks being zeroed must not already be cached in the hierarchy before entering the 
+        hammering loop. Otherwise, the underlying \gls{dram} will not be accessed; instead, only the cached copies 
+        are zeroed and marked as dirty. This behavior is fundamentally different from the use of non-temporal 
+        store instructions on x86 and would invalidate the intended experimental assumptions [~Triggering RH].
+        The corresponding access pattern and instruction sequence are illustrated in Figure~\ref{lst:dczva}.
+        \input{listings/dczva.tex}
     
     \subsubsection{Kernel Module} \label{subsubsec:kernel-module}
-        This is a test.
+        The cache bypass mechanism is further investigated using a Linux kernel module designed for kernel-space 
+        latency measurements of memory and cache operations on ARMv8 systems. The primary goal of this module is 
+        to determine whether cache hits and cache misses can be statistically distinguished and to visualize this 
+        distinction by plotting latency distributions for cache hits versus cache misses.
+        \\
+        The module uses the \gls{cpu} cycle counter \texttt{pmccntr\_el0} in combination with explicit instruction and data 
+        synchronization barriers to measure the latency of individual operations in \gls{cpu} cycles. It implements 
+        eight different operation modes, each representing a specific memory access pattern, including store and 
+        load operations, cache clean operations using DC CVAC, cache clean and invalidate operations using 
+        DC CIVAC, and cache line zeroing using DC ZVA. Each of these modes is further evaluated with and without 
+        explicit synchronization, thereby intentionally exposing different ordering and completion behaviors. 
+        Not all modes employ full memory barriers (DSB and ISB) after the operation, allowing the impact of 
+        missing versus enforced barriers on latency to be analyzed. A baseline mode measures plain memory loads 
+        to serve as a reference for comparison against all cache maintenance modes. Each configuration is 
+        executed repeatedly and averaged over multiple runs to reduce noise. The resulting latency distributions 
+        are written to a file and intended to be plotted as diagrams, enabling a clear comparison between modes 
+        and highlighting the influence of synchronization on latency and measurement comparability.
+        \\
+        % Zero Latency readings
+        A notable issue encountered during these experiments is the occurrence of zero latency readings when using 
+        cache-bypass kernel modules, despite an active \gls{pmu} and relaxed paranoid 
+        settings. This behavior is observed specifically on Raspberry Pi 5 systems, and its underlying cause 
+        remains unresolved at this stage.
+        \\
+        % System Control Register on EL1 (SCTLR\_EL1)
+        In contrast to the ARMv7 architecture, ARMv8 defines the \texttt{SCTLR\_EL1} system control register, which includes 
+        a bit denoted as \texttt{UCI}. If this bit is set, userspace access is enabled for a specific set of cache and 
+        instruction maintenance operations, as illustrated in Figure~\ref{fig:sctlr} [Quote of ~Masterthesis, 145].
+        \begin{figure}[htbp]
+            \centering
+            \frame{\includegraphics[width=\linewidth]{img/sctlr.pdf}}
+            \caption{Instructions affected by the \gls{uci} bit in SCTLR\_EL1}
+            \label{fig:sctlr}
+        \end{figure}
+
+        The \texttt{SCTLR\_EL1} register is a 64-bit system control register that provides top-level control of the system, 
+        including its memory system, at both EL1 and EL0 [91]. The \texttt{\gls{uci}} field is located at bit position 26 [91,92] 
+        and enables EL0 access to the aforementioned cache maintenance instructions when set to 1, while a value of 
+        0 disables EL0 access [92]. In addition, \texttt{SCTLR\_EL1} contains the \texttt{\gls{dze}} field at bit 
+        position 14 [91,92]. This bit controls EL0 access to the DC ZVA instruction, where a value of 1 enables 
+        execution in userspace and a value of 0 disables it [92].
+        \\
+        To verify the configuration of these fields, a dedicated kernel module \texttt{sctlr.c} was implemented to read 
+        and report the contents of \texttt{SCTLR\_EL1}. The module output confirms that both the \texttt{\gls{uci}} and \texttt{\gls{dze}} bits are set. 
+        This result demonstrates that DC CIVAC and DC CVAC are unprivileged and can be executed from userspace, 
+        and that DC ZVA is likewise unprivileged and accessible at EL0. These findings are consistent with previous 
+        observations reported in [~Triggering RH].
     
     \subsubsection{Userspace} \label{subsubsec:userspace}
-        This is a test.
+        A userspace counterpart to the kernel module experiments is implemented in the program \texttt{flush\_user.c}, 
+        located in \texttt{/rowhammer/experiments/cache-bypass}. The goal of this experiment is likewise to determine whether 
+        cache hits and cache misses can be statistically distinguished and to visualize the difference by plotting 
+        corresponding latency distributions.
+        \\
+        This experiment evaluates the effectiveness and performance impact of cache maintenance instructions on 
+        ARM-based systems when executed from userspace. The objective is to assess whether, and to what extent, 
+        specific instructions can bypass or influence cache behavior, and to quantify the associated latency costs. 
+        The program measures cycle-accurate execution times using ARM performance counters while applying different 
+        low-level memory operations. It executes eight predefined instruction patterns involving store, load, clean, 
+        invalidate, and zeroing operations. Each pattern is executed repeatedly under two conditions: with and 
+        without the corresponding cache maintenance instruction.
+        \\
+        Compared to the kernel-space implementation, several differences arise. The kernel-based \texttt{flush\_kernel.c} 
+        executes in kernel space as a loadable module using \texttt{module\_init} and \texttt{module\_exit}, providing direct access 
+        to hardware resources and privileged instructions. In contrast, \texttt{flush\_user.c} runs entirely in user space 
+        as a standard program with a \texttt{main()} function and without kernel privileges. Memory management also differs, 
+        as the kernel module relies on \texttt{kmalloc()} and \texttt{kfree()} to obtain physically contiguous memory, 
+        whereas the userspace program uses standard virtual memory allocation mechanisms such as \texttt{malloc()} and \texttt{free()}. 
+        File I/O and logging are handled using kernel-specific interfaces in kernel space, while the userspace implementation 
+        uses standard C library functions.

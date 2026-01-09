@@ -95,10 +95,10 @@
       selection of different hammering techniques such as single-sided, double-sided, one-location, and if feasible 
       many-sided hammering. It must allow configuration of the number of iterations and hammer cycles, automatically detect 
       the memory page size, and support configurable initialization patterns, for example using \texttt{0} or \texttt{1}. The amount 
-      of allocated RAM must be adjustable as a percentage of the available memory, and the framework must 
+      of allocated \gls{ram} must be adjustable as a percentage of the available memory, and the framework must 
       incorporate bit masks and bank addressing functions. Automatic detection of hardware characteristics, 
-      including the Raspberry Pi model, RAM size, and architecture, is required. Furthermore, the system must 
-      support cache bypass mechanisms, virtual-to-physical-to-DRAM address mapping, and, if feasible, mitigation 
+      including the Raspberry Pi model, \gls{ram} size, and architecture, is required. Furthermore, the system must 
+      support cache bypass mechanisms, virtual-to-physical-to-\gls{dram} address mapping, and, if feasible, mitigation 
       bypass techniques. Hammering operations must include bit flip detection and classification, such as 
       distinguishing between \texttt{0→1} and \texttt{1→0} transitions, as well as verification of detected bit flips. Experimental 
       output must be logged to the terminal, with all measurements recorded in JSON format and individual 

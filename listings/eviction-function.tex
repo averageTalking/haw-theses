@@ -1,0 +1,11 @@
+\begin{lstlisting}[language=c,caption=\texttt{Eviction function}, label=lst:eviction-function]
+inline void evict(congruent_address_cache_entry_t* congruent_address_cache_entry) {
+	for (unsigned int i = 0; i < ES_EVICTION_COUNTER; i += 1) {
+		for (unsigned int j = 0; j < ES_NUMBER_OF_ACCESSES_IN_LOOP; j++) {
+			for (unsigned int k = 0; k < ES_DIFFERENT_ADDRESSES_IN_LOOP; k++) {
+				libflush_access_memory(congruent_address_cache_entry->congruent_virtual_addresses[i+k]);
+			}
+		}
+	}
+}
+\end{lstlisting}

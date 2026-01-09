@@ -1,14 +1,7 @@
-%% MAKE BETTER
-    %% Check "Non-temporal accesses"
-    %% Check "Uncached memory"
-    %% Add Abbreviations
-    %% Formatierung
-
-
 \section{Uncached} \label{sec:uncached}
     To achieve~\hyperref[prim:uncached]{P1. Uncached}, the cache must be completely bypassed so that all memory accesses repeatedly 
-    reach the DRAM without being served from any cache level. This section therefore provides a brief 
-    discussion of the available methods to bypass CPU caches, explains why certain approaches are selected 
+    reach the \gls{dram} without being served from any cache level. This section therefore provides a brief 
+    discussion of the available methods to bypass \gls{cpu} caches, explains why certain approaches are selected 
     or discarded, and identifies the most effective method on ARM-based systems such as the Raspberry Pi. 
     In addition, it outlines the general implementation process, including the main development steps and 
     the challenges encountered during implementation.
@@ -35,25 +28,25 @@
         standard cache-coherency rules and are assumed by the memory controller to access data that will not 
         be reused, and several non-temporal instructions are designed to bypass the cache. Nevertheless, a 
         major limitation of this approach is that all non-temporal stores to a single address are combined 
-        into a single write-combining (WC) buffer, such that only the last write is eventually forwarded to 
-        DRAM, regardless of how many stores are issued. As a result, the effective access rate is insufficient 
+        into a single \gls{wc} buffer, such that only the last write is eventually forwarded to 
+        \gls{dram}, regardless of how many stores are issued. As a result, the effective access rate is insufficient 
         to perform reliable hammering [58]. Since Rowhammer requires a very high access rate, this limitation 
         makes non-temporal accesses unsuitable for this purpose [lecture-introduction].
     
     \subsection{Uncached memory} \label{subsec:uncached-memory}
         Another approach is the use of explicitly uncached memory. This method allocates memory regions that 
         are explicitly marked as uncached, for example via ION, such that every memory access goes directly 
-        to DRAM without interacting with the CPU cache. This approach is particularly well suited for mobile 
+        to \gls{dram} without interacting with the \gls{cpu} cache. This approach is particularly well suited for mobile 
         ARM platforms, such as ARMv7 and ARMv8 systems, where cache flush instructions are sometimes privileged, 
         cache eviction is often too slow, and non-temporal stores are still cached in practice [58]. An 
         important advantage of this method is that it does not require special privileges or permissions. 
-        Previous work takes advantage of DMA buffers exposed to userspace through the Android ION memory 
+        Previous work takes advantage of \gls{dma} buffers exposed to userspace through the Android ION memory 
         management interface [~Drammer]. However, [~GuardION] has rendered Rowhammer attacks triggered in this 
-        way non-exploitable. More generally, leveraging user-accessible DMA buffers on Android systems to 
-        bypass CPU caches has been explored in [38] [Quote of Triggering RH]. Despite its effectiveness on 
+        way non-exploitable. More generally, leveraging user-accessible \gls{dma} buffers on Android systems to 
+        bypass \gls{cpu} caches has been explored in [38] [Quote of Triggering RH]. Despite its effectiveness on 
         Android, this technique suffers from platform-specific memory management limitations. The Android 
         ION memory management framework is tightly coupled to the Android kernel and userspace stack and is 
-        not available on standard Raspberry Pi Linux distributions. Consequently, user-accessible DMA buffers 
+        not available on standard Raspberry Pi Linux distributions. Consequently, user-accessible \gls{dma} buffers 
         provided by ION cannot be allocated or controlled on a Raspberry Pi, rendering this cache-bypass 
         technique inapplicable in that environment.
         \\

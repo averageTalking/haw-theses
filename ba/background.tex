@@ -1,33 +1,33 @@
 \section{Background} \label{sec:background}
-  \subsection{CPU Caches} \label{subsec:cpu-caches}
-    Dynamic Random-Access Memory (DRAM) requires regular refreshing because it stores each bit 
+  \subsection{CPU Caches} \label{subsec:-caches}
+    \gls{dram} requires regular refreshing because it stores each bit 
     as an electrical charge, which gradually leaks over time. This leakage necessitates refresh 
-    cycles, resulting in slower access times; however, DRAM provides high storage density at a 
-    relatively low cost [27]. In contrast, Static Random-Access Memory (SRAM) maintains each bit 
+    cycles, resulting in slower access times; however, \gls{dram} provides high storage density at a 
+    relatively low cost [27]. In contrast, Static Random-Access Memory (\gls{sram}) maintains each bit 
     in a stable flip-flop circuit, eliminating the need for refresh operations. This 
-    characteristic makes SRAM faster and allows it to be physically located closer to the CPU, 
-    though it is more expensive and offers lower storage capacity compared to DRAM [27]. \\
-    CPU caches are constructed from SRAM to maximize access speed [45, 31]. A cache is a fast, 
+    characteristic makes \gls{sram} faster and allows it to be physically located closer to the \gls{cpu}, 
+    though it is more expensive and offers lower storage capacity compared to \gls{dram} [27]. \\
+    \gls{cpu} caches are constructed from \gls{sram} to maximize access speed [45, 31]. A cache is a fast, 
     specialized memory area designed to accelerate data retrieval [27]. It temporarily stores 
-    copies of frequently used data and instructions from main memory (RAM) that the CPU is likely 
-    to access imminently [27, 45]. By holding data that the CPU may repeatedly access, caches 
-    serve as a buffer between the CPU and main memory, significantly reducing the time required 
+    copies of frequently used data and instructions from main memory (\gls{ram}) that the \gls{cpu} is likely 
+    to access imminently [27, 45]. By holding data that the \gls{cpu} may repeatedly access, caches 
+    serve as a buffer between the \gls{cpu} and main memory, significantly reducing the time required 
     for repeated data accesses [30, 45]. Cached data typically mirrors the contents of slower 
-    storage devices such as RAM or disks [27]. Common types of caches include CPU caches, memory 
-    caches, and browser caches [27]; however, only CPU caches are relevant in the context of the 
+    storage devices such as \gls{ram} or disks [27]. Common types of caches include \gls{cpu} caches, memory 
+    caches, and browser caches [27]; however, only \gls{cpu} caches are relevant in the context of the 
     Rowhammer attack. \\
-    Cache performance is characterized by hits and misses. A cache hit occurs when the CPU 
+    Cache performance is characterized by hits and misses. A cache hit occurs when the \gls{cpu} 
     requests data already present in one of its cache levels. In this case, the cache provides 
     the data immediately, bypassing the need to access main memory. This results in extremely 
-    low latency, as cache access is several orders of magnitude faster than DRAM access. 
+    low latency, as cache access is several orders of magnitude faster than \gls{dram} access. 
     Conversely, a cache miss happens when the requested data is not stored in the cache. The 
-    CPU must then retrieve the data from DRAM, which introduces significantly higher latency 
+    \gls{cpu} must then retrieve the data from \gls{dram}, which introduces significantly higher latency 
     due to slower access times. Once retrieved, the data is typically placed in the cache to 
     accelerate potential future accesses. Cache hits improve overall system performance by 
     exploiting temporal and spatial locality, ensuring that frequently or recently used data 
-    remains close to the CPU. \\
+    remains close to the \gls{cpu}. \\
     The memory hierarchy organizes storage components according to their speed, latency, and 
     cost, as illustrated in Figure. Memory Hierarchy. Higher levels of the hierarchy, such as 
-    CPU caches, are smaller but faster, while lower levels are larger but significantly slower. 
-    Due to their proximity to the CPU and implementation using SRAM, caches provide access 
-    speeds approximately 10–100 times faster than DRAM [46].
+    \gls{cpu} caches, are smaller but faster, while lower levels are larger but significantly slower. 
+    Due to their proximity to the \gls{cpu} and implementation using \gls{sram}, caches provide access 
+    speeds approximately 10–100 times faster than \gls{dram} [46].

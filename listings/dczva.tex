@@ -1,0 +1,9 @@
+\begin{lstlisting}[language=c,caption=\texttt{DC ZVA Usage}, label=lst:dczva]
+put addr1 into X9
+put addr2 into X10
+invalidate/evict addr1 
+invalidate/evict addr2 
+for i := 0 to N - 1 do 
+  DC ZVA, X9 
+  DC ZVA, X1
+\end{lstlisting}

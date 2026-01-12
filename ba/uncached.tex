@@ -1,11 +1,53 @@
 \section{Uncached} \label{sec:uncached}
-    This is a test.
+    In the following, each attack primitive is discussed in turn, beginning with \hyperref[sec:attack-primitives]{P1. Uncached}, which 
+    establishes the foundation for inducing repeated \gls{dram} row activations. The P1. Uncached primitive 
+    is realized by preventing data from being stored in or retrieved from the cache, thereby ensuring 
+    that all memory accesses are served directly from \gls{dram}. To this end, the available techniques for 
+    bypassing the cache are first presented, followed by a focused discussion of two mechanisms that 
+    are particularly relevant for Raspberry Pi platforms: cache eviction and cache flushing.
+    \\
+    To enable the memory access behavior required for triggering Rowhammer, several cache-bypass 
+    techniques are considered [106, 58]. These techniques include the use of non-temporal memory 
+    accesses, the allocation of uncached memory regions, cache eviction strategies, and explicit cache 
+    flush operations. Prior work has shown that triggering Rowhammer on ARM-based devices presents 
+    substantial challenges, as successful exploitation requires rapid, repeated access to identical 
+    \gls{dram} locations [48]. \gls{cpu} caches significantly obstruct this process by intercepting repeated accesses, 
+    thereby preventing them from reaching \gls{dram}. Consequently, mitigating cache effects becomes a central 
+    prerequisite. While x86 architectures provide well-established mechanisms - such as cache flushing 
+    via the \texttt{clflush} instruction, non-temporal accesses, and eviction-based techniques - [48] demonstrates 
+    that these approaches are either impractical or not well suited for direct adaptation to ARM platforms, 
+    thereby motivating the exploration of alternative, architecture-specific solutions. Since successful 
+    Rowhammer attacks require high-frequency access to \gls{dram}, cache memory can significantly disrupt the 
+    attack by absorbing repeated accesses and reducing the number of \gls{dram} activation's. Consequently, 
+    uncached access can be achieved through two complementary strategies, either by explicitly removing 
+    data from the cache or by preventing data from being cached in the first place [lecture-introduction].
 
     \subsection{Non-temporal accesses} \label{subsec:non-temporal-accesses}
-        This is a test.
+        Prior work introduces a Rowhammer triggering technique on x86 platforms that leverages \gls{nt} 
+        memory instructions [105]. \gls{nt} accesses are intended for data with low temporal locality, i.e., 
+        data that is unlikely to be reused in the near future and therefore should not occupy cache space, 
+        such as streaming data. By design, these accesses can reduce or avoid cache involvement, which has 
+        been shown to significantly facilitate Rowhammer attacks on x86 systems [105]. On ARMv8 architecture, 
+        however, \gls{nt} load and store instructions (e.g., \texttt{LDNP} and \texttt{STNP}) merely act as advisory hints to the memory 
+        system rather than enforcing uncached behavior [Drammer]. Empirical results indicate that accessed data 
+        may still be cached in practice [48]. Moreover, multiple consecutive writes to the same address are 
+        collected within a single write-combining buffer, with only the last write being committed to \gls{dram} [58].
+        This aggregation substantially reduces the effective access frequency to \gls{dram}, rendering \gls{nt}-based approaches 
+        unsuitable for achieving the activation rates required for Rowhammer attacks on Raspberry Pi devices.
     
     \subsection{Uncached memory} \label{subsec:uncached-memory}
-        This is a test.
+        Another approach involves allocating memory regions that are explicitly marked as uncached, for example 
+        through the use of ION, such that every access is served directly from \gls{dram} without interacting with the 
+        cache [38]. This method is particularly suitable for ARM-based mobile architectures, such as ARMv7 and 
+        ARMv8, where cache flush instructions may require elevated privileges and non-temporal stores may still 
+        be subject to caching in practice [58]. A key advantage of this technique is that it operates entirely 
+        in unprivileged user space and does not require special permissions. Prior work describes how 
+        user-accessible \gls{dma} buffers exposed by the Android ION memory management interface can be leveraged to 
+        bypass \gls{cpu} caches, thereby enabling Rowhammer triggering from user space [38, 48]. However, subsequent 
+        defenses, such as GuardION [GuardION], have rendered Rowhammer bugs triggered in this way non-exploitable. 
+        Importantly, this technique is not applicable to Raspberry Pi systems, as the Android-specific ION framework 
+        is not available in standard Linux-based Raspberry Pi environments, which prevents the allocation or control 
+        of such uncached \gls{dma} buffers.
     
     \input{ba/cache-eviction}
 

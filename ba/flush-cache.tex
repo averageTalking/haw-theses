@@ -1,8 +1,126 @@
 \subsection{Flush cache} \label{subsec:flush-cache}
-    This is a test.
+    Flushing the cache explicitly invalidates a specific cache line so that the next memory access must be 
+    served from \gls{dram} rather than from a cache level. The primary purpose of this operation is to force 
+    direct \gls{dram} activation instead of cache hits, thereby guaranteeing a cache miss on every hammer iteration. 
+    As a result, very high row-activation rates can be achieved, which are essential for effective Rowhammer 
+    attacks. On x86 architectures, this behavior is implemented via the \texttt{clflush} instruction [5], whereas 
+    ARM-based systems rely on cache flush maintenance instructions, such as \texttt{DC CIVAC}, \texttt{DC CVAC}, \texttt{DC ZVA}, and 
+    related operations, to achieve comparable effects [48].
+    \\
+    In ARM terminology, the word flush is often used in descriptions of clean and invalidate 
+    operations, although the architecture specification generally uses only the terms clean and invalidate 
+    [72]. 
+    \\
+    \textbf{Invalidating} a cache or cache line means clearing it of data by clearing the valid bit of one 
+    or more cache lines. The cache must always be invalidated after reset because its contents are undefined. 
+    If the cache contains dirty data, simple invalidation is generally incorrect, since updated data from 
+    write-back cacheable regions would be lost [109].
+    \\
+    \textbf{Cleaning} a cache or cache line refers to writing the contents of dirty cache lines back to main memory 
+    and clearing the dirty bits, which makes the contents of the cache and main memory coherent with each 
+    other [109]. This operation is only applicable to data caches that use a write-back policy. Cache 
+    clean and invalidate operations can be performed by cache set or way, or by virtual address.
+    \\
+    The \textbf{\gls{poc}} is defined as the point at which all blocks that can access memory, such 
+    as processor cores or DMA engines, are guaranteed to observe the same copy of a given address [109]. 
+    Commonly, this point corresponds to the main external system memory, as illustrated in 
+    \hyperref[fig:poc-pou]{Figure~\ref{fig:poc-pou}b}. 
+    \\
+    Closely related is the \textbf{\gls{pou}}, which denotes the point in the memory hierarchy at which the instruction cache, 
+    data cache, and translation table walks of a core are guaranteed to observe the same copy of a memory location [109]. 
+    In a system with Harvard L1 caches and a \gls{tlb} for caching translation table entries, a unified L2 cache represents 
+    the Point of Unification. If no external cache is present, the main memory itself serves as the \gls{pou} [72], as 
+    also shown in \hyperref[fig:poc-pou]{Figure~\ref{fig:poc-pou}a}.
+    \begin{figure}[htbp]
+        \centering
+        \frame{\includegraphics[width=\linewidth]{img/poc-pou.pdf}}
+        \caption{Point of Coherency and of Unification [109]}
+        \label{fig:poc-pou}
+    \end{figure}
 
     \subsubsection{Instruction Types} \label{subsubsec:instruction-types}
-        This is a test.
+        The original Rowhammer study by Kim et al. [5] employed the \texttt{clflush} instruction to force cache lines 
+        out of the cache hierarchy. \texttt{clflush} ensures that each memory access reaches physical \gls{dram}, thereby 
+        enabling the high-frequency row activations required for Rowhammer. Raspberry Pi devices, however, 
+        use ARM CPUs, which do not provide \texttt{clflush} or a direct equivalent. Instead, these systems rely on 
+        ARM cache maintenance instructions to control the cache state. Although architecturally different, 
+        these instructions fulfill the same fundamental requirement by bypassing or invalidating caches so 
+        that memory accesses are actually served from \gls{dram}. ARM cache maintenance instructions are designed 
+        to clean, invalidate, or clean and invalidate specific cache lines or entire cache structures. In 
+        the context of Rowhammer attacks on ARM, these instructions are used to invalidate targeted cache 
+        lines so that subsequent loads cause \gls{dram} accesses, to clean dirty lines when required so that writes 
+        propagate to memory, and to maintain a stable state in which hammering produces real row activations 
+        rather than being absorbed by the cache hierarchy. Overall, they are used to force memory accesses 
+        to bypass or invalidate cache lines, thereby enabling direct \gls{dram} access.
+        \\
+        On Intel x86 systems, the \texttt{clflush} instruction invalidates the cache line containing the specified 
+        address from all levels of the cache hierarchy, including both data and instruction caches 
+        [72]. If a cache line at any level of the hierarchy is dirty, meaning 
+        that it contains modified data [151], it is written back to memory before being invalidated 
+        [150, 72]. The \texttt{clflush} instruction is not privileged and is therefore 
+        available in userspace [150, 72], which makes it particularly suitable 
+        for userspace Rowhammer implementations.
+        \\
+        On ARM architectures, the \texttt{DC CIVAC} instruction performs a clean and invalidate operation on a data 
+        cache line by virtual address to the Point of Coherency. If access from Exception Level 0 (EL0) is 
+        enabled, executing this instruction at EL0 may generate a permission fault. Its execution may also 
+        require a translation from virtual to physical address, and it is defined as a 64-bit system 
+        instruction [152, 109]. Similarly, the \texttt{DC CVAC} instruction cleans a data cache line by address to 
+        the Point of Coherency. It is also a 64-bit system instruction and may generate a permission fault 
+        when executed at EL0 if such access is enabled, and it may require address translation [153, 109]. 
+        The \texttt{DC ZVA} instruction was introduced to efficiently zero out a block of memory [~Triggering RH]. 
+        It zeroes a naturally aligned block of N bytes, and is 
+        likewise a 64-bit system instruction [154, 109]. The ability to preload the data cache with zero 
+        values using \texttt{DC ZVA} is new in ARMv8-A. Cache line zeroing behaves similarly to a prefetch by hinting 
+        that certain addresses are likely to be used in the future; however, zeroing can be significantly 
+        faster because it does not require waiting for external memory accesses to complete [~Triggering RH, Raspberry Pi 3B+].
     
     \subsubsection{Cache Behavior} \label{subsubsec:cache-behavior}
-        This is a test.
+        \hyperref[tag:cache-bypass]{Table~\ref{tab:cache-bypass}} presents cache bypass measurements obtained under 
+        different execution modes and measurement units 
+        across several Raspberry Pi platforms. The table reports \gls{cpu} cycle counts for baseline measurements in 
+        kernel and user space, as well as measurements obtained using a kernel module and explicit userspace 
+        cache-bypass mechanisms using \texttt{DC CIVAC} und \texttt{STR}. In addition, userspace measurements are also 
+        reported in nanoseconds. The nanosecond 
+        values were measured using POSIX functions.
+        \begin{table}[ht]
+            \centering
+            \begin{tabular}{llccccc}
+                \hline
+                Mode & Unit & RPi4 4GB & RPi4 8GB & RPi5 4GB & RPi5 8GB & RPi5 16GB \\
+                \hline
+                kernel baseline & Cycles & 78.71 & 78.16 & - & - & - \\
+                kernel module & Cycles & 416.83 & 468.56 & - & - & - \\
+                user baseline & Cycles & 80.04 & 88.76 & 43.19 & 43.21 & 43.21 \\
+                userspace & Cycles & 431.76 & 581.20 & 489.60 & 483.14 & 495.90 \\
+                userspace & ns & 341.92 & 334.51 & 263.49 & 248.34 & 249.67 \\
+            \hline
+            \end{tabular}
+            \caption{Cache Bypass with a variety of measurements from userspace and as kernel module}
+            \label{tab:cache-bypass}
+        \end{table}
+        The userspace measurements demonstrate a significant increase in \gls{cpu} cycles compared to the respective baselines. 
+        On the RPi4, cache-bypassing measurements in userspace range between 431 and 581 cycles, compared to a baseline 
+        of approximately 84 cycles. On the RPi5, userspace cache-bypassing measurements range between 416 and 468 cycles, 
+        while the baseline remains at approximately 43 cycles. This clearly indicates a substantial increase in memory 
+        access latency when the cache is bypassed.
+        \\
+        Kernel module measurements confirm a similar trend for the RPi4. Here, cache-bypassing measurements range from 
+        432 to 581 \gls{cpu} cycles, compared to a baseline of approximately 78 cycles. For the RPi5, kernel module 
+        measurements could not be interpreted due to the Zero Latency Readings Problem described in [Praxisarbeit], 
+        which prevents meaningful analysis of the collected data.
+        \\
+        To statistically evaluate the observed differences, a \textit{Welch t-test} was conducted, yielding a test statistic 
+        of \texttt{t = -67.70}. The \textit{Welch t-test} assesses whether the means of two independent samples differ significantly 
+        without assuming equal variances. The result indicates a statistically significant difference between baseline 
+        measurements without cache flushing and measurements obtained using \texttt{DC CIVAC + STR}. In addition, \textit{Cohen’s d} 
+        was calculated as \texttt{d = -3.03}. \textit{Cohen’s d} is a standardized measure of effect size that expresses the magnitude 
+        of the difference between two means relative to their pooled standard deviation. The obtained value represents 
+        a very large effect size, confirming a strong impact of the cache flush operation on memory access latency.
+        \\
+        Overall, the results show that the applied cache-bypass mode effectively bypasses the cache hierarchy, 
+        leading to an approximately four- to six-fold increase in observed latency on the RPi4 and an approximately 
+        five- to six-fold increase on the RPi5. The applied statistical tests support the conclusion that this 
+        increase is highly significant and cannot be attributed to random variation. Consequently, \texttt{DC CIVAC + STR} 
+        can be considered a robust cache flush operation for inducing measurable memory access delays in both userspace 
+        and kernel space, with results that are consistent across multiple devices and measurement interfaces.

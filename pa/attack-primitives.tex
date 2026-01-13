@@ -2,12 +2,15 @@
   For Rowhammer attacks to be feasible, three fundamental prerequisites must be satisfied, commonly referred
   to as attack primitives [106, 58]. These primitives define the necessary properties of memory accesses that 
   enable the electrical disturbance of \gls{dram} cells required for inducing bit flips.
-  \begin{itemize}
-    \item \hyperref[sec:uncached]{\textbf{P1.} Uncached} \label{prim:uncached}
-    \item \hyperref[sec:targeted]{\textbf{P2.} Targeted} \label{prim:targeted}
-    \item \hyperref[sec:fast]{\textbf{P3.} Fast} \label{prim:fast}
-  \end{itemize}
-  
+  \vspace{0.5cm}
+  \\
+  \textbf{P1.} Uncached 
+  \\
+  \textbf{P2.} Targeted 
+  \\
+  \textbf{P3.} Fast
+  \vspace{0.5cm}
+  \\
   The first prerequisite, denoted as \textbf{\hyperref[sec:uncached]{P1. Uncached}}, requires that memory accesses bypass 
   the \gls{cpu} cache and reach the \gls{dram} directly. \gls{dram} cells are only electrically stressed when the memory controller opens 
   and closes the corresponding \gls{dram} row, which occurs exclusively on accesses that are not served by the cache. 

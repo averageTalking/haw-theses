@@ -1,3 +1,42 @@
 \section{Attack Primitives} \label{sec:attack-primitives}
-  This is a test.
+  The feasibility of Rowhammer attacks depends on a set of fundamental attack primitives, which 
+  define the conditions under which the attack can succeed [106, 58]. Specifically, three 
+  properties of memory accesses must simultaneously hold.
+  \vspace{0.5cm}
+  \\
+  \textbf{P1.} Uncached 
+  \\
+  \textbf{P2.} Targeted 
+  \\
+  \textbf{P3.} Fast
+  \vspace{0.5cm}
+  \\
+  First, memory accesses must be \textbf{\hyperref[sec:uncached]{uncached}} in order to reach the \gls{dram} 
+  directly, thereby bypassing 
+  the \gls{cpu} cache. \gls{dram} cells are only electrically stressed when the memory controller opens and 
+  closes an actual \gls{dram} row. Consequently, this primitive ensures that each memory access physically 
+  toggles \gls{dram} cells instead of being served from the \gls{cpu} cache. This property is critical because 
+  Rowhammer relies on high-frequency, direct \gls{dram} activations, which only occur when cache effects 
+  are avoided. If memory accesses remain cached, the effective hammering speed decreases by orders 
+  of magnitude and falls far below the threshold required to discharge charge in adjacent cells. 
+  Therefore, forcing cache misses, or alternatively using uncached memory regions, is mandatory 
+  to generate the activation frequency necessary for a successful attack.
+  \\
+  Second, memory accesses must be \textbf{\hyperref[sec:targeted]{targeted}} such that they reach a 
+  specific intended physical \gls{dram} 
+  row. This requires an understanding of \gls{dram} mapping, as the attacker must determine how virtual 
+  addresses are translated to physical \gls{dram} structures in order to select aggressor rows that 
+  surround a victim row. Achieving this goal necessitates reconstructing the \gls{dram} address scheme. 
+  Only with accurate knowledge of this mapping can hammering be focused so that specific adjacent 
+  rows are repeatedly activated. Without correct mapping, hammering becomes largely probabilistic 
+  and rarely, if ever, results in disturbances to victim data.
+  \\
+  Third, memory accesses must be sufficiently \textbf{\hyperref[sec:fast]{fast}} to race against the 
+  next \gls{dram} row refresh. The 
+  attack depends on hammering memory rows at a higher rate than \gls{dram} refresh cycles can restore 
+  charge in adjacent cells. This, in turn, requires achieving high access throughput to the same 
+  \gls{dram} rows with minimal delay. To sustain such high-frequency activation, optimal access parameters 
+  must be used, and the attack must often bypass mitigation mechanisms. In particular, defenses that 
+  throttle activation patterns or increase refresh activity, such as \gls{trr} or 
+  increased refresh rates, must frequently be circumvented to maintain sufficient hammering intensity.
   

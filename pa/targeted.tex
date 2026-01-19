@@ -1,25 +1,25 @@
 \section{Targeted} \label{sec:targeted}
     After bypassing the cache hierarchy, a fundamental challenge remains, namely the existence of a 
-    fixed mapping between physical addresses and the DRAM layout, as noted in [~introductory-lecture]. 
+    fixed mapping between physical addresses and the \gls{dram} layout, as noted in [~introductory-lecture]. 
     To achieve the \hyperref[sec:attack-primitives]{P3. Targeted} attack primitive, it is necessary to access a specific 
-    DRAM row in order to gain bit flips in an adjacent victim row. However, the exact informations of this 
-    physical-to-DRAM address mapping are typically not publicly available, which is also the case for all 
+    \gls{dram} row in order to gain bit flips in an adjacent victim row. However, the exact informations of this 
+    physical-to-\gls{dram} address mapping are typically not publicly available, which is also the case for all 
     our test devices used in this work. Consequently, the only viable approach is to 
-    reverse engineer the DRAM address mapping. This section briefly discusses the available methods, 
+    reverse engineer the \gls{dram} address mapping. This section briefly discusses the available methods, 
     explains why certain approaches are adopted or discarded, and identifies the most 
     effective technique for ARM-based systems such as the Raspberry Pi. In addition, it outlines the 
     practical implementation process, including the development steps and the challenges 
     encountered during implementation.
 
     \subsection{Methods} \label{subsec:methods}
-        If the internal organization of DRAM and the behavior of the row buffer are known, it becomes 
+        If the internal organization of \gls{dram} and the behavior of the row buffer are known, it becomes 
         feasible to identify two distinct rows located within the same bank. Based on this observation, 
         several approaches have been proposed to reverse engineer the mapping between physical addresses 
-        and DRAM structures. These approaches mainly differ in how address sets are constructed and how 
+        and \gls{dram} structures. These approaches mainly differ in how address sets are constructed and how 
         the underlying addressing functions are inferred.
         \\
         \textit{PALLOC}, proposed by Yun et al. in 2014 [75], relies on a dedicated microbenchmark that traverses 
-        a linked list across the physical address space. This traversal enforces continuous DRAM accesses 
+        a linked list across the physical address space. This traversal enforces continuous \gls{dram} accesses 
         while enabling controlled usage of specific banks.
         \\
         \textit{DRAMA}, introduced by Pessl et al. in 2016 [73], exploits a row-buffer timing side channel where 
@@ -33,12 +33,12 @@
         during the reverse-engineering process.
         \\
         \textit{DRAMDig}, proposed by Wang et al. in 2020 [76], builds directly upon DRAMA. It incorporates knowledge 
-        about specific DRAM chip geometries and processor microarchitectural characteristics in order to 
+        about specific \gls{dram} chip geometries and processor microarchitectural characteristics in order to 
         reduce the search space of the otherwise exponential-time search. This approach is used, for example, 
-        by the DRAM MaUT tool [79].
+        by the \gls{dram} MaUT tool [79].
         \\
         The work titled \textit{One Bit flips, one cloud flops}, introduced by Xiao et al. in 2016 [93], proposes a 
-        graph-based approach to infer physical-to-DRAM address mappings. Similar to DRAMA, it relies on 
+        graph-based approach to infer physical-to-\gls{dram} address mappings. Similar to DRAMA, it relies on 
         timing differences caused by row conflicts, but its primarily aimed at enableing Rowhammer attacks 
         across virtual machines.
         \\
@@ -49,7 +49,7 @@
         approach forms the basis of multiple attacks and tools, including Halfdouble [53, 132], Drammer [38, 127], and Cache 
         Attacks and Rowhammer [72].
         \\
-        \textit{Knock Knock}, introduced by Plin et al. in 2025 [99], reformulates the identification of DRAM parity 
+        \textit{Knock Knock}, introduced by Plin et al. in 2025 [99], reformulates the identification of \gls{dram} parity 
         masks as a linear algebra problem. Instead of relying on exhaustive search, this method focuses on 
         solving the address mapping directly through algebraic reasoning.
         \\

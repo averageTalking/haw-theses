@@ -1,2 +1,213 @@
+% TODOs abhacken
+% ADD Figures
+
+
 \subsection{Reverse Engineering} \label{subsec:reverse-engineering}
-    This is a test.
+    \subsubsection{Graph-Based Mapping Inference} \label{subsubsec:graph-based-mapping-inference}
+        Building on the timing-channel primitive introduced in [One Bit Flips, One Cloud Flops], a novel 
+        graph-based algorithm is employed to determine the memory mapping at runtime. 
+        This approach models each bit in a physical address as a node in a graph and establishes 
+        relationships between nodes based on measured memory access latencies. By exploiting the fact 
+        that specific latency patterns emerge when addresses differ in particular bit positions, the method 
+        enables the automatic and accurate detection of row bits, column bits, and bank bits.
+        \\
+        The core idea is implemented using a kernel module, named \texttt{latency.c} which reverse-engineers the physical-to-DRAM 
+        address mapping by measuring access latencies \texttt{L(i,j)} between pairs of physical addresses that differ 
+        in bits \texttt{i} and \texttt{j}. Large access latencies occur only when the two addresses reside in different rows 
+        within the same bank, which allows the identification of row, column, and bank bits. On ARMv8 systems, 
+        \texttt{latency.c} specifically focuses on locating the second-lowest row bit by systematically measuring the 
+        latency between addresses that differ in exactly two bits and inferring which bit positions correspond 
+        to row differences [118].
+        \\
+        The program output reports the time required to access two physical addresses that differ in two 
+        bit positions. Each measurement is represented in the form \texttt{L(i,j):T}, where \texttt{T} denotes the measured 
+        access time when the addresses differ in bit \texttt{i} and bit \texttt{j}. In the special case \texttt{i=j}, the addresses 
+        differ in only a single bit. The key observation exploited by the analysis is that high latency 
+        values occur exclusively when two addresses are located in different rows of the same bank, which 
+        provides a distinguishing feature for identifying row, column, bank bits.
+        \\
+        % TODO: Aufzeigen was portiert wurde
+        % \\
+        The workflow involves porting, building and executing the tool [118]. The results are stored in 
+        the \texttt{latency.log} file using the corresponding Python script which analyzes all bit positions. 
+        The three bits exhibiting the highest average latency deviations are identified. 
+        The analysis reveals that bits \texttt{12}, \texttt{13}, and \texttt{14} show the highest average latencies, with average 
+        values of \texttt{299.25}, \texttt{298.41}, and \texttt{299.03} cycles, respectively.
+        \\
+        Despite these results, a problem arises from the fact that the observed latency deviations are 
+        relatively small and do not demonstrate a significant difference. Despite this limited magnitude 
+        of deviation, the resulting mapping remains consistent across multiple measurements. This 
+        consistency aligns with findings from related work, particularly the [DRAM MaUT] mapping, as well 
+        [Memory Aware DOS] mapping. However, due to the lack of pronounced 
+        latency differences, these observations alone were insufficient, and consequently additional methods 
+        were explored.
+
+    \subsubsection{Algebraic Mapping Inference} \label{subsubsec:algebraic-mapping-inference}
+        An alternative approach to physical-to-DRAM mapping inference is based on algebraic techniques 
+        described in [99]. As outlined in the Methods section of the targeted approach, the Knock-Knock 
+        method treats identifying parity masks as a linear algebra problem. This technique 
+        directly targets the physical-to-DRAM mapping and enables the recovery of bank and row functions 
+        without relying on iterative function checks. Instead, it computes the nullspace of conflicting 
+        address sets.
+        \\
+        A major advantage of this tool is that it is a platform-agnostic design. It supports a wide range of 
+        architectures, including x86\_64, ARMv8, and POWER9/10, which makes it suitable for all 
+        test devices used in this work.
+        \\
+        The workflow requires activation of the \gls{pmu} via a kernel module.
+        However, both the automatic and manual workflows failed to 
+        recover any valid mapping. In all cases, the execution terminated with the warning “Threshold 
+        quality check failed: Valley between peaks not pronounced enough.” Multiple mitigation attempts 
+        were undertaken, including manual threshold selection, parameter tuning for noisy systems, and 
+        high-precision measurement runs. Nevertheless, all attempts resulted in an insufficient number 
+        of coherent conflict samples, which caused the derivation of bank masks to abort and the row mask 
+        analysis to be skipped entirely.
+        \\
+        This limitation is closely related to the employed closed-page policy. Even the authors of [99] 
+        reported that they were unable to retrieve any part of the mapping on a Raspberry Pi 4, as the 
+        observed latency distribution consisted of a single peak indicative of a closed-page policy. 
+        The same behavior was observed not only on the tested Raspberry Pi 4 but also consistently 
+        across all Raspberry Pi 5 devices examined in this work. Further details and implications of 
+        this issue are discussed in \hyperref[sec:discussion-and-limitations]{Discussion and Limitations}.
+
+    \subsubsection{Row Hit, Row Conflict Distinction} \label{subsubsec:row-hit-row-conflict-distinction}
+        Distinguishing row hits from row conflicts is a fundamental requirement for reverse engineering 
+        \gls{dram} address mappings, because access latency directly reflects the internal organization of 
+        banks and rows. By correlating timing differences with chosen address pairs, one can infer which 
+        physical address bits select the bank and which select the row, without vendor documentation.
+        However, based on the issues encountered in the previous part - most notably the insufficiently 
+        pronounced valley between latency peaks - it remains 
+        unclear whether a reliable distinction between row hits and row conflicts is feasible in practice.
+        \\
+        To further investigate this problem, an approach was designed to explicitly analyze the distinction 
+        between row hits and row conflicts. This approach builds directly on observations from DRAMA and 
+        similar prior work. Since access latency reflects the internal structure of banks and rows, 
+        measuring timing differences between address pairs can reveal which physical address bits are 
+        responsible for bank selection and which correspond to row selection, without relying on proprietary 
+        information. Three types of access patterns are considered. 
+        \\
+        \textbf{Bank Miss}: both addresses are located in different banks, which results in low access times.
+        \\
+        \textbf{Row Hit}: both addresses reside in the same bank and row, also leading to low access times. 
+        \\
+        \textbf{Row Conflict}: both addresses are in the same bank but different rows, which 
+        results in high access times.
+        \\
+        Assuming a system with \texttt{N} banks and \texttt{R} rows per bank, the probability \texttt{P} of a bank miss is given by 
+        \[
+        P_\text{Bank Miss} = 1 - \frac{1}{N}
+        \]
+        The probability of a row hit is
+        \[
+        P_\text{Row Hit} = \frac{1}{N} \cdot \frac{1}{R}
+        \]
+        while the probability of a row conflict is 
+        \[
+        P_\text{Row Conflict} = \frac{1}{N} \cdot \left(1 - \frac{1}{R}\right)
+        \]
+
+        Under these assumptions, two peaks are expected to become visible in the latency distribution. The 
+        left peak corresponds to low access times and consists of bank misses and row hits, while the 
+        right peak corresponds to high access times and consists of row conflicts [23, 73].
+
+        % bank-timing-probe
+        The bank-timing-probe tool was developed to empirically study latency distributions. The idea is 
+        to randomly select pairs of addresses using pagemap and repeatedly access them for 
+        approximately 1000 iterations, with cache flushes such as \texttt{DC CIVAC} performed between accesses. 
+        Access latencies are measured using the \texttt{PMCCNTR} register, \gls{cpu} execution is pinned to a single core, 
+        and the resulting latencies are stored in \texttt{.dat} files for further analysis.
+        \\
+        Initial experiments suffered from low timing resolution due to the use of the POSIX function 
+        \texttt{clock\_gettime()}, which resulted in low-resolution plots. To address this issue, a higher-resolution 
+        timing mechanism based on \texttt{PMCCNTR\_EL0} was introduced, yielding higher-resolution plots. Despite 
+        this improvement, the exact measurement behavior remained unclear. The observed outputs appeared 
+        unusual, as the number of row hits did not consistently exceed the number of row conflicts, which 
+        contradicts expected behavior. A detailed discussion of these results is provided in the 
+        Discussion and Limitations section.
+
+        % rowhitconflict
+        Preliminary results revealed several limitations of the previous approaches. The Knock-Knock 
+        method demonstrated that latency peaks were not sufficiently pronounced to clearly separate 
+        row hits from row conflicts, and the bank-timing-probe program showed that the exact measurements 
+        remained unclear, with outputs sometimes deviating from expected behavior. In particular, row 
+        hits did not consistently outnumber row conflicts.
+        \\
+        To address these challenges, a new program called \texttt{rowhitconflict} was developed. This tool is 
+        specifically designed to isolate \gls{dram} accesses from cache effects, increase measurement resolution, 
+        and statistically analyze latency distributions. The approach builds on insights from DRAMA 
+        and earlier measurements, but introduces higher precision, systematic evaluation, and a 
+        foundation for scientific analysis. Unlike previous tools that randomly measured access latencies 
+        between address pairs, \texttt{rowhitconflict} introduces explicit thresholds and performs statistical 
+        validation, including the computation of means, variances, confidence intervals, and t-tests, 
+        to reliably distinguish row hits from row conflicts across multiple runs on each test device. 
+        Furthermore, after averaging measurements over multiple runs, the tool produces a single \texttt{.log} 
+        file and generates histograms of the row hit and row conflict distributions.
+        \\
+        Several challenges were addressed in the workflow. The first challenge was the accurate measurement 
+        of \gls{dram} access times while isolating cache effects. The function \texttt{measure\_dram\_access\_time()} 
+        reads memory after cleaning and invalidating cache lines using \texttt{DC CIVAC} and timestamps accesses 
+        with \texttt{PMCCNTR\_EL0}. Random memory pairs are accessed to sample latencies, optional cache measurements 
+        can be performed for comparison, and multiple runs are averaged to reduce noise.
+        \\
+        The second challenge involved threshold detection. Thousands of latency samples are collected 
+        to build and smooth a histogram. The main peak corresponding to row hits and the high-latency 
+        peak corresponding to row conflicts are detected, and a threshold is computed at the left foot 
+        of the high-latency peak. The threshold is validated based on peak distance and valley depth, 
+        with a fallback applied if validation fails, and is then used to separate row hits from row 
+        conflicts. This challenge was successfully addressed by adapting the methodology from the Knock-Knock 
+        tool, which provided the basis for robust threshold computation and peak analysis.
+        \\
+        The third challenge concerns statistical validation. Latency samples are split into row hit and 
+        row conflict groups based on the detected threshold. For each group, the mean and variance are 
+        computed, 95\% confidence intervals are derived, and a t-test is performed. The results report 
+        the mean, variance, confidence interval, and statistical significance of the separation.
+
+    \subsubsection{Bank Function Derivation} \label{subsubsec:bank-function-derivation}
+        The DRAMA approach [73, 116, 159] derives \gls{dram} address mappings by grouping physical addresses 
+        into \gls{dram} sets based on access-time differences caused by row hits, row conflicts, and bank 
+        conflicts. From these sets, the tool infers the \gls{dram} address mapping by identifying XOR combinations 
+        of physical address bits that consistently characterize the sets.
+        \\
+        DRAMA has previously been demonstrated to work on several ARM-based platforms, including ARMv7 
+        systems with LPDDR2 and LPDDR3 memory [73] and ARMv8-A systems with LPDDR3 and LPDDR4 [83] memory [73, 159]. 
+        These prior results provide proof that DRAMA can be ported to ARM architectures. Several challenges were 
+        encountered during the ARM port. 
+        \\
+        First, the original DRAMA implementation
+        relied on x86-specific instructions such as \texttt{RDTSC} and \texttt{CLFLUSH}, which are unavailable on ARM. To 
+        address this, these functions were implemented using \texttt{PMCCNTR\_EL0} for 
+        precise timing, and a \texttt{flush\_cache\_line()} function with a selection for one of eight ARM cache maintenance options, similar 
+        to [118], was added to replace \texttt{CLFLUSH}. The \texttt{-march=armv8-a} compiler flag was used to ensure optimized 
+        ARM code generation.
+        \\
+        A second challenge concerned measurement stability. The original DRAMA code measured each memory 
+        access only once, which made the results susceptible to noise. To improve robustness, repeated 
+        measurements were introduced by defining multiple runs of the entire measurement process. For each 
+        run, memory mapping and random address pools are initialized, access times are measured across 
+        all candidate addresses, and observed XOR combinations are accumulated. After all runs, the 
+        observed combinations are aggregated, sorted, and saved to \texttt{combinations.dat}, thereby increasing 
+        statistical confidence and reducing the influence of outliers.
+        \\
+        A third challenge involved result visualization. The original DRAMA code only printed XOR functions 
+        and masks to the terminal, without any automated post-processing or visualization. To address this, 
+        all detected XOR and non-XOR combinations are counted in \texttt{measure.cpp} and written to \texttt{combinations.dat}. 
+        A Python script, \texttt{plot.py}, reads this file, separates XOR and non-XOR functions, sorts bit combinations 
+        numerically, plots the counts as a bar chart with distinct visual encodings, and saves the resulting 
+        figure with a filename derived from the host system. The Makefile integrates this workflow by executing 
+        the measurement with \gls{cpu} pinning and automatically invoking \texttt{plot.py}, enabling reproducible and 
+        device-independent visual analysis of \gls{dram} bank bit combinations.
+    
+        % Bit Mask Check
+        As a final step, a bit mask check is used to verify a given physical-address-to-bank mapping using 
+        configurable bit masks. Bank address bits are defined either as single physical address bits or as 
+        XOR combinations of bits. A configurable fraction of system memory is allocated using \texttt{mmap}, and 
+        virtual-to-physical address translation is resolved via pagemap. For each physical address, the 
+        bank index is computed according to the specified bit mask mapping, and addresses belonging to 
+        the same bank are grouped into lists. The number of physical addresses per bank list is then 
+        output as a consistency check.
+        \\
+        % TODO: Was sind den jetzt die Results
+        The results of this method strictly reflect the assumed bit-mask mapping provided as input. 
+        Consequently, the approach allows only a plausibility and internal-consistency check of bank 
+        assignments and does not guarantee that the derived mapping corresponds to the actual hardware 
+        bank mapping.

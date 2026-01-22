@@ -64,4 +64,59 @@
             This is a test.
 
     \subsection{Verification} \label{subsec:verification}
-        This is a test.
+        For each test device, a \gls{dram} address mapping has been derived. However, the completeness and 
+        correctness of the recovered mappings cannot be guaranteed. To assess the validity of the inferred 
+        \gls{dram} addressing functions, several verification approaches can be employed.
+        \\
+        % Physical Probing
+        One method involves comparing the inferred functions against results obtained via \textbf{physical probing}, 
+        as reported in prior work [73]. In general, embedded systems are characterized by small chips and 
+        multi-layered circuit boards [159]. On Raspberry Pi devices, direct hardware-level verification is 
+        not feasible, as the \gls{dram} is soldered to the board and therefore inaccessible.
+        \\
+        % Rowhammer
+        Another verification approach is to use \textbf{Rowhammer} experiments to validate the addressing functions. 
+        If the inferred functions are correct, their application should increase the bit flip rate 
+        proportionally to the number of identified sets [73]. However, this method is often impractical due 
+        to potentially long execution times, the presence of mitigation mechanisms, or limited susceptibility 
+        of the system to Rowhammer. Even on systems previously identified as vulnerable, the distribution 
+        and occurrence of vulnerable memory regions vary across \gls{dram} chips, and not every device of the 
+        same model exhibits Rowhammer bit flips [Drammer, 72].
+        \\
+        % Software-based Verification
+        A purely \textbf{software-based} evaluation constitutes an alternative approach, which verifies timing 
+        differences across a larger set of addresses [73]. This method is feasible and allows validation 
+        without hardware access.
+        \\
+        The verification can be performed using the DRAMA methodology [73, 116]. In this approach, memory 
+        access latencies are measured and histograms are constructed to distinguish row hits from row 
+        conflicts. Address pairs predicted to map to the same \gls{dram} bank and row, denoted as row hits, or to the same 
+        bank but different rows, indicates as row conflicts, are identified. Access times are measured after flushing 
+        the relevant cache lines to minimize caching effects. Timing histograms are then used to calibrate 
+        a threshold separating row hits from row conflicts. The \gls{dram} mapping is validated by comparing the 
+        measured latencies with the predicted relationships, as described in the \hyperref[subsubsec:drama-approach]{previous section}.
+        \\
+        The verification assumes that addresses classified as same set and same row indeed result in row 
+        hits, and that addresses classified as same set and different row produce row conflicts. If the 
+        mapping is correct, two clearly separable timing distributions are expected. The hit histogram 
+        should show a dominant peak at low \gls{cpu} cycle counts, while the miss histogram should exhibit a dominant 
+        peak at significantly higher \gls{cpu} cycle counts. Minimal overlap between hit and conflict histograms is 
+        anticipated, and a stable, clear timing gap should exist. This scenario is recognizable when the 
+        printed histograms display a bimodal pattern, rows labeled as hits are consistently faster than 
+        conflicts, and repeated measurements produce similar histograms and thresholds.
+        \\
+        Verification of the \gls{dram} mapping was conducted on multiple Raspberry Pi devices using averages of 
+        several measurements. On Raspberry Pi 4 devices, with the \gls{dram} mapping \texttt{6, 12, 13, 14}, hammerpi 
+        produced distinct peaks corresponding to row hits and row conflicts, although the observed \gls{cpu} 
+        cycles were relatively low. This pattern was consistent across repeated measurements, confirming 
+        the presence of measurable row hit and row conflict peaks. In contrast, Raspberry Pi 5 devices, 
+        with the \gls{dram} mapping \texttt{6, 12}, did not yield valid results, as no reliable peaks 
+        could be observed. Consequently, while the \gls{dram} mapping could be validated on Raspberry Pi 4 
+        devices, the verification failed on Raspberry Pi 5 devices, and the underlying cause of this 
+        discrepancy remains unclear.
+        \begin{figure}[htbp]
+            \centering
+            \frame{\includegraphics[width=\linewidth]{img/calibration.pdf}}
+            \caption{Timing Histogram of Raspberry Pi 4 mapping}
+            \label{fig:calibrate}
+        \end{figure}

@@ -1,2 +1,67 @@
 \section{Targeted} \label{sec:targeted}
-    This is a test.
+    Even after eleminating cache effects, a fundamental challenge in memory access remains: the 
+    fixed mapping between physical addresses and the underlying \gls{dram} layout. It is insufficient 
+    to merely perform \gls{dram} accesses. Rather, precise access to specific \gls{dram} rows is required to
+    induce bit flips in adjacent victim rows, denoted as P2. Targeted. The physical address is 
+    composed of bits that are partitioned into rank, channel, bank, row, and column, which 
+    collectively determine the location where the data is stored [94].
+    However, the details of this mapping are not publicly disclosed. Knowledge of the \gls{dram} 
+    address mapping enables a wide range of applications, including application-aware memory 
+    channel partitioning, adapted page sizes for improved row buffer utilization, efficient use 
+    of emerging hybrid memory technologies, evaluation of the effects of unreliable memory, and 
+    \gls{dram} layout-aware memory allocators [94].
+
+    \subsection{Reverse Engineering} \label{subsec:reverse-engineering}
+        When the \gls{dram} mapping is known, memory systems become more susceptible to attacks, leading 
+        to higher pressure and an increased likelihood of bit flips. The addressing scheme can vary 
+        for each system, as it depends on multiple factors such as the processor model, DIMM 
+        population on the motherboard, and BIOS settings, according to [94]. Therefore, 
+        it is necessary to reverse-engineer the \gls{dram} address mapping for all test devices. This 
+        process leverages the fact that \gls{dram} consistently follows a hierarchical organization, as 
+        described in the \hyperref[sec:background]{Background} section of this thesis. As a consequence of this 
+        structure, memory access latencies vary depending on the physical location of data within 
+        the hardware [159].
+
+        \subsubsection{Methods} \label{subsubsec:methods}
+            \textbf{PALLOC}, introduced by Yun et al. [75] in 2014, uses a dedicated microbenchmark 
+            that traverses a linked list over the physical address space to enforce constant \gls{dram} 
+            access while controlling bank usage.
+            \\
+            \textbf{DRAMA}, proposed by Pessl et al. [73] in 2016, exploits the row-buffer timing side 
+            channel, where row conflicts cause increased memory access latency. This approach 
+            enables the construction of address sets that share channel, rank, and bank 
+            properties by performing exhaustive testing of linear addressing functions with an 
+            increasing number of coefficients.
+            \\
+            \textbf{Reliable RE}, presented by Helm et al. [94] in 2020, extends DRAMA by integrating 
+            performance counters, which identifies row hits and misses more reliable 
+            during the reverse-engineering process.
+            \\
+            \textbf{DRAMDig}, introduced by Wang et al. [76] in 2020, builds upon DRAMA by incorporating 
+            detailed knowledge of specific \gls{dram} chip geometries and processor microarchitecture, thereby 
+            reducing the search space of the exponential-time. This method is employed, for example, by 
+            the DRAM MaUT tool [79].
+            \\
+            \textbf{One Bitflip One Cloud Flop}, described by Xiao et al. [93] in 2016, proposes a graph-based 
+            approach to infer physical-to-DRAM mappings. It relies on timing differences caused by 
+            row conflicts and, similar to DRAMA, primarily aimed at enabling Rowhammer attacks 
+            across virtual machines.
+            \\
+            Common characteristics of DRAMA-based methods include the clustering of addresses into 
+            sets that experience row conflicts or row hits, indicating placement within the same bank. 
+            These sets are derived by determining which combinations of address bits identify them, 
+            often expressed as linear XOR combinations. This approach underlies several attacks 
+            and tools, including [38, 53, 72].
+            \\
+            \textbf{Knock-Knock}, introduced by Plin et al. [99] 2025, reformulates the identification of 
+            \gls{dram} parity masks as a linear algebra problem. Instead of relying on exhaustive search, it 
+            focuses on solving the mapping directly through algebraic reasoning.
+
+        \subsubsection{Graph-based Approach} \label{subsubsec:graph-based-approach}
+            This is a test.
+        
+        \subsubsection{DRAMA Approach} \label{subsubsec:drama-approach}
+            This is a test.
+
+    \subsection{Verification} \label{subsec:verification}
+        This is a test.

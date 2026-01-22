@@ -1,2 +1,29 @@
 \subsection{Verification} \label{subsec:verification}
-    This is a test.
+    A \gls{dram} mapping has been obtained for each test device. However, it remains uncertain whether 
+    the reverse-engineered mapping is entirely correct (as seen in the 
+    \hyperref[subsubsec:bank-function-derivation]{previous part}). Several methods can be employed 
+    to verify the correctness of the derived \gls{dram} addressing functions.
+    \\
+    One approach is \textbf{physical probing}, which involves comparing the determined functions with results 
+    obtained through direct hardware measurements, as described in [73]. This method, however, faces 
+    significant practical limitations. Embedded systems often incorporate small chips and 
+    multi-layered circuit boards [159], making direct probing difficult. In particular, verification 
+    via hardware probing is not feasible on devices such as Raspberry Pis due to the presence of 
+    soldered \gls{dram} modules.
+    \\
+    Another verification method leverages \textbf{Rowhammer} testing. In this approach, correctness is 
+    assessed by evaluating whether the use of the addressing functions in Rowhammer experiments 
+    increases the number of bit flips per second proportionally to the number of sets identified [73]. 
+    This method is often impractical because tests may require excessively long durations, the systems 
+    under study may not be vulnerable, or mitigations may interfere with the results.
+    \\
+    The final method is a \textbf{software-based} verification, which entails performing timing measurements 
+    across a larger set of addresses to detect differences consistent with the derived addressing 
+    functions [73]. This approach is feasible and provides a practical means of validating the 
+    correctness of the reverse-engineered \gls{dram} mappings.
+
+    \subsubsection{Software-based} \label{subsubsec:software-based}
+        This is a test.
+
+    \subsubsection{Rowhammer} \label{subsubsec:rowhammer}
+        This is a test.

@@ -22,7 +22,7 @@
     uncached access can be achieved through two complementary strategies, either by explicitly removing 
     data from the cache or by preventing data from being cached in the first place [lecture-introduction].
 
-    \subsection{Non-temporal accesses} \label{subsec:non-temporal-accesses}
+    \subsection{Non-temporal Accesses} \label{subsec:non-temporal-accesses}
         Prior work introduces a Rowhammer triggering technique on x86 platforms that leverages \gls{nt} 
         memory instructions [105]. \gls{nt} accesses are intended for data with low temporal locality, i.e., 
         data that is unlikely to be reused in the near future and therefore should not occupy cache space, 
@@ -35,7 +35,7 @@
         This aggregation substantially reduces the effective access frequency to \gls{dram}, rendering \gls{nt}-based approaches 
         unsuitable for achieving the activation rates required for Rowhammer attacks on Raspberry Pi devices.
     
-    \subsection{Uncached memory} \label{subsec:uncached-memory}
+    \subsection{Uncached Memory} \label{subsec:uncached-memory}
         Another approach involves allocating memory regions that are explicitly marked as uncached, for example 
         through the use of ION, such that every access is served directly from \gls{dram} without interacting with the 
         cache [38]. This method is particularly suitable for ARM-based mobile architectures, such as ARMv7 and 

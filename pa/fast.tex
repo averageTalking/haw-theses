@@ -1,2 +1,39 @@
 \section{Fast} \label{sec:fast}
     This is a test.
+
+
+\begin{table}[h!]
+    \centering
+    \caption{Mode Register Contents}
+    \label{tab:mode-register-contents}
+    \begin{tabular}{ll}
+        \hline
+        \textbf{Mode Register} & \textbf{Description} \\
+        \hline
+        MR0 OP[2] = 0b & TRR is supported \\
+        MR24 OP[7] = 1b & TRR Mode enabled \\
+        MR24 OP[7] = 0b & TRR Mode disabled \\
+        MR24 OP[3] = 0b & Limited MAC \\
+        MR24 OP[2:0] = 000b & Unlimited MAC \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Mode Register Assignments}
+    \label{tab:mode-register-assignments}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+            \hline
+            \textbf{MR\#} & \textbf{Function} & \textbf{OP7} & \textbf{OP6} & \textbf{OP5} & \textbf{OP4} & \textbf{OP3} & \textbf{OP2} & \textbf{OP1} & \textbf{OP0} \\
+            \hline
+            0 & Mode Select & \multicolumn{2}{|l|}{} & Singleended mode & \multicolumn{2}{l|}{} & XORed RFM/TRR support & Latency mode & REF \\
+            \hline
+            24 & TRR control & TRR mode & \multicolumn{3}{|l|}{TRR mode BAn} & UnItd MAC & \multicolumn{3}{|l|}{MAC value} \\
+            \hline
+            24 & RFM control & \multicolumn{2}{|l|}{RAAMMT} & \multicolumn{5}{|l|}{RAAIMT} & RFM \\
+            \hline
+        \end{tabular}%
+    }
+\end{table}

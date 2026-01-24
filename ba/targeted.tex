@@ -61,7 +61,107 @@
             This is a test.
         
         \subsubsection{DRAMA Approach} \label{subsubsec:drama-approach}
-            This is a test.
+            In the context of reverse engineering DRAM address mappings, it is essential to distinguish 
+            between Row Hits and Row Conflicts, as access latency provides a direct reflection of the 
+            internal organization of banks and rows. Accurate classification of these events enables 
+            the inference of the underlying memory structure and is therefore a critical step in memory 
+            analysis.
+            \\
+            A Row Hit is defined as an access to a memory address whose corresponding row is already 
+            active in the row buffer. In contrast, a Row Conflict occurs when an access targets an 
+            address within the same bank while a different row is active in the row buffer, resulting 
+            in the need to close the previously opened row and open the new one.
+            \\
+            This approach builds upon observations from prior work [73, 116, 159]. In particular, 
+            three primary cases are considered: (1) Bank Miss, in which the addresses reside in different 
+            banks and access times remain low. (2) Row Hit, where both addresses belong to the same bank 
+            and the same row, resulting in low access times. (3) Row Conflict, where addresses are 
+            in the same bank but different rows, producing higher access times. Based on these scenarios, 
+            it is assumed that two distinct peaks will appear in access time distributions: the first 
+            peak, corresponding to low-latency events, combines bank misses and row hits, whereas the 
+            second peak, associated with higher latencies, represents row conflicts.
+            \\
+            To reliably distinguish Row Hits from Row Conflicts, memory access latencies are measured 
+            while isolating DRAM from cache effects, using repeated accesses in combination with cache flushes. 
+            Latency histograms are constructed from multiple measurement runs, allowing identification 
+            of distinct peaks. From these histograms, a threshold is determined to separate Row Hits 
+            from Row Conflicts, which is subsequently validated using statistical measures such as mean, 
+            variance, confidence intervals, and t-tests.
+
+            \begin{figure}[htbp]
+                \centering
+                \frame{\includegraphics[width=\linewidth]{img/rowhitconflict.pdf}}
+                \caption{Row Hit, Row Conflict Histograms of all test devices}
+                \label{fig:row-hit-conflict}
+            \end{figure}
+
+            \hyperref[fig:row-hit-conflict]{Figure~\ref{fig:row-hit-conflict}} illustrates the resulting 
+            histograms across all test devices. On the Raspberry Pi 4, 
+            Row Hits are observed in the range of approximately 210-260 CPU cycles, while Row Conflicts 
+            occur shortly before or after 300 CPU cycles, demonstrating a clear separation. For the 
+            Raspberry Pi 5, Row Hits occur at approximately 275 CPU cycles and Row Conflicts at 340 
+            CPU cycles, showing a comparable separation but with an approximate 60 CPU cycle shift relative 
+            to the predecessor model, the Raspberry Pi 4.
+            \\
+            The experimental setup for statistical verification involved pinning all test devices to a single 
+            core and limiting memory usage to 20-25\% of total system memory. Across devices, statistical 
+            analysis revealed varying degrees of robustness in distinguishing Row Hits from Row Conflicts. 
+            Raspberry Pi 4 Devices exhibited the most robust separation, with mean differences 
+            of around 23-28 CPU cycles, low variance for hits, well-separated 95\% confidence 
+            intervals, and highly significant t-test values of 5.67 and 4.20. Thresholds were clearly defined.
+            One of the Raspberry Pi 5 Devices showed moderate distinction, with 
+            a mean separation of 11 CPU cycles, partially overlapping confidence intervals, moderate variance, 
+            and a significant t-test value of 3.39, indicating a usable but less robust threshold. In 
+            contrast, two out of three Raspberry Pi 5 Devices exhibited less reliable separation, with small mean 
+            differences of around 10 CPU cycles to around 7.5 CPU cycles, overlapping confidence intervals, higher variance, 
+            and marginally significant t-tests of 2.70 and 2.28, suggesting sensitivity to noise. Across all 
+            devices, Row Hits consistently displayed lower variance than Row Conflicts, reflecting more 
+            stable access times. Threshold reliability was highest for the Raspberry Pi 4 Model of 8 GB RAM with a peak separation ratio of  
+            2.00 and a confidence of 0.60, whereas all other test devices exhibited lower ratios of around 1.04 to 1.12
+            and confidence scores of around 0.45, rendering their thresholds usable but less robust.
+
+            \begin{figure}[htbp]
+                \centering
+                \frame{\includegraphics[width=\linewidth]{img/combinations-rpi4.pdf}}
+                \caption{Frequency of detected combinations for Raspberry Pi's 4}
+                \label{fig:combinations-rpi4}
+            \end{figure}
+
+            \begin{figure}[htbp]
+                \centering
+                \frame{\includegraphics[width=\linewidth]{img/combinations-rpi5.pdf}}
+                \caption{Frequency of detected combinations for Raspberry Pi's 5}
+                \label{fig:combinations-rpi5}
+            \end{figure}
+
+            \hyperref[fig:combinations-rpi4]{Figure~\ref{fig:combinations-rpi4}} and \hyperref[fig:combinations-rpi5]{Figure~\ref{fig:combinations-rpi5}} 
+            depict the frequency of detected combinations for Raspberry Pi 4 and 5 devices, 
+            respectively. Occasionally, multiple candidate functions are identified, encompassing rare additional 
+            simple bank bits and, in some instances, more complex XOR combinations. These occurrences are 
+            noticeably more frequent on the Raspberry Pi 5 devices compared to the Raspberry Pi 4 devices. However, 
+            prior studies on DRAM address mapping consistently report that ARM platforms employ only simple 
+            XOR functions, typically composed of one or two address bits [73, 79]. Therefore, the 
+            infrequently observed complex XOR combinations are assumed to represent false positives, as 
+            they lack consistency across runs. Comparisons with DRAM mappings reported in related work 
+            demonstrate that the mappings obtained in this study closely resemble those described in [74] and [79].
+
+            \begin{table}[ht]
+                \centering
+                \begin{tabular}{lll}
+                    \hline
+                    Device & Mappings & Bank Functions \\
+                    \hline
+                    Raspberry Pi 4B & Memory Aware DOS [74] & (11), (12), (13), (14) \\
+                    Raspberry Pi 4B & DRAM MaUT [79] & (12), (13), (14), (11 XOR 12) \\
+                    Raspberry Pi 3B+ & Flipping Bits Like a Pro [156] & (13 XOR 14), (14), (15) \\
+                    Exynos 7420 & DRAMA [73] & (14), (15), (16) \\
+                    Raspberry Pi's 4 & Rowhammer on Raspberry Pi's & (6), (12), (13), (14) \\
+                    Raspberry Pi's 5 & Rowhammer on Raspberry Pi's & (6), (12) \\
+                    \hline
+                \end{tabular}
+                \caption{Comparison between Related Work Mappings and own Thesis Mappings}
+                \label{tab:mappings}
+            \end{table}
 
     \subsection{Verification} \label{subsec:verification}
         For each test device, a \gls{dram} address mapping has been derived. However, the completeness and 

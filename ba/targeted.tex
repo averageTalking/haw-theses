@@ -57,11 +57,8 @@
             \gls{dram} parity masks as a linear algebra problem. Instead of relying on exhaustive search, it 
             focuses on solving the mapping directly through algebraic reasoning.
 
-        \subsubsection{Graph-based Approach} \label{subsubsec:graph-based-approach}
-            This is a test.
-        
-        \subsubsection{DRAMA Approach} \label{subsubsec:drama-approach}
-            In the context of reverse engineering DRAM address mappings, it is essential to distinguish 
+        \subsubsection{Row Hit, Row Conflict Distinction} \label{subsubsec:row-hit-row-conflict-distinction}
+            In the context of reverse engineering \gls{dram} address mappings, it is essential to distinguish 
             between Row Hits and Row Conflicts, as access latency provides a direct reflection of the 
             internal organization of banks and rows. Accurate classification of these events enables 
             the inference of the underlying memory structure and is therefore a critical step in memory 
@@ -82,7 +79,7 @@
             second peak, associated with higher latencies, represents row conflicts.
             \\
             To reliably distinguish Row Hits from Row Conflicts, memory access latencies are measured 
-            while isolating DRAM from cache effects, using repeated accesses in combination with cache flushes. 
+            while isolating \gls{dram} from cache effects, using repeated accesses in combination with cache flushes. 
             Latency histograms are constructed from multiple measurement runs, allowing identification 
             of distinct peaks. From these histograms, a threshold is determined to separate Row Hits 
             from Row Conflicts, which is subsequently validated using statistical measures such as mean, 
@@ -120,6 +117,14 @@
             2.00 and a confidence of 0.60, whereas all other test devices exhibited lower ratios of around 1.04 to 1.12
             and confidence scores of around 0.45, rendering their thresholds usable but less robust.
 
+            \subsubsection{DRAMA Approach} \label{subsubsec:drama-approach}
+            The DRAMA approach classifies physical addresses into \gls{dram} sets by exploiting access-time 
+            variations caused by row hits, row conflicts, and bank conflicts. Based on these timing 
+            differences, the approach derives the \gls{dram} address mapping by identifying XOR combinations 
+            of physical address bits that consistently distinguish between the observed sets. Applying 
+            this methodology results in the identification of multiple candidate functions, where the 
+            frequency of these combinations provides insight into the underlying \gls{dram} organization.
+
             \begin{figure}[htbp]
                 \centering
                 \frame{\includegraphics[width=\linewidth]{img/combinations-rpi4.pdf}}
@@ -134,16 +139,22 @@
                 \label{fig:combinations-rpi5}
             \end{figure}
 
-            \hyperref[fig:combinations-rpi4]{Figure~\ref{fig:combinations-rpi4}} and \hyperref[fig:combinations-rpi5]{Figure~\ref{fig:combinations-rpi5}} 
-            depict the frequency of detected combinations for Raspberry Pi 4 and 5 devices, 
-            respectively. Occasionally, multiple candidate functions are identified, encompassing rare additional 
-            simple bank bits and, in some instances, more complex XOR combinations. These occurrences are 
-            noticeably more frequent on the Raspberry Pi 5 devices compared to the Raspberry Pi 4 devices. However, 
-            prior studies on DRAM address mapping consistently report that ARM platforms employ only simple 
-            XOR functions, typically composed of one or two address bits [73, 79]. Therefore, the 
-            infrequently observed complex XOR combinations are assumed to represent false positives, as 
-            they lack consistency across runs. Comparisons with DRAM mappings reported in related work 
-            demonstrate that the mappings obtained in this study closely resemble those described in [74] and [79].
+            Figures \hyperref[fig:combinations-rpi4]{Figure~\ref{fig:combinations-rpi4}} and 
+            \hyperref[fig:combinations-rpi5]{Figure~\ref{fig:combinations-rpi5}} depict the 
+            distribution of detected XOR combinations for the Raspberry Pi 4 
+            and Raspberry Pi 5 devices, respectively. In some cases, the analysis yields multiple 
+            candidate functions, including rare additional simple bank bits and, in certain instances,
+            more complex XOR combinations. These occurrences are observed significantly more often on 
+            Raspberry Pi 5 devices than on Raspberry Pi 4 devices. However, prior work on 
+            reverse-engineering \gls{dram} address mappings consistently reports that ARM platforms rely 
+            exclusively on simple XOR functions, which are typically composed of one or two address bits 
+            [73, 79]. Consequently, this work assumes that the sporadically observed more complex XOR 
+            combinations represent false positives, particularly since they occur infrequently and do not 
+            exhibit consistency across multiple runs.
+            \\
+            When compared to \gls{dram} address mappings reported in related studies, the 
+            mappings derived in this work closely resemble those described in [74] and [79], as summarized
+            in \hyperref[tab:mappings]{Table~\ref{tab:mappings}}.
 
             \begin{table}[ht]
                 \centering

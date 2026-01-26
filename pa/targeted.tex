@@ -16,40 +16,23 @@
         feasible to identify two distinct rows located within the same bank. Based on this observation, 
         several approaches have been proposed to reverse engineer the mapping between physical addresses 
         and \gls{dram} structures. These approaches mainly differ in how address sets are constructed and how 
-        the underlying addressing functions are inferred.
+        the underlying addressing functions are inferred. This work focuses on three representative methods, which
+        are listet below, along with a brief description of each.
+        \\ \\
+        \textbf{DRAMA}, introduced by Pessl et al. in 2016 [73], exploits a row-buffer timing side channel in which 
+        row conflicts manifest as increased memory access latency. By observing row hits and row conflicts, physical 
+        addresses can be grouped into sets that reside within the same bank and thus share identical channel, DIMM, 
+        rank, and bank properties. The underlying \gls{dram} address mapping is inferred by exhaustively evaluating 
+        linear addressing functions that distinguish these sets, which are commonly expressed as XOR combinations of 
+        physical address bits. This general methodology underlies several subsequent attacks and tools, including 
+        \textit{Halfdouble} [53, 132], \textit{Drammer} [38, 127], and \textit{Cache Attacks and Rowhammer} [72].
         \\
-        \textit{PALLOC}, proposed by Yun et al. in 2014 [75], relies on a dedicated microbenchmark that traverses 
-        a linked list across the physical address space. This traversal enforces continuous \gls{dram} accesses 
-        while enabling controlled usage of specific banks.
-        \\
-        \textit{DRAMA}, introduced by Pessl et al. in 2016 [73], exploits a row-buffer timing side channel where 
-        row conflicts cause increased memory access latency. This behavior enables the construction of 
-        address sets that share the same channel, DIMM, rank, and bank properties. The method allows for 
-        exhaustive testing of linear addressing functions with an increasing number of coefficients to infer 
-        the underlying mapping.
-        \\
-        \textit{ReMap}, presented by Helm et al. in 2020 [94], extends DRAMA by incorporating 
-        performance counters. These counters allow row hits and row conflicts to be identified more reliably 
-        during the reverse-engineering process.
-        \\
-        \textit{DRAMDig}, proposed by Wang et al. in 2020 [76], builds directly upon DRAMA. It incorporates knowledge 
-        about specific \gls{dram} chip geometries and processor microarchitectural characteristics in order to 
-        reduce the search space of the otherwise exponential-time search. This approach is used, for example, 
-        by the \gls{dram} MaUT tool [79].
-        \\
-        The work titled \textit{One Bit flips, one cloud flops}, introduced by Xiao et al. in 2016 [93], proposes a 
+        The work titled \textbf{One Bit flips, one cloud flops}, introduced by Xiao et al. in 2016 [93], proposes a 
         graph-based approach to infer physical-to-\gls{dram} address mappings. Similar to DRAMA, it relies on 
         timing differences caused by row conflicts, but its primarily aimed at enableing Rowhammer attacks 
         across virtual machines.
         \\
-        DRAMA-based methods share several common characteristics. Addresses are clustered into sets that 
-        exhibit either row conflicts or row hits, which indicates that they are placed within the same bank. 
-        These sets are derived by determining which combinations of address bits identify the observed 
-        behavior, and the resulting functions are often expressed as linear XOR combinations. This general 
-        approach forms the basis of multiple attacks and tools, including Halfdouble [53, 132], Drammer [38, 127], and Cache 
-        Attacks and Rowhammer [72].
-        \\
-        \textit{Knock Knock}, introduced by Plin et al. in 2025 [99], reformulates the identification of \gls{dram} parity 
+        \textbf{Knock Knock}, introduced by Plin et al. in 2025 [99], reformulates the identification of \gls{dram} parity 
         masks as a linear algebra problem. Instead of relying on exhaustive search, this method focuses on 
         solving the address mapping directly through algebraic reasoning.
         \\

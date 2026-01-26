@@ -1,10 +1,6 @@
-% TODOs abhacken
-% ADD Figures
-
-
 \subsection{Reverse Engineering} \label{subsec:reverse-engineering}
     \subsubsection{Graph-Based Mapping Inference} \label{subsubsec:graph-based-mapping-inference}
-        Building on the timing-channel primitive introduced in [One Bit Flips, One Cloud Flops], a novel 
+        Building on the timing-channel primitive introduced in [93], a novel 
         graph-based algorithm is employed to determine the memory mapping at runtime. 
         This approach models each bit in a physical address as a node in a graph and establishes 
         relationships between nodes based on measured memory access latencies. By exploiting the fact 
@@ -26,19 +22,20 @@
         values occur exclusively when two addresses are located in different rows of the same bank, which 
         provides a distinguishing feature for identifying row, column, bank bits.
         \\
-        % TODO: Aufzeigen was portiert wurde
-        % \\
-        The workflow involves porting, building and executing the tool [118]. The results are stored in 
+        The workflow involves porting, building and executing the tool [118] by including several ARM-specific
+        adaptations for performance counters and cache flush instructions. In addition, dynamic memory allocation 
+        via \texttt{vmalloc} was introduced to accommodate larger arrays. The results are stored in 
         the \texttt{latency.log} file using the corresponding Python script which analyzes all bit positions. 
         The three bits exhibiting the highest average latency deviations are identified. 
-        The analysis reveals that bits \texttt{12}, \texttt{13}, and \texttt{14} show the highest average latencies, with average 
-        values of \texttt{299.25}, \texttt{298.41}, and \texttt{299.03} cycles, respectively.
+        Analysis across all bit positions revealed that bits \texttt{13}, \texttt{14}, and \texttt{15} 
+        consistently exhibit the highest average latencies, with bit \texttt{16} occasionally appearing 
+        among the most significant.
         \\
         Despite these results, a problem arises from the fact that the observed latency deviations are 
         relatively small and do not demonstrate a significant difference. Despite this limited magnitude 
         of deviation, the resulting mapping remains consistent across multiple measurements. This 
-        consistency aligns with findings from related work, particularly the [DRAM MaUT] mapping, as well 
-        [Memory Aware DOS] mapping. However, due to the lack of pronounced 
+        consistency aligns with findings from related work, particularly the mapping of [79], as well of the 
+        [74] mapping. However, due to the lack of pronounced 
         latency differences, these observations alone were insufficient, and consequently additional methods 
         were explored.
 

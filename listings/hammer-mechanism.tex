@@ -1,0 +1,11 @@
+\begin{lstlisting}[language=c,caption=Hammering Mechanism, label=lst:hammer_mechanism]
+for (size_t j = 0; j < HAMMER_CYCLES; ++j) {
+    asm volatile(
+        "str %2, [%0]\n\t"
+        "str %2, [%1]\n\t"
+        "dc cvac, %0\n\t"
+        "dc cvac, %1\n\t"
+        ::"r" (addr1), "r" (addr2), "r" (init_val)
+    );
+}
+\end{lstlisting}

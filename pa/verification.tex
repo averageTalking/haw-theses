@@ -26,4 +26,68 @@
         This is a test.
 
     \subsubsection{Rowhammer} \label{subsubsec:rowhammer}
-        This is a test.
+        A secondary approach was tested to verify the \gls{dram} mapping using the Rowhammer technique. This 
+        method aims to validate the addressing functions by observing whether their application leads 
+        to an increased rate of bit flips in memory.
+        \\
+        % Workflow, Problems, and Solutions
+        Memory allocation is performed via \texttt{mmap}, based on a predefined percentage of available system 
+        memory, specified by \texttt{MEMORY\_IN\_PERCENT}. Virtual addresses are translated to physical 
+        addresses using pagemap. Physical addresses that correspond to the 
+        same \gls{dram} bank are grouped into lists according to a reverse-engineered \gls{dram} mapping.
+        \\
+        The hammering procedure iterates until a predefined number of cycles is reached, as denoted as
+        \texttt{TIMES}. In each iteration, two physical addresses from the same bank are 
+        selected randomly. These addresses are repeatedly accessed hammered for a defined number of 
+        times while explicitly flushing the cache between accesses. After each 
+        iteration, the system checks for resulting bit flips. Once the procedure completes, the total 
+        number of detected bit flips is verified and reported.
+        \\
+        % Grouping Physical Addresses into DRAM Banks
+        The grouping of physical addresses follows the goal of assigning physical addresses to \gls{dram} banks 
+        according to the reverse-engineered mapping. These addresses are partitioned into bank-specific 
+        lists, where each list contains addresses mapping to the same \gls{dram} bank. These lists form 
+        the candidate sets used for the hammering process. The bank index is computed using the 
+        algorithm shown in \hyperref[lst:compute_bank]{Listing~\ref{lst:compute_bank}}.
+        \input{listings/compute_bank.tex}
+        
+        During the hammering phase, two addresses from the same bank are repeatedly accessed while 
+        the cache is explicitly flushed after each access. This maximizes \gls{dram} row activations and is 
+        intended to induce bit flips. The core idea is to randomly select two distinct addresses within 
+        one bank and repeatedly toogle between both in sequence, flushing the cache lines after each access. This process 
+        is repeated for a large number of cycles, as illustrated in 
+        \hyperref[lst:hammer_mechanism]{Listing~\ref{lst:hammer_mechanism}}.
+        \input{listings/hammer-mechanism.tex}
+        
+        % Related Work Mappings
+        The tested mappings, including those from related work, were visually represented and compared 
+        (see \hyperref[tab:mappings]{Table~\ref{tab:mappings}}).
+        \begin{table}[ht]
+            \centering
+            \begin{tabular}{lll}
+                \hline
+                Device & Mappings & Bank Functions \\
+                \hline
+                Raspberry Pi 4B & Memory Aware DOS [74] & (11), (12), (13), (14) \\
+                Raspberry Pi 4B & DRAM MaUT [79] & (12), (13), (14), (11 XOR 12) \\
+                Raspberry Pi 3B+ & Flipping Bits Like a Pro [156] & (13 XOR 14), (14), (15) \\
+                Exynos 7420 & DRAMA [73] & (14), (15), (16) \\
+                Raspberry Pi's 4 & Rowhammer on Raspberry Pi's & (6), (12), (13), (14) \\
+                Raspberry Pi's 5 & Rowhammer on Raspberry Pi's & (6), (12) \\
+                \hline
+            \end{tabular}
+            \caption{Comparison between Related Work Mappings and own Thesis Mappings}
+            \label{tab:mappings}
+        \end{table}
+
+        % Reverse-Engineered Mappings
+        Multiple attacks were conducted to evaluate both the mappings proposed in related work and the 
+        reverse-engineered mappings, with each Raspberry Pi device tested for approximately five hours.
+        Across all tests, no bit flips were observed. The resulting mapping is likely correct, as it 
+        closely resembles mappings reported in other studies for the Raspberry Pi 4 and older models. 
+        Repeated measurements consistently produced the same mapping.
+        \\
+        The absence of bit flips indicates that either hardware or software mitigations effectively 
+        prevent Rowhammer-induced errors, or the \gls{dram} modules under test are inherently resistant. 
+        Therefore, based on the obtained results, no definitive conclusions regarding Rowhammer 
+        susceptibility can be drawn for these devices.

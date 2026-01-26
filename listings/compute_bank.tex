@@ -1,0 +1,13 @@
+\begin{lstlisting}[language=c,caption=Algorithm for grouping physical addresses that yield the same bank index, label=lst:compute_bank]
+int compute_bank(uint64_t pa) {
+    int bank = 0;
+    for (size_t b = 0; b < NUM_BANKS; b++) {
+        int bit = 0;
+        for (size_t i = 0; i < hLens[b]; i++) {
+            bit ^= (pa >> hArrays[b][i]) & 1;
+        }
+        bank |= (bit << b);
+    }
+    return bank;
+}
+\end{lstlisting}

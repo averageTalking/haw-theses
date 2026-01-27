@@ -105,10 +105,9 @@
       measurements additionally stored in \texttt{.log} files.
       
     \subsubsection{Non-functional requirements} \label{subsubsec:non-functional-requirements}
-      The implementation must be realized using \textit{C}, \textit{C++}, or \textit{Python} and executed with root privileges in user space. 
+      The implementation requires root privileges in user space to execute privileged instructions.
       All \hyperref[tab:experimental-setups]{Raspberry Pi 4 and Raspberry Pi 5 devices} must operate in ARMv8 (AArch64) mode. The 
       system must meet requirements regarding performance and efficiency and include robust error-handling mechanisms. 
       Reproducibility is essential, such that repeated measurements yield similar results under comparable conditions. Ethical 
       considerations are explicitly addressed by conducting all experiments in isolated environments to prevent 
-      accidental harm and by emphasizing the responsible use of security attack techniques, ensuring that findings 
-      are not applied to production systems.
+      accidental harm.

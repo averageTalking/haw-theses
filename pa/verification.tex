@@ -8,7 +8,7 @@
     obtained through direct hardware measurements, as described in [73]. This method, however, faces 
     significant practical limitations. Embedded systems often incorporate small chips and 
     multi-layered circuit boards [159], making direct probing difficult. In particular, verification 
-    via hardware probing is not feasible on devices such as Raspberry Pis due to the presence of 
+    via hardware probing is not feasible on devices such as Raspberry Pi's due to the presence of 
     soldered \gls{dram} modules.
     \\
     Another verification method leverages \textbf{Rowhammer} testing. In this approach, correctness is 
@@ -23,18 +23,18 @@
     correctness of the reverse-engineered \gls{dram} mappings.
 
     \subsubsection{Software-based} \label{subsubsec:software-based}
-        Verification of DRAM mapping is conducted using a software-based, latency-driven methodology, 
+        Verification of \gls{dram} mapping is conducted using a software-based, latency-driven methodology, 
         following the approach proposed in the DRAMA methodology [73, 116]. This method's 
         Considerations are based on the cases that the system can encounter, specifically bank misses, row hits, 
         and row conflicts, as defined in the reverse engineering process. Each of these scenarios 
-        exhibits distinct access latencies, which can be exploited to verify the underlying DRAM mapping.
+        exhibits distinct access latencies, which can be exploited to verify the underlying \gls{dram} mapping.
         \\
         The verification procedure involves several steps. First, it identifies memory addresses that 
-        reside within the same or different DRAM rows and banks, as shown in \hyperref[lst:find-related-addresses]{Listing~\ref{lst:find-related-addresses}}.
+        reside within the same or different \gls{dram} rows and banks, as shown in \hyperref[lst:find-related-addresses]{Listing~\ref{lst:find-related-addresses}}.
         Next, access latencies are measured after flushing the relevant cache lines to ensure that the 
-        measurements reflect DRAM behavior rather than cached values. The collected latency data are then organized 
+        measurements reflect \gls{dram} behavior rather than cached values. The collected latency data are then organized 
         into histograms, which allow for the classification of row hits and row conflicts. These timing histograms 
-        serve to calibrate a latency threshold, enabling the verification of the DRAM mapping. Specifically, 
+        serve to calibrate a latency threshold, enabling the verification of the \gls{dram} mapping. Specifically, 
         addresses predicted to reside within the same row should exhibit low access latencies, while 
         addresses predicted to be located in different rows are expected to show higher latencies.
         \\
@@ -43,7 +43,7 @@
         Key difficulties include ensuring portability across ARM architectures and 
         mitigating measurement noise to maintain reliable latency distinctions.
 
-        \input{listings/find-addresses.tex}.
+        \input{listings/find-addresses.tex}
 
     \subsubsection{Rowhammer} \label{subsubsec:rowhammer}
         A secondary approach was tested to verify the \gls{dram} mapping using the Rowhammer technique. This 

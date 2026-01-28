@@ -5,18 +5,18 @@
   %   \gls{dram} requires regular refreshing because it stores each bit 
   %   as an electrical charge, which gradually leaks over time. This leakage necessitates refresh 
   %   cycles, resulting in slower access times; however, \gls{dram} provides high storage density at a 
-  %   relatively low cost [27]. In contrast, Static Random-Access Memory (\gls{sram}) maintains each bit 
+  %   relatively low cost~\cite{webCache}. In contrast, Static Random-Access Memory (\gls{sram}) maintains each bit 
   %   in a stable flip-flop circuit, eliminating the need for refresh operations. This 
   %   characteristic makes \gls{sram} faster and allows it to be physically located closer to the \gls{cpu}, 
-  %   though it is more expensive and offers lower storage capacity compared to \gls{dram} [27]. \\
-  %   \gls{cpu} caches are constructed from \gls{sram} to maximize access speed [45, 31]. A cache is a fast, 
-  %   specialized memory area designed to accelerate data retrieval [27]. It temporarily stores 
+  %   though it is more expensive and offers lower storage capacity compared to \gls{dram}~\cite{webCache}. \\
+  %   \gls{cpu} caches are constructed from \gls{sram} to maximize access speed~\cite{webCPUCache, paperOverviewOfCacheMemory}. A cache is a fast, 
+  %   specialized memory area designed to accelerate data retrieval~\cite{webCache}. It temporarily stores 
   %   copies of frequently used data and instructions from main memory (\gls{ram}) that the \gls{cpu} is likely 
-  %   to access imminently [27, 45]. By holding data that the \gls{cpu} may repeatedly access, caches 
+  %   to access imminently~\cite{webCache, webCPUCache}. By holding data that the \gls{cpu} may repeatedly access, caches 
   %   serve as a buffer between the \gls{cpu} and main memory, significantly reducing the time required 
-  %   for repeated data accesses [30, 45]. Cached data typically mirrors the contents of slower 
-  %   storage devices such as \gls{ram} or disks [27]. Common types of caches include \gls{cpu} caches, memory 
-  %   caches, and browser caches [27]; however, only \gls{cpu} caches are relevant in the context of the 
+  %   for repeated data accesses~\cite{webWhatsACache_1, webCPUCache}. Cached data typically mirrors the contents of slower 
+  %   storage devices such as \gls{ram} or disks~\cite{webCache}. Common types of caches include \gls{cpu} caches, memory 
+  %   caches, and browser caches~\cite{webCache}; however, only \gls{cpu} caches are relevant in the context of the 
   %   Rowhammer attack. \\
   %   Cache performance is characterized by hits and misses. A cache hit occurs when the \gls{cpu} 
   %   requests data already present in one of its cache levels. In this case, the cache provides 
@@ -32,4 +32,4 @@
   %   cost, as illustrated in Figure. Memory Hierarchy. Higher levels of the hierarchy, such as 
   %   \gls{cpu} caches, are smaller but faster, while lower levels are larger but significantly slower. 
   %   Due to their proximity to the \gls{cpu} and implementation using \gls{sram}, caches provide access 
-  %   speeds approximately 10–100 times faster than \gls{dram} [46].
+  %   speeds approximately 10-100 times faster than \gls{dram}~\cite{webCacheVsRAM}.

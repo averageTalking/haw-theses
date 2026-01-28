@@ -70,9 +70,19 @@ def convert_date(date_str):
     except ValueError:
         return date_str
 
+def format_author(author):
+    if not author:
+        return ""
+
+    escaped = author.replace("&", r"\&")
+    escaped = escaped.replace("#", r"\#")
+    return f"{{{{{escaped}}}}}"
+
+
 def format_bib_entry(row, bib_type):
     key = row.get("headline", "").strip() or "no_key"
-    author = row.get("author", "").strip()
+    raw_author = row.get("author", "").strip()
+    author = format_author(raw_author)
     title = row.get("title", "").strip()
     year = row.get("year", "").strip()
     url = row.get("url", "").strip()

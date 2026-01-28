@@ -81,10 +81,8 @@ https://projectzero.google/2015/03/exploiting-dram-rowhammer-bug-to-gain.html","
 ,Paper,78,Theory and Practice of Finding Eviction Sets,paperTheoryAndPractice,https://arxiv.org/pdf/1810.01497,"Pepe Vila, Boris Köpf, and José F. Morales",26/11/2025,2019,https://doi.org/10.1109/SP.2019.00042,,
 ,Paper,79,Work-in-Progress: DRAM-MaUT: DRAM Address Mapping Unveiling Tool for ARM Devices,paperDRAMMaUT,https://www.researchgate.net/publication/365100106_Work-in-Progress_DRAM-MaUT_DRAM_Address_Mapping_Unveiling_Tool_for_ARM_Devices,"Anandpreet Kaur, Pravin Srivastav, and Bibhas Ghoshal",26/11/2025,2022,https://doi.org/10.1109/CASES55004.2022.00027,,
 ,Webseite,80,LPDRAM4/4X Performance Tweaks,webPerformanceTweaks,https://www.design-reuse.com/article/61401-lpdram4-4x-performance-tweaks/,Aditi Sharma,26/11/2025,,,,
-⭐⭐⭐⭐,Paper,81,"OpenGL GPU-Based Rowhammer Attack (Work
-in Progress)",paperOpenGL,https://arxiv.org/pdf/2509.19959,"Antoine Plin, and Frédéric Fauberteau",26/11/2025,2025,https://doi.org/10.48550/arXiv.2509.19959,,
-,Paper,82,"Generic and Automated Drive-by GPU Cache Attacks
-from the Browser",paperGenericAndAutomated,https://dl.acm.org/doi/pdf/10.1145/3634737.3656283,"Lukas Giner, Roland Czerny, Christoph Gruber, Fabian Rauscher, Andreas Kogler, Daniel De Almeida Braga, and Daniel Gruss",26/11/2025,2024,https://doi.org/10.1145/3634737.3656283,,
+⭐⭐⭐⭐,Paper,81,OpenGL GPU-Based Rowhammer Attack (Work in Progress),paperOpenGL,https://arxiv.org/pdf/2509.19959,"Antoine Plin, and Frédéric Fauberteau",26/11/2025,2025,https://doi.org/10.48550/arXiv.2509.19959,,
+,Paper,82,Generic and Automated Drive-by GPU Cache Attacks from the Browser,paperGenericAndAutomated,https://dl.acm.org/doi/pdf/10.1145/3634737.3656283,"Lukas Giner, Roland Czerny, Christoph Gruber, Fabian Rauscher, Andreas Kogler, Daniel De Almeida Braga, and Daniel Gruss",26/11/2025,2024,https://doi.org/10.1145/3634737.3656283,,
 ⭐⭐⭐⭐⭐,Documentation,83,"JESD209-4, LPDDR4 Specification",docJEDECLPDDR4,https://www.jedec.org/standards-documents/docs/jesd209-4b,JEDEC,26/11/2025,2024,,,
 ⭐⭐⭐⭐⭐,Documentation,84,"JESD209-4, LPDDR4X Specification",docJEDECLPDDR4x,https://www.jedec.org/standards-documents/docs/jesd209-4-1,JEDEC,26/11/2025,2025,,,
 ⭐⭐⭐⭐,Paper,85,ARMageddon: Cache Attacks on Mobile Devices,paperARMageddon,https://www.usenix.org/system/files/conference/usenixsecurity16/sec16_paper_lipp.pdf,"Moritz Lipp, Daniel Gruss, Raphael Spreitzer, Clémentine Maurice, and Stefan Mangard",26/11/2025,2016,,,
@@ -96,8 +94,7 @@ from the Browser",paperGenericAndAutomated,https://dl.acm.org/doi/pdf/10.1145/36
 ⭐⭐⭐⭐⭐,Documentation,91,"SCTLR_EL1, System Control Register (EL1)",docSCTLR_EL1,https://developer.arm.com/documentation/ddi0601/2025-09/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-,ARM,26/11/2025,,,,
 ⭐⭐⭐⭐⭐,Documentation,92,"System Control Register, EL1",docSystemControlRegister,https://developer.arm.com/documentation/ddi0488/h/system-control/aarch64-register-descriptions/system-control-register--el1,ARM,26/11/2025,,,,
 ⭐⭐⭐⭐,Paper,93,"One bit flips, one cloud flops: cross-VM row hammer attacks and privilege escalation",paperOneBitFlipsOneCouldFlops,https://www.usenix.org/system/files/conference/usenixsecurity16/sec16_paper_xiao.pdf,"Yuan Xiao, Xiaokuan Zhang, Yinqian Zhang, and Radu Teodorescu",26/11/2025,2016,,,
-,Paper,94,"Reliable Reverse Engineering of Intel DRAM
-Addressing Using Performance Counters",paperReliableReverseEngineering,https://www.soramichi.jp/pdf/MASCOTS2020.pdf,"Christian Helm, Soramichi Akiyama, and Kenjiro Taura",26/11/2025,2020,https://doi.ieeecomputersociety.org/10.1109/MASCOTS50786.2020.9285962,,
+,Paper,94,Reliable Reverse Engineering of Intel DRAM Addressing Using Performance Counters,paperReliableReverseEngineering,https://www.soramichi.jp/pdf/MASCOTS2020.pdf,"Christian Helm, Soramichi Akiyama, and Kenjiro Taura",26/11/2025,2020,https://doi.ieeecomputersociety.org/10.1109/MASCOTS50786.2020.9285962,,
 ,Masterthesis,95,"A Quantitative Analysis of Memory Controller Page Policies ",thesisPagePolicies,https://pdxscholar.library.pdx.edu/cgi/viewcontent.cgi?article=1659&context=open_access_etds,Matthew Blackmore,26/11/2025,2013,,"Portland State University ",Masterthesis
 ,Webseite,96,What is sdram memory,webSDRAMMemory,https://embeddedhardwaredesign.com/what-is-sdram-memory/,Vikky K,26/11/2025,2023,,,
 ,Forum,97,NUMA Testing,webNUMATesting,https://forums.raspberrypi.com/viewtopic.php?t=378276,dom,26/11/2025,2024,,,
@@ -111,8 +108,7 @@ Addressing Using Performance Counters",paperReliableReverseEngineering,https://w
 ,Presentation,106,Rowhammer Attacks: An Extended Walkthrough Guide,presRHAttacksWalkthrough,https://gruss.cc/files/sba.pdf,Daniel Gruss,26/11/2025,2017,,,
 ,Documentation,107,Cache Maintenance Operations,docCacheMaintenanceOperations,https://developer.arm.com/documentation/101924/0101/Memory-system/Instruction-and-data-cache/Cache-maintenance-operations,ARM,26/11/2025,,,,
 ,Github,108,ES_Security_rowhammer_rpi3,toolRPI3,https://github.com/japanninja74/ES_Security_rowhammer_rpi3,japanninja74,26/11/2025,2023,,,
-,Datasheet,109,"ARM® Cortex™ A Series Version: 4.0
-Programmer’s Guide",datasheetCortexASeries,https://cpen432.github.io/resources/arm-cortex-a-prog-guide-v4.pdf,ARM,26/11/2025,,,,
+,Datasheet,109,ARM® Cortex™ A Series Version: 4.0 Programmer’s Guide,datasheetCortexASeries,https://cpen432.github.io/resources/arm-cortex-a-prog-guide-v4.pdf,ARM,26/11/2025,,,,
 ,Github,110,reMap,toolReMap,https://github.com/helchr/reMap,helchr,26/11/2025,2020,,,
 ,Datasheet,111,Raspberry Pi RP1 Peripherals,datasheetRP1Peripherals,https://datasheets.raspberrypi.com/rp1/rp1-peripherals.pdf,Raspberry Pi,26/11/2025,,,,
 ,Github,112,Knock-Knock,toolKnockKnock,https://github.com/antpln/Knock-Knock,antpln,26/11/2025,2025,,,

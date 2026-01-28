@@ -44,7 +44,7 @@
         in unprivileged user space and does not require special permissions. Prior work describes how 
         user-accessible \gls{dma} buffers exposed by the Android ION memory management interface can be leveraged to 
         bypass \gls{cpu} caches, thereby enabling Rowhammer triggering from user space [38, 48]. However, subsequent 
-        defenses, such as GuardION [GuardION], have rendered Rowhammer bugs triggered in this way non-exploitable. 
+        defenses, such as [GuardION], have rendered Rowhammer bugs triggered in this way non-exploitable. 
         Importantly, this technique is not applicable to Raspberry Pi systems, as the Android-specific ION framework 
         is not available in standard Linux-based Raspberry Pi environments, which prevents the allocation or control 
         of such uncached \gls{dma} buffers.

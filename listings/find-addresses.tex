@@ -1,0 +1,15 @@
+\begin{lstlisting}[language=c,caption=\texttt{Find related addresses}, label=lst:find-related-addresses]
+p = base_address
+
+// Find second address within same bank and row
+for each address in memory_array:
+    if dram_bank(address) == dram_bank(p) and dram_row(address) == dram_row(p):
+        p2 = address
+        break
+
+// find third address whitin same bank but different row
+for each address in memory_array:
+    if dram_bank(address) == dram_bank(p) and dram_row(address) != dram_row(p):
+        p3 = address
+        break
+\end{lstlisting}

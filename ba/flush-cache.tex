@@ -3,43 +3,42 @@
     served from \gls{dram} rather than from a cache level. The primary purpose of this operation is to force 
     direct \gls{dram} activation instead of cache hits, thereby guaranteeing a cache miss on every hammer iteration. 
     As a result, very high row-activation rates can be achieved, which are essential for effective Rowhammer 
-    attacks. On x86 architectures, this behavior is implemented via the \texttt{clflush} instruction [5], whereas 
+    attacks. On x86 architectures, this behavior is implemented via the \texttt{clflush} instruction~\cite{paperFlippingBits}, whereas 
     ARM-based systems rely on cache flush maintenance instructions, such as \texttt{DC CIVAC}, \texttt{DC CVAC}, \texttt{DC ZVA}, and 
-    related operations, to achieve comparable effects [48].
+    related operations, to achieve comparable effects~\cite{paperTriggeringRHHardwareFault}.
     \\
     In ARM terminology, the word flush is often used in descriptions of clean and invalidate 
-    operations, although the architecture specification generally uses only the terms clean and invalidate 
-    [72]. 
+    operations, although the architecture specification generally uses only the terms clean and invalidate~\cite{thesisCacheAttacksandRH}.
     \\
     \textbf{Invalidating} a cache or cache line means clearing it of data by clearing the valid bit of one 
     or more cache lines. The cache must always be invalidated after reset because its contents are undefined. 
     If the cache contains dirty data, simple invalidation is generally incorrect, since updated data from 
-    write-back cacheable regions would be lost [109].
+    write-back cacheable regions would be lost~\cite{datasheetCortexASeries}.
     \\
     \textbf{Cleaning} a cache or cache line refers to writing the contents of dirty cache lines back to main memory 
     and clearing the dirty bits, which makes the contents of the cache and main memory coherent with each 
-    other [109]. This operation is only applicable to data caches that use a write-back policy. Cache 
+    other~\cite{datasheetCortexASeries}. This operation is only applicable to data caches that use a write-back policy. Cache 
     clean and invalidate operations can be performed by cache set or way, or by virtual address.
     \\
     The \textbf{\gls{poc}} is defined as the point at which all blocks that can access memory, such 
-    as processor cores or DMA engines, are guaranteed to observe the same copy of a given address [109]. 
+    as processor cores or DMA engines, are guaranteed to observe the same copy of a given address~\cite{datasheetCortexASeries}. 
     Commonly, this point corresponds to the main external system memory, as illustrated in 
     \hyperref[fig:poc-pou]{Figure~\ref{fig:poc-pou}b}. 
     \\
     Closely related is the \textbf{\gls{pou}}, which denotes the point in the memory hierarchy at which the instruction cache, 
-    data cache, and translation table walks of a core are guaranteed to observe the same copy of a memory location [109]. 
+    data cache, and translation table walks of a core are guaranteed to observe the same copy of a memory location~\cite{datasheetCortexASeries}. 
     In a system with Harvard L1 caches and a \gls{tlb} for caching translation table entries, a unified L2 cache represents 
-    the Point of Unification. If no external cache is present, the main memory itself serves as the \gls{pou} [72], as 
+    the Point of Unification. If no external cache is present, the main memory itself serves as the \gls{pou}~\cite{thesisCacheAttacksandRH}, as 
     also shown in \hyperref[fig:poc-pou]{Figure~\ref{fig:poc-pou}a}.
     \begin{figure}[htbp]
         \centering
         \frame{\includegraphics[width=\linewidth]{img/poc-pou.pdf}}
-        \caption{Point of Coherency and of Unification [109]}
+        \caption{Point of Coherency and of Unification~\cite{datasheetCortexASeries}}
         \label{fig:poc-pou}
     \end{figure}
 
     \subsubsection{Instruction Types} \label{subsubsec:instruction-types}
-        The original Rowhammer study by Kim et al. [5] employed the \texttt{clflush} instruction to force cache lines 
+        The original Rowhammer study by Kim et al.~\cite{paperFlippingBits} employed the \texttt{clflush} instruction to force cache lines 
         out of the cache hierarchy. \texttt{clflush} ensures that each memory access reaches physical \gls{dram}, thereby 
         enabling the high-frequency row activations required for Rowhammer. Raspberry Pi devices, however, 
         use ARM CPUs, which do not provide \texttt{clflush} or a direct equivalent. Instead, these systems rely on 
@@ -54,26 +53,26 @@
         to bypass or invalidate cache lines, thereby enabling direct \gls{dram} access.
         \\
         On Intel x86 systems, the \texttt{clflush} instruction invalidates the cache line containing the specified 
-        address from all levels of the cache hierarchy, including both data and instruction caches 
-        [72]. If a cache line at any level of the hierarchy is dirty, meaning 
-        that it contains modified data [151], it is written back to memory before being invalidated 
-        [150, 72]. The \texttt{clflush} instruction is not privileged and is therefore 
-        available in userspace [150, 72], which makes it particularly suitable 
+        address from all levels of the cache hierarchy, including both data and instruction caches~\cite{thesisCacheAttacksandRH}. 
+        If a cache line at any level of the hierarchy is dirty, meaning 
+        that it contains modified data~\cite{docCLFLUSH}, it is written back to memory before being invalidated ~\cite{datasheetIntelReferenceManual, thesisCacheAttacksandRH}.
+        The \texttt{clflush} instruction is not privileged and is therefore 
+        available in userspace~\cite{datasheetIntelReferenceManual, thesisCacheAttacksandRH}, which makes it particularly suitable 
         for userspace Rowhammer implementations.
         \\
         On ARM architectures, the \texttt{DC CIVAC} instruction performs a clean and invalidate operation on a data 
         cache line by virtual address to the Point of Coherency. If access from Exception Level 0 (EL0) is 
         enabled, executing this instruction at EL0 may generate a permission fault. Its execution may also 
         require a translation from virtual to physical address, and it is defined as a 64-bit system 
-        instruction [152, 109]. Similarly, the \texttt{DC CVAC} instruction cleans a data cache line by address to 
+        instruction~\cite{docDCCIVAC, datasheetCortexASeries}. Similarly, the \texttt{DC CVAC} instruction cleans a data cache line by address to 
         the Point of Coherency. It is also a 64-bit system instruction and may generate a permission fault 
-        when executed at EL0 if such access is enabled, and it may require address translation [153, 109]. 
-        The \texttt{DC ZVA} instruction was introduced to efficiently zero out a block of memory [~Triggering RH]. 
+        when executed at EL0 if such access is enabled, and it may require address translation~\cite{docDCCVAC, datasheetCortexASeries}. 
+        The \texttt{DC ZVA} instruction was introduced to efficiently zero out a block of memory~\cite{paperTriggeringRHHardwareFault}. 
         It zeroes a naturally aligned block of N bytes, and is 
-        likewise a 64-bit system instruction [154, 109]. The ability to preload the data cache with zero 
+        likewise a 64-bit system instruction~\cite{docDCZVA, datasheetCortexASeries}. The ability to preload the data cache with zero 
         values using \texttt{DC ZVA} is new in ARMv8-A. Cache line zeroing behaves similarly to a prefetch by hinting 
         that certain addresses are likely to be used in the future; however, zeroing can be significantly 
-        faster because it does not require waiting for external memory accesses to complete [~Triggering RH, Raspberry Pi 3B+].
+        faster because it does not require waiting for external memory accesses to complete~\cite{paperTriggeringRHHardwareFault, paperRHonRi3B+}.
     
     \subsubsection{Cache Behavior} \label{subsubsec:cache-behavior}
         \hyperref[tag:cache-bypass]{Table~\ref{tab:cache-bypass}} presents cache bypass measurements obtained under 
@@ -107,7 +106,7 @@
         \\
         Kernel module measurements confirm a similar trend for the RPi4. Here, cache-bypassing measurements range from 
         432 to 581 \gls{cpu} cycles, compared to a baseline of approximately 78 cycles. For the RPi5, kernel module 
-        measurements could not be interpreted due to the Zero Latency Readings Problem described in [Praxisarbeit], 
+        measurements could not be interpreted due to the Zero Latency Readings Problem described in~\cite{paperPraxisarbeit}, 
         which prevents meaningful analysis of the collected data.
         \\
         To statistically evaluate the observed differences, a \textit{Welch t-test} was conducted, yielding a test statistic 

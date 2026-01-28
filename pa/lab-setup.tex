@@ -19,14 +19,14 @@
     were conducted to ensure all hosts and systems were operational. Direct access from the laptop to the Pi systems 
     was established by placing the authorized keys in the \texttt{.ssh/authorized\_keys} file on each device. All relevant IP 
     addresses were added to the \texttt{/etc/hosts} file on the laptop. \textit{Visual Studio Code} was configured with the 
-    Remote \textit{\gls{ssh}} extension, alongside additional extensions for \textit{Python}, \textit{C}, and other required languagesecs.
+    Remote \textit{\gls{ssh}} extension, alongside additional extensions for \textit{Python}, \textit{C}, and other required languages.
     \\
     % Unequal Versions of Header and Kernel
     Following the completion of system setup, multiple Raspberry Pi platforms with varying hardware configurations were 
-    prepared for experimentation. Table~\ref{tab:experimental-setups} summarizes the experimental setups used in this 
+    prepared for experimentation. \hyperref[tab:experimental-setups]{Table~\ref{tab:experimental-setups}} summarizes the experimental setups used in this 
     work, including the platform, processor architecture, \gls{soc}, and available \gls{dram}. All platforms were based on the ARMv8 architecture, 
     providing a common architectural baseline while differing in memory capacity and \gls{soc} generation.
-    At the outset of the project, the test systems did not contain the data referenced in Table~\ref{tab:experimental-setups}, and the test 
+    At the outset of the project, the test systems did not contain the data referenced in \hyperref[tab:experimental-setups]{Table~\ref{tab:experimental-setups}}, and the test 
     environments were based on different operating systems. In addition, software versions and system architectures 
     varied across the platforms, resulting in Raspberry Pi devices that were not aligned with each other. These 
     discrepancies affected the consistency of the experimental setup.
@@ -154,3 +154,4 @@
     all \gls{tmux} sessions per reachable host, provided the total session count, and indicated if no sessions were found. Finally, 
     the \texttt{connect\_with\_session.sh} script attached \gls{ssh} connections to existing \gls{tmux} sessions on reachable hosts, opening a 
     new terminal tab for each host and skipping hosts without the specified session.
+    

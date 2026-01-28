@@ -1,12 +1,3 @@
-%% MAKE BETTER
-    %% Check "Cache Organization"
-    %% Check "Cache Management"
-    %% Check "Eviction Set Structure" in "Eviction Development"
-    %% Check "Eviction Function" in "Eviction Development"
-    %% Check "Cache Set Determination" in "Eviction Development"
-    %% Check Parameter of "Eviction Strategies" in "Eviction Development"
-    %% Make Listings look better
-
 \subsection{Cache eviction} \label{subsec:cache-eviction}
     Cache eviction refers to the process of deliberately forcing cache lines out of the cache by accessing 
     memory addresses that are mapped to the same cache eviction set. By repeatedly accessing such congruent 
@@ -35,7 +26,7 @@
         In a direct-mapped cache, each main memory entry is mapped to exactly one cache location. As a 
         consequence, multiple distinct memory addresses can also map to the same cache location [72].
         \\
-        An illustrative example is shown in Figure~\ref{fig:direct-mapped-cache}, which depicts a cache with a total size of 4~KB, 
+        An illustrative example is shown in \hyperref[fig:direct-mapped-cache]{Figure~\ref{fig:direct-mapped-cache}}, which depicts a cache with a total size of 4~KB, 
         consisting of 128 cache locations and a cache line size of 64~bytes. In this configuration, an address 
         is divided into three fields: 6 bits for the block offset, 7 bits for the index, and 19 bits for the 
         tag.
@@ -60,7 +51,7 @@
         cache, each memory block can be placed in any one of N cache lines within a specific set.
         \\
         Each memory address maps to exactly one cache set, and addresses that map to the same set are called 
-        congruent addresses, as illustrated in Figure~\ref{fig:n-way-associative-cache}. 
+        congruent addresses, as illustrated in \hyperref[fig:n-way-associative-cache]{Figure~\ref{fig:n-way-associative-cache}}. 
         When all cache lines of a set are occupied and a new block needs to be loaded, the cache replacement 
         policy determines which existing cache line is evicted in order to accommodate the new data [72].
 
@@ -73,7 +64,7 @@
 
         \begin{table}[h!]
             \centering
-            \caption{RPi4 Cache: \texttt{lscpu --cache}}
+            \caption{RPi4 Cache: \texttt{lscpu {-}{-}cache}}
             \label{tab:rpi4-cache}
             \resizebox{\textwidth}{!}{%
                 \begin{tabular}{lrrrrrrr}
@@ -89,7 +80,7 @@
         \end{table}
         \begin{table}[h!]
             \centering
-            \caption{RPi5 Cache: \texttt{lscpu --cache}}
+            \caption{RPi5 Cache: \texttt{lscpu {-}{-}cache}}
             \label{tab:rpi5-cache}
             \resizebox{\textwidth}{!}{%
                 \begin{tabular}{lrrrrrrr}
@@ -104,8 +95,8 @@
                 \end{tabular}%
             }
         \end{table}
-        Tables \ref{tab:rpi4-cache} and \ref{tab:rpi5-cache} summarize the cache configurations of the Raspberry 
-        Pi 4 and Raspberry Pi 5, respectively, as obtained using the lscpu --cache command. These tables provide 
+        \hyperref[tab:rpi4-cache]{Tables \ref{tab:rpi4-cache}} and \ref{tab:rpi5-cache} summarize the cache configurations of the Raspberry 
+        Pi 4 and Raspberry Pi 5, respectively. These tables provide 
         an overview of cache sizes, associativity, cache levels, and the number of cache sets for the different 
         cache hierarchies present on both platforms.
         
@@ -128,9 +119,9 @@
 
         %% Virtual and Physical Tags and Indexes
         \noindent
-        \gls{cpu} caches can be indexed and tagged using either virtual or physical addresses [72]. When virtual 
+        \gls{cpu} caches can be indexed and tagged using either virtual or physical addresses. When virtual 
         addresses are used, it is possible for the same physical address to be cached in multiple cache lines, 
-        which can negatively affect performance [72]. Cache lines are uniquely identified by a tag, which may 
+        which can negatively affect performance. Cache lines are uniquely identified by a tag, which may 
         be derived from either the virtual or the physical address [72].
         \\
         In \textbf{\gls{vivt}} caches, both the index and the tag are derived from the 
@@ -157,12 +148,12 @@
         %% Cache Replacement Policy
         When a cache is full and a cache miss occurs, buffered code and data must be evicted from the cache to make room for new 
         cache entries. The heuristic used to decide which cache entry to evict is referred to as the cache replacement 
-        policy, which aims to select the entry that is least likely to be used in the near future [Quote of 72]. The chosen 
+        policy, which aims to select the entry that is least likely to be used in the near future. The chosen 
         replacement policy directly influences the number and access patterns required for an effective eviction 
         strategy [72].
         \\
         The \gls{lru} replacement policy replaces the cache entry that has not been accessed for 
-        the longest time [72]. In contrast, a pseudo-random replacement policy selects a cache entry to evict based 
+        the longest time. In contrast, a pseudo-random replacement policy selects a cache entry to evict based 
         on a pseudorandom number generator [72].
         \\
         On the Raspberry Pi 4, the L1 instruction and L1 data caches use an \gls{lru} replacement policy, while the L2 
@@ -173,9 +164,9 @@
         %% Inclusiveness
         In a multi-level cache hierarchy, it must be decided which cache levels store copies of data. A 
         higher-level cache is called inclusive with respect to a lower-level cache if all cache lines present in 
-        the lower-level cache are also stored in the higher-level cache [72]. Caches are considered exclusive if 
+        the lower-level cache are also stored in the higher-level cache. Caches are considered exclusive if 
         a cache line can reside in only one of two cache levels [72]. If a cache is neither inclusive nor exclusive, 
-        it is referred to as non-inclusive [72].
+        it is referred to as non-inclusive.
         \\
         On the Raspberry Pi 4, the L2 cache is inclusive with respect to the L1 cache. On the Raspberry Pi 5, the 
         cache hierarchy is strictly inclusive with respect to the L1 data cache and weakly inclusive with respect 
@@ -191,25 +182,24 @@
         construction and use of eviction sets. 
         \\
         % Eviction Set Structure
-        The eviction set structure, as defined in Listing~\ref{lst:eviction-set-structure}, consists of multiple virtual 
+        The eviction set structure, as defined in \hyperref[lst:eviction-set-structure]{Figure~\ref{lst:eviction-set-structure}}, consists of multiple virtual 
         addresses that are congruent, meaning that they map to the same cache set. Accessing all addresses contained 
         in an eviction set therefore ensures that a targeted cache line occupying the same set can be evicted from the cache.
         \input{listings/eviction-set-structure.tex}
 
         % Eviction Function
         The actual eviction procedure is implemented as a nested loop structure that repeatedly accesses the virtual 
-        addresses contained in an eviction set (see Listing~\ref{lst:eviction-function}). During execution, 
+        addresses contained in an eviction set (see \hyperref[lst:eviction-function]{Figure~\ref{lst:eviction-function}}). During execution, 
         all addresses are iterated over multiple times, thereby generating sustained pressure on the corresponding cache set. 
         These repeated memory accesses are intended to reliably force the eviction of a target cache line. The behavior 
-        of the eviction routine is governed by several configuration parameters, namely \texttt{ES\_EVICTION\_COUNTER}, 
-        \texttt{ES\_NUMBER\_OF\_ACCESSES\_IN\_LOOP}, and \texttt{ES\_DIFFERENT\_ADDRESSES\_IN\_LOOP}. Together, these 
+        of the eviction routine is governed by several configuration parameters. Together, these 
         parameters control both the repetition frequency of the eviction process and the coverage of memory accesses 
         within the eviction set.
         \input{listings/eviction-function.tex}
 
         %  Cache Set Determination
         To correctly construct eviction sets, it is necessary to determine the cache set index of a given memory 
-        address (see Listing~\ref{lst:cache-set-determination}). This is achieved by computing the set index from the 
+        address (see \hyperref[lst:cache-set-determination]{Figure~\ref{lst:cache-set-determination}}). This is achieved by computing the set index from the 
         physical address of the memory location. The calculation is performed by shifting the physical address by 
         \texttt{LINE\_LENGTH\_LOG2} bits, corresponding to the cache line size, and then taking the result modulo 
         the total number of cache sets. This computation ensures that all addresses selected for an eviction set 
@@ -217,15 +207,13 @@
         \input{listings/cache-set-determination.tex}
 
         %% Build and Integration Adjustments
-        The libflush library was built for the ARMv8 architecture using \texttt{make ARCH=armv8 CC=gcc}, producing 
-        both static and shared libraries. A system-wide installation without Android dependencies was performed using 
-        \texttt{sudo make install ARCH=armv8 WITH\_ANDROID=0 CC=gcc}. The provided example application was subsequently 
-        built and executed with \texttt{make run ARCH=armv8 WITH\_ANDROID=0 USE\_EVICTION=1 TIME\_SOURCE=monotonic\_clock CC=gcc}, 
+        The libflush library was built for the ARMv8 architecture.
+        A system-wide installation without Android dependencies was performed. The provided example application was subsequently 
+        built and executed
         which additionally generated measurement plots. To streamline the build process, the Makefile in 
         \texttt{armageddon/libflush} was improved by introducing Raspberry Pi specific default build targets, allowing 
         straightforward execution of \texttt{make} and \texttt{make install}. Furthermore, the Makefile in 
-        \texttt{cache-bypass} was modified to simplify the use of \texttt{make}, \texttt{make install}, and 
-        \texttt{make uninstall} by forwarding these targets to \texttt{armageddon/libflush}. The \texttt{libflush/example} 
+        \texttt{cache-bypass} was modified for simplify the usage by forwarding these targets to \texttt{armageddon/libflush}. The \texttt{libflush/example} 
         application was adapted to be directly executable and was initially used to evaluate experimental observations. 
         It was then extended to include averaging over multiple repetitions to improve statistical robustness, automated 
         sequential execution of all cache attack methods, persistent storage of measurement results in \texttt{.dat} 
@@ -240,7 +228,7 @@
         sufficiently fast, as previously proposed eviction strategies have been shown to be too slow [179] [72]. 
         In this work, the cache eviction implementation proposed by Lipp et~al. [125] is used. This approach is 
         applicable only to devices with a known eviction strategy [159], and therefore the default configuration 
-        provided by the libflush tool is adopted (see Figure~\ref{lst:default}).
+        provided by the libflush tool is adopted (see \hyperref[lst:default]{Figure~\ref{lst:default}}).
         \input{listings/default.h.tex}
 
         The relevant configuration parameters are defined in the default libflush configuration. The parameter 

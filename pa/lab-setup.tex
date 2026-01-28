@@ -97,14 +97,42 @@
     % Requirements & Automated Setup
     For Python development, a virtual environment was created, and all additional dependencies were installed.
     \\
+    % Natively Rebuild the Kernel
+    The kernel was rebuilt natively on the target system to enable the required memory management features 
+    while maintaining compatibility with the existing Raspberry Pi environment. The procedure began with a 
+    full system update, including updating the package index and upgrading all installed packages, followed 
+    by a system reboot to ensure that all updates were applied correctly.
+    \\
+    Subsequently, all necessary build dependencies were installed. These included standard compilation tools 
+    as well as libraries required for building the Linux kernel and device tree binaries for the Raspberry Pi 
+    platform. The official Raspberry Pi Linux kernel source code [187] was then cloned, restricted to the latest 
+    commit of the \texttt{rpi-6.12.y}.
+    \\
+    To preserve compatibility with the currently running system, the configuration of the active kernel was 
+    reused as the baseline for the new build by copying the existing kernel configuration into the build 
+    directory. Based on this configuration, kernel options were adjusted to enable support for the HugeTLB 
+    file system and Transparent Hugepages within the memory management subsystem. The correctness of these 
+    configuration changes was verified directly in the kernel configuration file.
+    \\
+    After configuration, the kernel image, kernel modules, and device tree were compiled using all 
+    available processor cores. The compiled kernel modules were installed into the system. The newly 
+    built kernel image, along with the corresponding device 
+    tree binaries and overlays required for system boot, was then deployed to the boot firmware directory. 
+    A reboot was performed to activate the new kernel.
+    \\
+    Finally, the successful installation was verified by checking the running kernel version and confirming 
+    the availability of Hugepage support through system interfaces, ensuring that both HugeTLB and Transparent 
+    Hugepages were correctly enabled and recognized by the operating system.
+    \\
     % Outcome
     All newly deployed systems are based on Raspberry Pi OS Lite 64-bit running on the aarch64 architecture. 
     This paper primarily focuses on Rowhammer techniques targeting the ARMv8-A architecture. The Raspberry 
     Pi 4 uses kernel version \texttt{6.12.47+rpt-rpi-v8}, while the Raspberry Pi 5 runs kernel version \texttt{6.12.47+rpt-rpi-2712}. As a 
     result of this setup, all test systems now operate on the same operating system, have access to all maintenance 
-    instructions that are relevant in Section~\hyperref[subsec:flush-cache]{Uncached}, and are capable of executing kernel modules.
-    This unified system configuration provides several additional advantages. It ensures improved comparability of 
-    experimental results, as all Raspberry Pi devices run on an identical software stack.
+    instructions that are relevant in Section~\hyperref[subsec:flush-cache]{Uncached}, are capable of executing kernel modules
+    and provide HugePage support enabled through a natively rebuilt kernel. This unified system configuration provides 
+    several additional advantages. It ensures improved comparability of experimental results, as all Raspberry Pi devices 
+    run on an identical software stack.
 
   \subsection{Experiment Setup} \label{subsec:experiment-setup}
     For long-term experiments, the \gls{tmux} tool was installed to address the challenge of maintaining continuous processes on the 

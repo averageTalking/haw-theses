@@ -59,8 +59,9 @@ type_mapping = {
     "Book": "book"
 }
 
-csv_file = "ref_database_26-11-2025.csv"
-bib_file = "references.bib"
+date = "28-jan-2026"
+csv_file = f"references_{date}.csv"
+bib_file = f"references_{date}.bib"
 
 
 def convert_date(date_str):

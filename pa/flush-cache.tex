@@ -1,7 +1,7 @@
 \subsection{Flush cache} \label{subsec:flush-cache}
     This method for bypassing the cache is recommended because it explicitly invalidates a specific cache 
     line, ensuring that the next access must be served from \gls{dram}. ARMv8 provides explicit cache maintenance 
-    instructions for this purpose, most notably the DC CIVAC instruction [Quote of ~159]. By directly 
+    instructions for this purpose, most notably the \texttt{DC CIVAC} instruction [Quote of ~159]. By directly 
     targeting individual cache lines, this approach provides deterministic cache-line invalidation, which 
     guarantees predictable behavior whereby every subsequent access is fetched from \gls{dram}. 
     It should be noted that these instructions are no longer available in an unprivileged context but require 
@@ -31,18 +31,18 @@
         its related instructions are unprivileged and therefore accessible from userspace 
         [150, Cache Attacks and Rowhammer].
         \\
-        ARMv8-A defines several cache maintenance instructions with distinct semantics. The DC CIVAC 
-        instruction cleans and invalidates a data cache by address to \gls{poc} [152], while DC CVAC 
+        ARMv8-A defines several cache maintenance instructions with distinct semantics. The \texttt{DC CIVAC} 
+        instruction cleans and invalidates a data cache by address to \gls{poc} [152], while \texttt{DC CVAC} 
         cleans a data cache line by address to the \gls{poc} without invalidation [153].
-        In addition, ARMv8-A introduces the DC ZVA instruction, which 
+        In addition, ARMv8-A introduces the \texttt{DC ZVA} instruction, which 
         is designed to efficiently zero out a block of memory [~Triggering RH]. This instruction zeros a 
         naturally aligned block of N bytes [166]. As described in [Raspberry Pi 3B+], “The ability to preload the data cache 
-        with zero values using the DC ZVA instruction is new in ARMv8-A. Cache line zeroing behaves in a similar fashion 
+        with zero values using the \texttt{DC ZVA} instruction is new in ARMv8-A. Cache line zeroing behaves in a similar fashion 
         to a prefetch, as a way of hinting to the processor that certain addresses are likely to be used in the future. 
         However, a zeroing operation can be much quicker as there is no need to wait for external memory 
         accesses to complete [~Triggering RH]."
         \\
-        When using DC ZVA in the context of cache bypassing or Rowhammer-style experiments, a crucial requirement 
+        When using \texttt{DC ZVA} in the context of cache bypassing or Rowhammer-style experiments, a crucial requirement 
         is that the memory blocks being zeroed must not already be cached in the hierarchy before entering the 
         hammering loop. Otherwise, the underlying \gls{dram} will not be accessed; instead, only the cached copies 
         are zeroed and marked as dirty. This behavior is fundamentally different from the use of non-temporal 

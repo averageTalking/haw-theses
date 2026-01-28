@@ -20,11 +20,11 @@
         attacks on x86 architectures, as demonstrated in [105]. However, as discussed in [~Drammer], ARMv8-A 
         non-temporal memory access instructions merely provide a hint to the memory system that caching is 
         not required, and in practice the accessed data is still cached. Although the ARMv8-A instruction set 
-        includes non-temporal load and store instructions, such as LDNP and STNP, it is generally considered 
+        includes non-temporal load and store instructions, such as \texttt{LDNP} and \texttt{STNP}, it is generally considered 
         that these instructions are not effective for triggering the RH bug [Quote of ~Triggering RH]. This 
         observation is further reinforced by the statement in [~Drammer] that these ARMv8-A non-temporal memory 
         access instructions do not reliably bypass the cache and that data accessed through them is still found 
-        cached in practice [Quote of Triggering RH]. Conceptually, non-temporal operations do not follow 
+        cached in practice [~Triggering RH]. Conceptually, non-temporal operations do not follow 
         standard cache-coherency rules and are assumed by the memory controller to access data that will not 
         be reused, and several non-temporal instructions are designed to bypass the cache. Nevertheless, a 
         major limitation of this approach is that all non-temporal stores to a single address are combined 

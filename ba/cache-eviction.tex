@@ -4,27 +4,27 @@
     \\
     Cache attacks are a class of attacks that explicitly exploit the properties and effects of the cache 
     hierarchy in order to gain information about the behavior or data of other programs or processes. Such 
-    attacks represent a powerful method for exploiting the memory hierarchy of modern system architectures 
-    [72]. To evict a specific address from the cache back to main memory, attackers can access congruent 
+    attacks represent a powerful method for exploiting the memory hierarchy of modern system architectures~\cite{thesisCacheAttacksandRH}. 
+    To evict a specific address from the cache back to main memory, attackers can access congruent 
     addresses that map to the same cache set, thereby forcing the cache replacement policy to evict the target 
     address. The strategy that defines how these congruent addresses are accessed is referred to as an eviction 
-    strategy [72]. Over time, various methods have been proposed to reliably evict data from the cache.
+    strategy~\cite{thesisCacheAttacksandRH}. Over time, various methods have been proposed to reliably evict data from the cache.
     
     \subsubsection{Cache Attacks} \label{subsubsec:cache-attacks}
         % Flush+Reload
-        The \textbf{\textit{Flush+Reload}} attack was introduced by Gullasch et al. [167] and later extended by
-        Yarom and Falkner [168]. It exploits shared memory between an attacker and a victim and provides very 
-        fine-grained resolution [39]. The basic idea proposed in [167] is 
+        The \textbf{\textit{Flush+Reload}} attack was introduced by Gullasch et al.~\cite{paperCacheGames} and later extended by
+        Yarom and Falkner~\cite{paperFlushReload}. It exploits shared memory between an attacker and a victim and provides very 
+        fine-grained resolution~\cite{paperRowhammerjs}. The basic idea proposed in~\cite{paperCacheGames} is 
         to use the \texttt{clflush} instruction to evict monitored memory locations from the cache and then 
         check whether these locations have been reloaded after the victim program has executed a small number of 
-        instructions. Yarom and Falkner [168] further observed that the \texttt{clflush} instruction evicts cache 
+        instructions. Yarom and Falkner~\cite{paperFlushReload} further observed that the \texttt{clflush} instruction evicts cache 
         lines from all cache levels, including the shared \gls{llc}, which enables \textit{Flush+Reload} 
-        attacks even when the attacker and victim execute on different \gls{cpu} cores [72].
+        attacks even when the attacker and victim execute on different \gls{cpu} cores~\cite{thesisCacheAttacksandRH}.
         \\
         Flush+Reload has been automated to exploit cache-based side channels and extended beyond cryptographic 
         applications. In particular, Gruss et al. demonstrated a cache-based keylogger that infers keystrokes 
-        using \textit{Flush+Reload} [169]. Additionally, Yarom et al. successfully recovered OpenSSL ECDSA nonces and, 
-        consequently, the private key using this technique [170].
+        using \textit{Flush+Reload}~\cite{paperCacheTemplateAttacks}. Additionally, Yarom et al. successfully recovered OpenSSL ECDSA nonces and, 
+        consequently, the private key using this technique~\cite{paperECDSA}.
         \\
         The functionality of the \textit{Flush+Reload} attack proceeds in several steps. First, the attacker maps a target 
         binary, such as a shared library or executable, into their own virtual address space using a system call 
@@ -38,7 +38,7 @@
         \begin{figure}[htbp]
             \centering
             \frame{\includegraphics[width=\linewidth]{img/flush-and-reload.pdf}}
-            \caption{\textit{Flush+Reload} - 4-way (columns) cache with 8 sets (rows) [72]}
+            \caption{\textit{Flush+Reload} - 4-way (columns) cache with 8 sets (rows)~\cite{thesisCacheAttacksandRH}}
             \label{fig:flush-and-reload}
         \end{figure}
         Experimental results from \textit{Flush+Reload} measurements on the Raspberry Pi 5 reveal three distinct peaks in 
@@ -58,19 +58,19 @@
         \end{figure}
         \\ \\ % Flush+Flush
         \textit{Flush+Reload} and \textit{Prime+Probe} generate a significant number of cache references and cache misses, making them 
-        detectable via hardware performance counters [72]. The \textbf{\textit{Flush+Flush}} attack addresses this limitation 
+        detectable via hardware performance counters~\cite{thesisCacheAttacksandRH}. The \textbf{\textit{Flush+Flush}} attack addresses this limitation 
         by relying on the execution time of the flush instruction, which differs depending on whether the 
-        targeted data is cached or not [175]. The attack setup is similar to \textit{Flush+Reload}. A shared or binary object 
-        file is mapped into the attacker’s address space, an address is flushed from the cache, and the victim program 
+        targeted data is cached or not~\cite{paperFlushFlush}. The attack setup is similar to \textit{Flush+Reload}. A shared or binary object 
+        file is mapped into the attacker's address space, an address is flushed from the cache, and the victim program 
         is scheduled. However, after the victim executes, the attacker flushes the address again instead of reloading 
         it. This second flush does not generate cache misses, unlike \textit{Flush+Reload} or \textit{Prime+Probe}.
         \\
-        Gruss et al. [175] demonstrated the effectiveness of \textit{Flush+Flush} by constructing a covert channel with a 
+        Gruss et al.~\cite{paperFlushFlush} demonstrated the effectiveness of \textit{Flush+Flush} by constructing a covert channel with a 
         transmission rate nearly seven times faster than previously published channels. Since \textit{Flush+Flush} does not 
         perform any memory accesses, it causes no cache misses at all, and the number of cache hits is reduced to a 
-        minimum due to the continuous cache flushes as seen in [175] or on all of our test devices.
+        minimum due to the continuous cache flushes as seen in~\cite{paperFlushFlush} or on all of our test devices.
         \\ \\ % Evict+Time
-        The \textbf{\textit{Evict+Time}} attack measures how evicting a specific cache set affects the execution time [72]. 
+        The \textbf{\textit{Evict+Time}} attack measures how evicting a specific cache set affects the execution time~\cite{thesisCacheAttacksandRH}. 
         Initially, the execution time of the victim is measured. Subsequently, a specific cache set is evicted, and the victim 
         program is measured again to observe changes in execution time.
         \\
@@ -91,13 +91,13 @@
         \end{figure}
         \\ \\ % Prime+Probe
         \textbf{\textit{Prime+Probe}} is a cache side-channel attack introduced by Osvik et al. [176] that allows an attacker to 
-        identify which cache sets are used during a victim’s computations [72]. The attack operates in a manner similar 
+        identify which cache sets are used during a victim’s computations~\cite{thesisCacheAttacksandRH}. The attack operates in a manner similar 
         to \textit{Evict+Time}. In the priming phase, the attacker accesses congruent addresses that map to a target cache set, 
         thereby occupying one or more specific cache sets with memory controlled by the adversary, as seen in 
         \hyperref[fig:prime-and-probe]{Figure~\ref{fig:prime-and-probe}a}. During the victim 
         execution phase, the victim program is scheduled and may fill the cache sets with its own addresses (see 
         \hyperref[fig:prime-and-probe]{Figure~\ref{fig:prime-and-probe}b}).  If the program uses addresses that map to the same 
-        cache set as the attacker’s addresses, it will, therefore, evict addresses that the attacker used to occupy the cache set. 
+        cache set as the attacker's addresses, it will, therefore, evict addresses that the attacker used to occupy the cache set. 
         In the probing phase, as seen in \hyperref[fig:prime-and-probe]{Figure~\ref{fig:prime-and-probe}c}, 
         the attacker reaccesses the previously used addresses and measures the access times to determine which cache lines remain 
         resident. If an address has been evicted, it must be reloaded from main memory, resulting in a significantly higher access 
@@ -105,21 +105,21 @@
         previously accessed attacker addresses, which can lead to false positives.
         \\
         Prime+Probe has been used in several attacks. In 2015, Irazoqui et al. applied \textit{Prime+Probe} to attack the OpenSSL 
-        AES implementation in a cloud environment [177]. In the same year, Liu et al. used \textit{Prime+Probe} to construct a 
-        cross-core covert channel and to attack ElGamal decryption in GnuPG [178].
+        AES implementation in a cloud environment~\cite{paperSharedCacheAttack}. In the same year, Liu et al. used \textit{Prime+Probe} to construct a 
+        cross-core covert channel and to attack ElGamal decryption in GnuPG~\cite{paperLastLevelCacheAttack}.
         \begin{figure}[htbp]
             \centering
             \frame{\includegraphics[width=\linewidth]{img/prime-and-probe.pdf}}
-            \caption{\textit{Prime+Probe} - 4-way (columns) cache with 8 sets (rows) [72]}
+            \caption{\textit{Prime+Probe} - 4-way (columns) cache with 8 sets (rows)~\cite{thesisCacheAttacksandRH}}
             \label{fig:prime-and-probe}
         \end{figure}
         Experimental results show that \textit{Prime+Probe} fails on the Raspberry Pi 4 when using the selected cache eviction 
         strategy. On the Raspberry Pi 5, observable responses exhibit unusual behavior. Instead of two distinct peaks 
         corresponding to cache hits and cache misses, a single broad peak spanning approximately 500 to 1000 \gls{cpu} cycles 
         is observed. ARM CPUs employ a pseudo-random cache replacement policy to determine which cache line within a 
-        set is evicted, which introduces additional noise into time-driven cache attacks [180]. This behavior has been 
+        set is evicted, which introduces additional noise into time-driven cache attacks~\cite{paperTimeDrivenCacheAttacks}. This behavior has been 
         identified as a key factor preventing the successful application of \textit{Prime+Probe} attacks on ARM architectures 
-        so far [179, 72].
+        so far~\cite{paperCacheAccessPattern, thesisCacheAttacksandRH}.
         \begin{figure}[htbp]
             \centering
             \frame{\includegraphics[width=\linewidth]{img/evict_primeandprobe_stats.pdf}}
@@ -128,14 +128,14 @@
         \end{figure}
         \\ \\ % Evict+Reload
         \textbf{\textit{Evict+Reload}} was introduced by Gruss et al. in 2015 as a variant of \textit{Flush+Reload} that replaces the 
-        flush instruction with cache eviction [169]. While it has no practical use on x86 CPUs due to the availability 
+        flush instruction with cache eviction~\cite{paperCacheTemplateAttacks}. While it has no practical use on x86 CPUs due to the availability 
         of the unprivileged \texttt{clflush} instruction, it is applicable to ARM CPUs that lack an unprivileged 
         cache flush instruction. Cache eviction in \textit{Evict+Reload} requires filling a cache set with a sufficient 
         number of congruent addresses so that the replacement policy evicts the target address. The number of 
         required addresses and the access pattern depend on the cache replacement policy, and using too few addresses 
-        or accessing them insufficiently results in a low eviction rate [72]. Gruss et al. later demonstrated 
+        or accessing them insufficiently results in a low eviction rate~\cite{thesisCacheAttacksandRH}. Gruss et al. later demonstrated 
         that effective eviction strategies can even trigger \gls{dram} bit flips, known as Rowhammer, via JavaScript 
-        without relying on the privileged \texttt{clflush} instruction [39].
+        without relying on the privileged \texttt{clflush} instruction~\cite{paperRowhammerjs}.
         \\
         The results obtained with \textit{Evict+Reload} are consistent with those observed using \textit{Flush+Reload}. On the 
         Raspberry Pi 4, \textit{Evict+Reload} works as expected, showing a clear separation between cache and memory 
@@ -160,7 +160,7 @@
         side-channel attacks or Rowhammer exploits theoretically feasible. In practice, however, the execution
         time of cache eviction is significantly slower than cache flushing, as it requires repeated accesses to a 
         large number of congruent addresses and is affected by noise introduced by pseudo-random cache replacement 
-        policies [72]. This increased noise exceeds that of cache flushing, thereby increasing the number of 
-        measurements required [159] and further reducing efficiency. Moreover, the most efficient and effective 
-        cache eviction strategy must be determined empirically [125], and even the most efficient known strategies 
-        remain too slow to reliably trigger the Rowhammer bug on ARM architectures [27].
+        policies~\cite{thesisCacheAttacksandRH}. This increased noise exceeds that of cache flushing, thereby increasing the number of 
+        measurements required~\cite{thesisDRAMA} and further reducing efficiency. Moreover, the most efficient and effective 
+        cache eviction strategy must be determined empirically~\cite{toolArmageddon}, and even the most efficient known strategies 
+        remain too slow to reliably trigger the Rowhammer bug on ARM architectures~\cite{webCache}.

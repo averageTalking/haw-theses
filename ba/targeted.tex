@@ -4,45 +4,45 @@
     to merely perform \gls{dram} accesses. Rather, precise access to specific \gls{dram} rows is required to
     induce bit flips in adjacent victim rows, denoted as P2. Targeted. The physical address is 
     composed of bits that are partitioned into rank, channel, bank, row, and column, which 
-    collectively determine the location where the data is stored [94].
+    collectively determine the location where the data is stored~\cite{paperReliableReverseEngineering}.
     However, the details of this mapping are not publicly disclosed. Knowledge of the \gls{dram} 
     address mapping enables a wide range of applications, including application-aware memory 
     channel partitioning, adapted page sizes for improved row buffer utilization, efficient use 
     of emerging hybrid memory technologies, evaluation of the effects of unreliable memory, and 
-    \gls{dram} layout-aware memory allocators [94].
+    \gls{dram} layout-aware memory allocators~\cite{paperReliableReverseEngineering}.
 
     \subsection{Reverse Engineering} \label{subsec:reverse-engineering}
         When the \gls{dram} mapping is known, memory systems become more susceptible to attacks, leading 
         to higher pressure and an increased likelihood of bit flips. The addressing scheme can vary 
         for each system, as it depends on multiple factors such as the processor model, DIMM 
-        population on the motherboard, and BIOS settings, according to [94]. Therefore, 
+        population on the motherboard, and BIOS settings, according to~\cite{paperReliableReverseEngineering}. Therefore, 
         it is necessary to reverse-engineer the \gls{dram} address mapping for all test devices. This 
         process leverages the fact that \gls{dram} consistently follows a hierarchical organization, as 
         described in the \hyperref[sec:background]{Background} section of this thesis. As a consequence of this 
         structure, memory access latencies vary depending on the physical location of data within 
-        the hardware [159].
+        the hardware~\cite{thesisDRAMA}.
 
         \subsubsection{Methods} \label{subsubsec:methods}
-            \textbf{PALLOC}, introduced by Yun et al. [75] in 2014, uses a dedicated microbenchmark 
+            \textbf{PALLOC}, introduced by Yun et al.~\cite{paperPALLOC} in 2014, uses a dedicated microbenchmark 
             that traverses a linked list over the physical address space to enforce constant \gls{dram} 
             access while controlling bank usage.
             \\
-            \textbf{DRAMA}, proposed by Pessl et al. [73] in 2016, exploits the row-buffer timing side 
+            \textbf{DRAMA}, proposed by Pessl et al.~\cite{paperDRAMA} in 2016, exploits the row-buffer timing side 
             channel, where row conflicts cause increased memory access latency. This approach 
             enables the construction of address sets that share channel, rank, and bank 
             properties by performing exhaustive testing of linear addressing functions with an 
             increasing number of coefficients.
             \\
-            \textbf{Reliable RE}, presented by Helm et al. [94] in 2020, extends DRAMA by integrating 
+            \textbf{Reliable RE}, presented by Helm et al.~\cite{paperReliableReverseEngineering} in 2020, extends DRAMA by integrating 
             performance counters, which identifies row hits and misses more reliable 
             during the reverse-engineering process.
             \\
-            \textbf{DRAMDig}, introduced by Wang et al. [76] in 2020, builds upon DRAMA by incorporating 
+            \textbf{DRAMDig}, introduced by Wang et al.~\cite{paperDRAMDig} in 2020, builds upon DRAMA by incorporating 
             detailed knowledge of specific \gls{dram} chip geometries and processor microarchitecture, thereby 
             reducing the search space of the exponential-time. This method is employed, for example, by 
-            the DRAM MaUT tool [79].
+            the DRAM MaUT tool~\cite{paperDRAMMaUT}.
             \\
-            \textbf{One Bitflip One Cloud Flop}, described by Xiao et al. [93] in 2016, proposes a graph-based 
+            \textbf{One Bitflip One Cloud Flop}, described by Xiao et al.~\cite{paperOneBitFlipsOneCouldFlops} in 2016, proposes a graph-based 
             approach to infer physical-to-DRAM mappings. It relies on timing differences caused by 
             row conflicts and, similar to DRAMA, primarily aimed at enabling Rowhammer attacks 
             across virtual machines.
@@ -51,9 +51,9 @@
             sets that experience row conflicts or row hits, indicating placement within the same bank. 
             These sets are derived by determining which combinations of address bits identify them, 
             often expressed as linear XOR combinations. This approach underlies several attacks 
-            and tools, including [38, 53, 72].
+            and tools, including~\cite{paperDrammer, paperHalfDouble, thesisCacheAttacksandRH}.
             \\
-            \textbf{Knock-Knock}, introduced by Plin et al. [99] 2025, reformulates the identification of 
+            \textbf{Knock-Knock}, introduced by Plin et al.~\cite{paperKnockKnock} 2025, reformulates the identification of 
             \gls{dram} parity masks as a linear algebra problem. Instead of relying on exhaustive search, it 
             focuses on solving the mapping directly through algebraic reasoning.
 
@@ -69,7 +69,7 @@
             address within the same bank while a different row is active in the row buffer, resulting 
             in the need to close the previously opened row and open the new one.
             \\
-            This approach builds upon observations from prior work [73, 116, 159]. In particular, 
+            This approach builds upon observations from prior work~\cite{paperDRAMA, toolDrama, thesisDRAMA}. In particular, 
             three primary cases are considered: (1) Bank Miss, in which the addresses reside in different 
             banks and access times remain low. (2) Row Hit, where both addresses belong to the same bank 
             and the same row, resulting in low access times. (3) Row Conflict, where addresses are 
@@ -147,13 +147,13 @@
             more complex XOR combinations. These occurrences are observed significantly more often on 
             Raspberry Pi 5 devices than on Raspberry Pi 4 devices. However, prior work on 
             reverse-engineering \gls{dram} address mappings consistently reports that ARM platforms rely 
-            exclusively on simple XOR functions, which are typically composed of one or two address bits 
-            [73, 79]. Consequently, this work assumes that the sporadically observed more complex XOR 
+            exclusively on simple XOR functions, which are typically composed of one or two address bits~\cite{paperDRAMA, paperDRAMMaUT}.
+            Consequently, this work assumes that the sporadically observed more complex XOR 
             combinations represent false positives, particularly since they occur infrequently and do not 
             exhibit consistency across multiple runs.
             \\
             When compared to \gls{dram} address mappings reported in related studies, the 
-            mappings derived in this work closely resemble those described in [74] and [79], as summarized
+            mappings derived in this work closely resemble those described in~\cite{paperMemoryAware} and~\cite{paperDRAMMaUT}, as summarized
             in \hyperref[tab:mappings]{Table~\ref{tab:mappings}}.
 
             \begin{table}[ht]
@@ -162,12 +162,12 @@
                     \hline
                     Device & Mappings & Bank Functions \\
                     \hline
-                    Raspberry Pi 4B & Memory Aware DOS [74] & (11), (12), (13), (14) \\
-                    Raspberry Pi 4B & DRAM MaUT [79] & (12), (13), (14), (11 XOR 12) \\
-                    Raspberry Pi 3B+ & Flipping Bits Like a Pro [156] & (13 XOR 14), (14), (15) \\
-                    Exynos 7420 & DRAMA [73] & (14), (15), (16) \\
-                    Raspberry Pi's 4 & Rowhammer on Raspberry Pi's & (6), (12), (13), (14) \\
-                    Raspberry Pi's 5 & Rowhammer on Raspberry Pi's & (6), (12) \\
+                    Raspberry Pi 4B & Memory Aware DOS~\cite{paperMemoryAware} & (11), (12), (13), (14) \\
+                    Raspberry Pi 4B & DRAM MaUT~\cite{paperDRAMMaUT} & (12), (13), (14), (11 XOR 12) \\
+                    Raspberry Pi 3B+ & Flipping Bits Like a Pro~\cite{paperProFlipping} & (13 XOR 14), (14), (15) \\
+                    Exynos 7420 & DRAMA~\cite{paperDRAMA} & (14), (15), (16) \\
+                    Raspberry Pi's 4 & Rowhammer on Raspberry Pi's~\cite{paperPraxisarbeit} & (6), (12), (13), (14) \\
+                    Raspberry Pi's 5 & Rowhammer on Raspberry Pi's~\cite{paperPraxisarbeit} & (6), (12) \\
                     \hline
                 \end{tabular}
                 \caption{Comparison between Related Work Mappings and own Thesis Mappings}
@@ -181,25 +181,25 @@
         \\
         % Physical Probing
         One method involves comparing the inferred functions against results obtained via \textbf{physical probing}, 
-        as reported in prior work [73]. In general, embedded systems are characterized by small chips and 
-        multi-layered circuit boards [159]. On Raspberry Pi devices, direct hardware-level verification is 
+        as reported in prior work~\cite{paperDRAMA}. In general, embedded systems are characterized by small chips and 
+        multi-layered circuit boards~\cite{thesisDRAMA}. On Raspberry Pi devices, direct hardware-level verification is 
         not feasible, as the \gls{dram} is soldered to the board and therefore inaccessible.
         \\
         % Rowhammer
         Another verification approach is to use \textbf{Rowhammer} experiments to validate the addressing functions. 
         If the inferred functions are correct, their application should increase the bit flip rate 
-        proportionally to the number of identified sets [73]. However, this method is often impractical due 
+        proportionally to the number of identified sets~\cite{paperDRAMA}. However, this method is often impractical due 
         to potentially long execution times, the presence of mitigation mechanisms, or limited susceptibility 
         of the system to Rowhammer. Even on systems previously identified as vulnerable, the distribution 
         and occurrence of vulnerable memory regions vary across \gls{dram} chips, and not every device of the 
-        same model exhibits Rowhammer bit flips [Drammer, 72].
+        same model exhibits Rowhammer bit flips~\cite{paperDrammer,thesisCacheAttacksandRH}.
         \\
         % Software-based Verification
         A purely \textbf{software-based} evaluation constitutes an alternative approach, which verifies timing 
-        differences across a larger set of addresses [73]. This method is feasible and allows validation 
+        differences across a larger set of addresses~\cite{paperDRAMA}. This method is feasible and allows validation 
         without hardware access.
         \\
-        The verification can be performed using the DRAMA methodology [73, 116]. In this approach, memory 
+        The verification can be performed using the DRAMA methodology~\cite{paperDRAMA,toolDrama}. In this approach, memory 
         access latencies are measured and histograms are constructed to distinguish row hits from row 
         conflicts. Address pairs predicted to map to the same \gls{dram} bank and row, denoted as row hits, or to the same 
         bank but different rows, indicates as row conflicts, are identified. Access times are measured after flushing 

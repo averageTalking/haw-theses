@@ -5,26 +5,26 @@
     %     % In General
     %     The Rowhammer vulnerability has been demonstrated in a wide range of environments, including sandboxed 
     %     systems, native platforms, virtual machines, JavaScript contexts, mobile devices, and even across 
-    %     networks [53]. Mitigation strategies aim to reduce both the likelihood and the impact of Rowhammer-induced 
+    %     networks~\cite{paperHalfDouble}. Mitigation strategies aim to reduce both the likelihood and the impact of Rowhammer-induced 
     %     disturbance errors by altering system behavior, memory management policies, or \gls{dram} operation. Numerous 
-    %     mitigation techniques have been proposed to address the Rowhammer problem in general [Quote of ~Triggering RH]. 
+    %     mitigation techniques have been proposed to address the Rowhammer problem in general~\cite{paperTriggeringRHHardwareFault}. 
     %     These approaches can be broadly classified into two categories: software-based protections and 
-    %     hardware-based protections [36, 38].
+    %     hardware-based protections~\cite{paperTRRScope, paperDrammer}.
     %     \\
     %     % Software-Based Defenses
-    %     \textbf{Software-based defenses} against Rowhammer attacks are often complex, costly, and may remain incomplete [37]. 
+    %     \textbf{Software-based defenses} against Rowhammer attacks are often complex, costly, and may remain incomplete~\cite{paperTRRespass}. 
     %     These approaches can be further divided into prevention or restriction techniques and detection strategies.
     %     \textbf{Prevention and restriction approaches} aim to constrain or disable memory access patterns and instructions 
     %     that can lead to high activation rates, thereby preventing Rowhammer conditions from occurring. Examples 
-    %     include \textit{MASCAT}, which performs static analysis of binaries to detect suspicious instruction sequences, 
+    %     include \textit{MASCAT}~\cite{paperMASCAT}, which performs static analysis of binaries to detect suspicious instruction sequences, 
     %     though this approach faces open problems such as false positives. \textit{Instruction blacklisting} restricts access 
     %     to specific commands, such as cache flush instructions, to limit potential exploitation. Additionally, 
-    %     \textit{B-CATT} disables vulnerable physical memory or \gls{dram} regions to prevent Rowhammer-induced errors [43, 101].
+    %     \textit{B-CATT} disables vulnerable physical memory or \gls{dram} regions to prevent Rowhammer-induced errors~\cite{paperCantTouchThis, webAnotherFlip}.
     %     \textbf{Detection approaches} focus on identifying behaviors indicative of Rowhammer activity. This includes monitoring 
     %     abnormal activation frequencies or microarchitectural patterns so that countermeasures can be triggered before 
     %     bit flips occur. Rowhammer attacks are characterized by a significantly higher number of cache misses and hits 
     %     compared to other attack types. Detection systems also aim to identify hammering patterns, frequent row 
-    %     activations, high cache-miss rates (as in \textit{ANVIL}), and other suspicious instruction sequences.
+    %     activations, high cache-miss rates (as in \textit{ANVIL}~\cite{paperANVIL}), and other suspicious instruction sequences.
     %     \\
     %     % Hardware-Based Defenses
     %     The root cause of Rowhammer stems from disturbance errors arising from physical interactions between multiple 
@@ -38,16 +38,15 @@
     %     approaches} may introduce additional latency, increase energy consumption, or raise implementation complexity.
     %     \textbf{\gls{ecc}} can correct single-bit errors using stored parity information. However, 
     %     \gls{ecc} can only detect and correct single-bit flips and is insufficient for addressing multi-bit flips, which 
-    %     have become increasingly common [~Triggering RH].
+    %     have become increasingly common~\cite{paperTriggeringRHHardwareFault}.
     %     \textbf{Increasing the \gls{dram} refresh rate} represents another mitigation strategy. \gls{dram} cells are volatile and 
-    %     require refreshing at standard intervals of 32 ms to 64 ms [~Triggering RH]. The simplest approach is to increase 
-    %     the refresh rate by two to four times [57, 34], which reduces charge leakage exposure. However, higher refresh 
-    %     frequencies delay data access, negatively impacting system performance [34]. While this strategy makes Rowhammer 
-    %     attacks more difficult, it is often unacceptable due to its detrimental effects on performance and energy efficiency 
-    %     [~Triggering RH].
+    %     require refreshing at standard intervals of 32 ms to 64 ms~\cite{paperTriggeringRHHardwareFault}. The simplest approach is to increase 
+    %     the refresh rate by two to four times~\cite{paperRHARetrospective, webTenYearsOfRH}, which reduces charge leakage exposure. However, higher refresh 
+    %     frequencies delay data access, negatively impacting system performance~\cite{webTenYearsOfRH}. While this strategy makes Rowhammer 
+    %     attacks more difficult, it is often unacceptable due to its detrimental effects on performance and energy efficiency~\cite{paperTriggeringRHHardwareFault}.
     %     \textbf{\gls{trr}} detects frequently activated rows and refreshes adjacent rows to prevent 
     %     disturbance errors. Nonetheless, \textit{\gls{trr}} is vendor-specific and non-mandatory, and it is vulnerable to bypasses such 
-    %     as \textit{TRRespass} and \textit{Halfdouble} due to imperfect identification of victim rows.
+    %     as \textit{TRRespass}~\cite{paperTRRespass,toolTRRespass} and \textit{Halfdouble}~\cite{paperHalfDouble,toolHalfDouble} due to imperfect identification of victim rows.
     %     \\
     %     % Cross-Cutting Limitations
     %     Several limitations affect mitigation strategies across both software and hardware approaches. Certain hammering 
@@ -55,10 +54,9 @@
     %     false-positive rates in real workloads. Mitigations may restrict system functionality or break compatibility with 
     %     existing software. Single-error correction remains insufficient, leaving multi-bit flips exploitable. Hardware 
     %     protections are often manufacturer-dependent (e.g., \textit{\gls{trr}}) and may degrade performance, increase energy consumption, 
-    %     or be difficult to deploy on existing platforms, such as ARM architectures [~Triggering RH]. Software-based approaches 
+    %     or be difficult to deploy on existing platforms, such as ARM architectures~\cite{paperTriggeringRHHardwareFault}. Software-based approaches 
     %     generally provide only partial workarounds and cannot fully overcome the physical limitations of \gls{dram}, often remaining 
-    %     incomplete. Incorrect identification of victim rows can be exploited, as demonstrated by \textit{TRRespass} and \textit{Halfdouble} 
-    %     attacks.
+    %     incomplete. Incorrect identification of victim rows can be exploited, as demonstrated by~\cite{paperTRRespass,paperHalfDouble}.
     %     \\
     %     % Conclusion
     %     To date, existing mitigation strategies only reduce the risk of Rowhammer attacks; no solution provides 

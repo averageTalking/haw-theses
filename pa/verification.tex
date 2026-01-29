@@ -5,26 +5,26 @@
     to verify the correctness of the derived \gls{dram} addressing functions.
     \\
     One approach is \textbf{physical probing}, which involves comparing the determined functions with results 
-    obtained through direct hardware measurements, as described in [73]. This method, however, faces 
+    obtained through direct hardware measurements, as described in~\cite{paperDRAMA}. This method, however, faces 
     significant practical limitations. Embedded systems often incorporate small chips and 
-    multi-layered circuit boards [159], making direct probing difficult. In particular, verification 
+    multi-layered circuit boards~\cite{thesisDRAMA}, making direct probing difficult. In particular, verification 
     via hardware probing is not feasible on devices such as Raspberry Pi's due to the presence of 
     soldered \gls{dram} modules.
     \\
     Another verification method leverages \textbf{Rowhammer} testing. In this approach, correctness is 
     assessed by evaluating whether the use of the addressing functions in Rowhammer experiments 
-    increases the number of bit flips per second proportionally to the number of sets identified [73]. 
+    increases the number of bit flips per second proportionally to the number of sets identified~\cite{paperDRAMA}. 
     This method is often impractical because tests may require excessively long durations, the systems 
     under study may not be vulnerable, or mitigations may interfere with the results.
     \\
     The final method is a \textbf{software-based} verification, which entails performing timing measurements 
     across a larger set of addresses to detect differences consistent with the derived addressing 
-    functions [73]. This approach is feasible and provides a practical means of validating the 
+    functions~\cite{paperDRAMA}. This approach is feasible and provides a practical means of validating the 
     correctness of the reverse-engineered \gls{dram} mappings.
 
     \subsubsection{Software-based} \label{subsubsec:software-based}
         Verification of \gls{dram} mapping is conducted using a software-based, latency-driven methodology, 
-        following the approach proposed in the DRAMA methodology [73, 116]. This method's 
+        following the approach proposed in the DRAMA methodology~\cite{toolDrama}. This method's 
         Considerations are based on the cases that the system can encounter, specifically bank misses, row hits, 
         and row conflicts, as defined in the reverse engineering process. Each of these scenarios 
         exhibits distinct access latencies, which can be exploited to verify the underlying \gls{dram} mapping.
@@ -88,10 +88,10 @@
                 \hline
                 Device & Mappings & Bank Functions \\
                 \hline
-                Raspberry Pi 4B & Memory Aware DOS [74] & (11), (12), (13), (14) \\
-                Raspberry Pi 4B & DRAM MaUT [79] & (12), (13), (14), (11 XOR 12) \\
-                Raspberry Pi 3B+ & Flipping Bits Like a Pro [156] & (13 XOR 14), (14), (15) \\
-                Exynos 7420 & DRAMA [73] & (14), (15), (16) \\
+                Raspberry Pi 4B & Memory Aware DOS~\cite{paperMemoryAware} & (11), (12), (13), (14) \\
+                Raspberry Pi 4B & DRAM MaUT~\cite{paperDRAMMaUT} & (12), (13), (14), (11 XOR 12) \\
+                Raspberry Pi 3B+ & Flipping Bits Like a Pro~\cite{paperProFlipping} [156] & (13 XOR 14), (14), (15) \\
+                Exynos 7420 & DRAMA~\cite{paperDRAMA} & (14), (15), (16) \\
                 Raspberry Pi's 4 & Rowhammer on Raspberry Pi's & (6), (12), (13), (14) \\
                 Raspberry Pi's 5 & Rowhammer on Raspberry Pi's & (6), (12) \\
                 \hline

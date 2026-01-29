@@ -6,13 +6,13 @@
 
     In the context of \textbf{GPU cache eviction}, prior work has shown that by cleverly evicting the cache of an 
     integrated \gls{gpu}, access to main memory can be achieved with significantly reduced latency, enabling 
-    memory accesses [~Grand Pwning Unit]. This approach exploits the relatively simple cache structures 
-    of integrated \gls{gpu}s, which can be evicted efficiently in order to achieve main-memory accesses [81, 155].
+    memory accesses~\cite{paperPwning}. This approach exploits the relatively simple cache structures 
+    of integrated \gls{gpu}s, which can be evicted efficiently in order to achieve main-memory accesses~\cite{paperOpenGL, paperPwning}.
 
-    \textbf{CPU cache eviction} is considerably more complex [TODO]. This complexity arises from higher cache associativity, 
+    \textbf{CPU cache eviction} is considerably more complex~\cite{paperARMageddon}. This complexity arises from higher cache associativity, 
     the presence of multiple cache levels, and sophisticated cache replacement policies. Nevertheless, 
     empirical studies demonstrate that \gls{cpu} cache eviction is feasible in practice, provided that precise 
-    timing and detailed knowledge of cache set mappings are available [72, 108].
+    timing and detailed knowledge of cache set mappings are available~\cite{thesisCacheAttacksandRH, toolRPI3}.
 
     This section first outlines fundamental aspects of cache organization, which form the basis for 
     understanding eviction sets, including direct-mapped and set-associative cache structures, as well as 
@@ -24,7 +24,7 @@
     \subsubsection{Cache Organization} \label{subsubsec:cache-organization}
         %% Direct-mapped Caches
         In a direct-mapped cache, each main memory entry is mapped to exactly one cache location. As a 
-        consequence, multiple distinct memory addresses can also map to the same cache location [72].
+        consequence, multiple distinct memory addresses can also map to the same cache location~\cite{thesisCacheAttacksandRH}.
         \\
         An illustrative example is shown in \hyperref[fig:direct-mapped-cache]{Figure~\ref{fig:direct-mapped-cache}}, which depicts a cache with a total size of 4~KB, 
         consisting of 128 cache locations and a cache line size of 64~bytes. In this configuration, an address 
@@ -33,7 +33,7 @@
         \begin{figure}[htbp]
             \centering
             \frame{\includegraphics[width=\linewidth]{img/direct-mapped-cache.pdf}}
-            \caption{Direct-mapped cache [72]}
+            \caption{Direct-mapped cache~\cite{thesisCacheAttacksandRH}}
             \label{fig:direct-mapped-cache}
         \end{figure}
         To determine whether a specific address is present in the cache, the index bits of the address are 
@@ -46,19 +46,19 @@
 
         %% Set-Associative Caches
         If the replacement policy is allowed to choose any entry in the cache to hold a the data, the 
-        cache is referred to as fully associative [72]. Modern processors, however, typically employ 
-        set-associative caches, which organize cache lines into multiple sets [72]. In an N-way set-associative 
+        cache is referred to as fully associative~\cite{thesisCacheAttacksandRH}. Modern processors, however, typically employ 
+        set-associative caches, which organize cache lines into multiple sets~\cite{thesisCacheAttacksandRH}. In an N-way set-associative 
         cache, each memory block can be placed in any one of N cache lines within a specific set.
         \\
         Each memory address maps to exactly one cache set, and addresses that map to the same set are called 
         congruent addresses, as illustrated in \hyperref[fig:n-way-associative-cache]{Figure~\ref{fig:n-way-associative-cache}}. 
         When all cache lines of a set are occupied and a new block needs to be loaded, the cache replacement 
-        policy determines which existing cache line is evicted in order to accommodate the new data [72].
+        policy determines which existing cache line is evicted in order to accommodate the new data~\cite{thesisCacheAttacksandRH}.
 
         \begin{figure}[htbp]
             \centering
             \frame{\includegraphics[width=\linewidth]{img/n-way-associative-cache.pdf}}
-            \caption{N-way associative cache [72]}
+            \caption{N-way associative cache~\cite{thesisCacheAttacksandRH}}
             \label{fig:n-way-associative-cache}
         \end{figure}
 
@@ -122,7 +122,7 @@
         \gls{cpu} caches can be indexed and tagged using either virtual or physical addresses. When virtual 
         addresses are used, it is possible for the same physical address to be cached in multiple cache lines, 
         which can negatively affect performance. Cache lines are uniquely identified by a tag, which may 
-        be derived from either the virtual or the physical address [72].
+        be derived from either the virtual or the physical address~\cite{thesisCacheAttacksandRH}.
         \\
         In \textbf{\gls{vivt}} caches, both the index and the tag are derived from the 
         virtual address. Such caches are generally faster because no address translation is required before 
@@ -140,9 +140,9 @@
         address for tagging. This approach offers lower latency than \gls{pipt} caches because index lookup can proceed 
         in parallel with \gls{tlb} translation, although tag comparison must still wait for the physical address.
         \\
-        On the Raspberry Pi 4, the L1 instruction cache, L1 data cache, and L2 cache behave as \gls{pipt} caches [172, 123]. 
+        On the Raspberry Pi 4, the L1 instruction cache, L1 data cache, and L2 cache behave as \gls{pipt} caches~\cite{webRPi4Hardware, docCortexA72}. 
         On the Raspberry Pi 5, the L1 instruction and L1 data caches are \gls{vipt}, but they behave effectively as \gls{pipt}
-        4-way set-associative caches [122].
+        4-way set-associative caches~\cite{docCortexA76}.
     
     \subsubsection{Cache Management} \label{subsubsec:cache-management}
         %% Cache Replacement Policy
@@ -150,32 +150,32 @@
         cache entries. The heuristic used to decide which cache entry to evict is referred to as the cache replacement 
         policy, which aims to select the entry that is least likely to be used in the near future. The chosen 
         replacement policy directly influences the number and access patterns required for an effective eviction 
-        strategy [72].
+        strategy~\cite{thesisCacheAttacksandRH}.
         \\
         The \gls{lru} replacement policy replaces the cache entry that has not been accessed for 
         the longest time. In contrast, a pseudo-random replacement policy selects a cache entry to evict based 
-        on a pseudorandom number generator [72].
+        on a pseudorandom number generator~\cite{thesisCacheAttacksandRH}.
         \\
         On the Raspberry Pi 4, the L1 instruction and L1 data caches use an \gls{lru} replacement policy, while the L2 
-        cache employs a pseudo-\gls{lru} replacement policy [172, 123]. On the Raspberry Pi 5, the L1 instruction and 
+        cache employs a pseudo-\gls{lru} replacement policy~\cite{webRPi4Hardware, docCortexA72}. On the Raspberry Pi 5, the L1 instruction and 
         L1 data caches use a pseudo-\gls{lru} replacement policy, and a dynamic biased replacement policy is 
-        employed [122].
+        employed~\cite{docCortexA76}.
         \\
         %% Inclusiveness
         In a multi-level cache hierarchy, it must be decided which cache levels store copies of data. A 
         higher-level cache is called inclusive with respect to a lower-level cache if all cache lines present in 
         the lower-level cache are also stored in the higher-level cache. Caches are considered exclusive if 
-        a cache line can reside in only one of two cache levels [72]. If a cache is neither inclusive nor exclusive, 
+        a cache line can reside in only one of two cache levels~\cite{thesisCacheAttacksandRH}. If a cache is neither inclusive nor exclusive, 
         it is referred to as non-inclusive.
         \\
         On the Raspberry Pi 4, the L2 cache is inclusive with respect to the L1 cache. On the Raspberry Pi 5, the 
         cache hierarchy is strictly inclusive with respect to the L1 data cache and weakly inclusive with respect 
-        to the L1 instruction cache [122]. The L3 cache is neither strictly inclusive nor strictly exclusive, but 
-        rather non-inclusive, with a dynamic allocation policy that depends on the access pattern [173, 174]. 
+        to the L1 instruction cache~\cite{docCortexA76}. The L3 cache is neither strictly inclusive nor strictly exclusive, but 
+        rather non-inclusive, with a dynamic allocation policy that depends on the access pattern~\cite{docSharedUnit, webInclusivness}. 
         Specifically, a first-time access by a core allocates data only to its L1 and L2 caches and not to the 
         L3. If data is evicted from the L2 cache, it can be reloaded into the L3 cache, exhibiting exclusive behavior. 
         If multiple cores share the same cache line, it may reside simultaneously in the L3 cache and in multiple 
-        L2 caches, exhibiting inclusive behavior [173, 174].
+        L2 caches, exhibiting inclusive behavior~\cite{docSharedUnit, webInclusivness}.
 
     \subsubsection{Eviction Development} \label{subsubsec:eviction-development}
         The cache eviction mechanism used in this work is based on the libflush framework and relies on the 
@@ -225,9 +225,9 @@
         instruction \texttt{clflush} to evict cache lines. With the exception of ARMv8-A CPUs, ARM processors do 
         not provide an unprivileged flush instruction, which makes cache eviction strategies necessary instead. 
         In order to obtain the high-frequency measurements required by modern cache attacks, eviction must be 
-        sufficiently fast, as previously proposed eviction strategies have been shown to be too slow [179] [72]. 
-        In this work, the cache eviction implementation proposed by Lipp et~al. [125] is used. This approach is 
-        applicable only to devices with a known eviction strategy [159], and therefore the default configuration 
+        sufficiently fast, as previously proposed eviction strategies have been shown to be too slow~\cite{paperCacheAccessPattern}. 
+        In this work, the cache eviction implementation proposed by Lipp et~al.~\cite{toolArmageddon} is used. This approach is 
+        applicable only to devices with a known eviction strategy~\cite{thesisDRAMA}, and therefore the default configuration 
         provided by the libflush tool is adopted (see \hyperref[lst:default]{Figure~\ref{lst:default}}).
         \input{listings/default.h.tex}
 

@@ -30,9 +30,9 @@
     environments were based on different operating systems. In addition, software versions and system architectures 
     varied across the platforms, resulting in Raspberry Pi devices that were not aligned with each other. These 
     discrepancies affected the consistency of the experimental setup.
-    The term ARM denotes a family of \gls{risc} architectures [26], within which ARMv7-A and ARMv8-A constitute two major 
+    The term ARM denotes a family of \gls{risc} architectures~\cite{webARMandX86}, within which ARMv7-A and ARMv8-A constitute two major 
     application-profile generations. The ARMv7-A architecture is limited to 32-bit execution, 
-    whereas ARMv8-A, supports both 32-bit and 64-bit computation [48]. Although ARMv7-A processors remain in 
+    whereas ARMv8-A, supports both 32-bit and 64-bit computation~\cite{paperTriggeringRHHardwareFault}. Although ARMv7-A processors remain in 
     use, ARMv8-A processors have become the predominant architecture in contemporary industrial applications.
     On the Raspberry Pi 4 devices, older system installations were used. These systems ran Arch Linux ARM and reported 
     a CPU identified as an ARMv7 Processor revision 3 (v7l) on all Raspberry Pis 4. The kernel versions differed between 
@@ -68,7 +68,7 @@
     % Reinstall Systems [Requirements]
     The hardware required for this process included a Raspberry Pi, a desktop computer, network cables, USB-C cables, 
     Micro HDMI to HDMI adapters, a mouse, a keyboard, a laptop, and a micro SD card with an adapter. Software 
-    requirements consisted of the Raspberry Imager [165] installed on the laptop and backups of the Raspberry Pi, including 
+    requirements consisted of the Raspberry Imager~\cite{webRaspberryImager} installed on the laptop and backups of the Raspberry Pi, including 
     programs, boot files, \texttt{.ssh/authorized\_keys}, \texttt{/etc/wireguard/wg0.conf}, and the \gls{motd} 
     configuration.
     \\
@@ -105,7 +105,7 @@
     \\
     Subsequently, all necessary build dependencies were installed. These included standard compilation tools 
     as well as libraries required for building the Linux kernel and device tree binaries for the Raspberry Pi 
-    platform. The official Raspberry Pi Linux kernel source code [187] was then cloned, restricted to the latest 
+    platform. The official Raspberry Pi Linux kernel source code~\cite{toolLinuxKernel} was then cloned, restricted to the latest 
     commit of the \texttt{rpi-6.12.y}.
     \\
     To preserve compatibility with the currently running system, the configuration of the active kernel was 

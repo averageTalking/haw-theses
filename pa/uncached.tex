@@ -13,37 +13,37 @@
 
     \subsection{Non-temporal accesses} \label{subsec:non-temporal-accesses}
         Non-temporal accesses have been proposed as a cache-bypassing technique in the context of Rowhammer 
-        attacks. In particular, [105] introduce a Rowhammer approach based on x86 non-temporal instructions. 
+        attacks. In particular, \cite{paperANewApproach} introduce a Rowhammer approach based on x86 non-temporal instructions. 
         Non-temporal data refers to data that is accessed once and not reused in the near future, exhibiting 
         low temporal locality, such as streaming data, which ideally should not be cached in order to avoid 
-        cache pollution [~Triggering RH]. This cache-bypassing capability significantly facilitates Rowhammer 
-        attacks on x86 architectures, as demonstrated in [105]. However, as discussed in [~Drammer], ARMv8-A 
+        cache pollution~\cite{paperTriggeringRHHardwareFault}. This cache-bypassing capability significantly facilitates Rowhammer 
+        attacks on x86 architectures, as demonstrated in~\cite{paperANewApproach}. However, as discussed in~\cite{paperDrammer}, ARMv8-A 
         non-temporal memory access instructions merely provide a hint to the memory system that caching is 
         not required, and in practice the accessed data is still cached. Although the ARMv8-A instruction set 
         includes non-temporal load and store instructions, such as \texttt{LDNP} and \texttt{STNP}, it is generally considered 
-        that these instructions are not effective for triggering the RH bug [Quote of ~Triggering RH]. This 
-        observation is further reinforced by the statement in [~Drammer] that these ARMv8-A non-temporal memory 
+        that these instructions are not effective for triggering the RH bug~\cite{paperTriggeringRHHardwareFault}. This 
+        observation is further reinforced by the statement in~\cite{paperDrammer} that these ARMv8-A non-temporal memory 
         access instructions do not reliably bypass the cache and that data accessed through them is still found 
-        cached in practice [~Triggering RH]. Conceptually, non-temporal operations do not follow 
+        cached in practice~\cite{paperTriggeringRHHardwareFault}. Conceptually, non-temporal operations do not follow 
         standard cache-coherency rules and are assumed by the memory controller to access data that will not 
         be reused, and several non-temporal instructions are designed to bypass the cache. Nevertheless, a 
         major limitation of this approach is that all non-temporal stores to a single address are combined 
         into a single \gls{wc} buffer, such that only the last write is eventually forwarded to 
         \gls{dram}, regardless of how many stores are issued. As a result, the effective access rate is insufficient 
-        to perform reliable hammering [58]. Since Rowhammer requires a very high access rate, this limitation 
-        makes non-temporal accesses unsuitable for this purpose [lecture-introduction].
+        to perform reliable hammering~\cite{toolRowhammering}. Since Rowhammer requires a very high access rate, this limitation 
+        makes non-temporal accesses unsuitable for this purpose~\cite{toolRPI3}.
     
     \subsection{Uncached memory} \label{subsec:uncached-memory}
         Another approach is the use of explicitly uncached memory. This method allocates memory regions that 
         are explicitly marked as uncached, for example via ION, such that every memory access goes directly 
         to \gls{dram} without interacting with the \gls{cpu} cache. This approach is particularly well suited for mobile 
         ARM platforms, such as ARMv7 and ARMv8 systems, where cache flush instructions are sometimes privileged, 
-        cache eviction is often too slow, and non-temporal stores are still cached in practice [58]. An 
+        cache eviction is often too slow, and non-temporal stores are still cached in practice~\cite{toolRowhammering}. An 
         important advantage of this method is that it does not require special privileges or permissions. 
         Previous work takes advantage of \gls{dma} buffers exposed to userspace through the Android ION memory 
-        management interface [~Drammer]. However, [~GuardION] has rendered Rowhammer attacks triggered in this 
+        management interface~\cite{paperDrammer}. However, \cite{paperGuardION} has rendered Rowhammer attacks triggered in this 
         way non-exploitable. More generally, leveraging user-accessible \gls{dma} buffers on Android systems to 
-        bypass \gls{cpu} caches has been explored in [38] [Quote of Triggering RH]. Despite its effectiveness on 
+        bypass \gls{cpu} caches has been explored in~\cite{paperDrammer,paperTriggeringRHHardwareFault}. Despite its effectiveness on 
         Android, this technique suffers from platform-specific memory management limitations. The Android 
         ION memory management framework is tightly coupled to the Android kernel and userspace stack and is 
         not available on standard Raspberry Pi Linux distributions. Consequently, user-accessible \gls{dma} buffers 

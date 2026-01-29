@@ -1,6 +1,6 @@
 \section{Targeted} \label{sec:targeted}
     After bypassing the cache hierarchy, a fundamental challenge remains, namely the existence of a 
-    fixed mapping between physical addresses and the \gls{dram} layout, as noted in [~introductory-lecture]. 
+    fixed mapping between physical addresses and the \gls{dram} layout, as noted in~\cite{toolRPI3}. 
     To achieve the \hyperref[sec:attack-primitives]{P2. Targeted} attack primitive, it is necessary to access a specific 
     \gls{dram} row in order to gain bit flips in an adjacent victim row. However, the exact informations of this 
     physical-to-\gls{dram} address mapping are typically not publicly available, which is also the case for all 
@@ -19,20 +19,20 @@
         the underlying addressing functions are inferred. This work focuses on three representative methods, which
         are listed below, along with a brief description of each.
         \\ \\
-        \textbf{DRAMA}, introduced by Pessl et al. in 2016 [73], exploits a row-buffer timing side channel in which 
+        \textbf{DRAMA}, introduced by Pessl et al. in 2016~\cite{paperDRAMA}, exploits a row-buffer timing side channel in which 
         row conflicts manifest as increased memory access latency. By observing row hits and row conflicts, physical 
         addresses can be grouped into sets that reside within the same bank and thus share identical channel, DIMM, 
         rank, and bank properties. The underlying \gls{dram} address mapping is inferred by exhaustively evaluating 
         linear addressing functions that distinguish these sets, which are commonly expressed as XOR combinations of 
         physical address bits. This general methodology underlies several subsequent attacks and tools, including 
-        \textit{Halfdouble} [53, 132], \textit{Drammer} [38, 127], and \textit{Cache Attacks and Rowhammer} [72].
+        \textit{Halfdouble}~\cite{paperHalfDouble, toolHalfDouble}, \textit{Drammer}~\cite{paperDrammer,toolDrammer}, and \textit{Cache Attacks and Rowhammer}~\cite{thesisCacheAttacksandRH}.
         \\
-        The work titled \textbf{One Bit flips, one cloud flops}, introduced by Xiao et al. in 2016 [93], proposes a 
+        The work titled \textbf{One Bit flips, one cloud flops}, introduced by Xiao et al. in 2016~\cite{paperOneBitFlipsOneCouldFlops}, proposes a 
         graph-based approach to infer physical-to-\gls{dram} address mappings. Similar to DRAMA, it relies on 
         timing differences caused by row conflicts, but its primarily aimed at enableing Rowhammer attacks 
         across virtual machines.
         \\
-        \textbf{Knock Knock}, introduced by Plin et al. in 2025 [99], reformulates the identification of \gls{dram} parity 
+        \textbf{Knock Knock}, introduced by Plin et al. in 2025~\cite{paperKnockKnock}, reformulates the identification of \gls{dram} parity 
         masks as a linear algebra problem. Instead of relying on exhaustive search, this method focuses on 
         solving the address mapping directly through algebraic reasoning.
         \\

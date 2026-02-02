@@ -59,9 +59,10 @@ type_mapping = {
     "Book": "book"
 }
 
-date = "28-jan-2026"
+date = "02-feb-2026"
 csv_file = f"references_{date}.csv"
 bib_file = f"references_{date}.bib"
+everything = False  # True = alle Quellen, False = nur "Nicht begonnen"
 
 
 def convert_date(date_str):
@@ -159,14 +160,22 @@ def format_bib_entry(row, bib_type):
 
 entry_count = 0
 
-with open(csv_file, newline="", encoding="utf-8") as csvfile, open(bib_file, "w", encoding="utf-8") as bib:
+with open(csv_file, newline="", encoding="utf-8-sig") as csvfile, open(bib_file, "w", encoding="utf-8") as bib:
     reader = csv.DictReader(csvfile)
+
     for row in reader:
+        status = row.get("status", "").strip()
+
+        if not everything and status != "not-there":
+            continue
+
         typ = row.get("typ", "").strip()
         bib_type = type_mapping.get(typ, "misc")
+
         bib_entry = format_bib_entry(row, bib_type)
         bib.write(bib_entry)
         entry_count += 1
+
 
 print(f"BibTeX-Datei '{bib_file}' erfolgreich erstellt.")
 print(f"Anzahl erstellter Quellen: {entry_count}")

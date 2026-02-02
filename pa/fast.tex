@@ -171,5 +171,30 @@
         \texttt{/sys/kernel/mm/hugepages/*/nr\_hugepages}, which reports the number of HugePages 
         currently in use for each supported size.
     
-    \subsection{TRRespass Port} \label{subsec:trrespass-port}
-        This is a test.
+    \subsection{TRRespass ARM Port} \label{subsec:trrespass-arm-port}
+        This subsection focuses exclusively on the architectural adaptations required to port TRRespass from 
+        x86-based systems to the ARMv8 architecture in order to enable execution on the ARM-based 
+        single-board computers used in this work, denoted as test devices.
+        \\
+        The scope of this porting effort is deliberately constrained. The core fuzzing and hammering 
+        algorithms implemented in TRRespass remain unchanged, and no modifications are made to their 
+        fundamental logic or operation. Consequently, the algorithmic behavior and the effectiveness 
+        of the underlying attacks are not reassessed in this work, as these aspects are thoroughly 
+        analyzed and discussed in the original TRRespass publication~\cite{paperTRRespass}.
+        \\
+        Several porting challenges arise from the fundamental differences between x86 and ARMv8 
+        architectures. A primary issue is the absence of x86-specific instructions and registers on 
+        ARM platforms, which necessitates the replacement of x86-only CPU instructions with 
+        ARMv8-compatible equivalents. This challenge is further compounded by the lack of direct 
+        counterparts for certain cache flush and timing instructions that are commonly available on 
+        x86 systems. In addition, compatibility with Linux hugepage support on ARM systems must be
+        ensured, as outlined in the previous section. The migration also requires replacing x86-specific 
+        compiler flags with configurations suitable for ARMv8. To support heterogeneous ARM platforms 
+        across different test devices, system page sizes must be handled dynamically. Furthermore, 
+        hugepages need to be integrated to preserve contiguous memory regions, which are essential for 
+        both hammering and fuzzing operations.
+        \\
+        As a result of these adaptations, the modified TRRespass tool executes successfully on the 
+        ARMv8-based platforms evaluated in~\cite{paperBachelorarbeit}. Moreover, the ported TRRespass 
+        tool~\cite{toolHamOnRaspi} establishes a foundation for future research on Rowhammer-related attacks and 
+        defenses in ARM-based systems.

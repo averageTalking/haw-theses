@@ -102,7 +102,7 @@
         configuration~\cite{webSPD}. While DIMM-based systems typically include an \gls{spd} EEPROM, it is unclear whether 
         such an EEPROM exists for soldered \gls{dram}, as used in Raspberry Pi devices. The proposed approach was 
         therefore to access the system bus using I2C tools, dump the \gls{spd} EEPROM if present, and decode its 
-        contents according to the corresponding DDR standard.
+        contents according to the corresponding \gls{ddr} standard.
         \\
         The workflow began with the initial detection of available I2C buses using \texttt{sudo i2cdetect -l}, 
         which returned no entries, and \texttt{sudo i2cdetect -y 1}, which failed with an error indicating that 

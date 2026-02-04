@@ -2,7 +2,7 @@
     Even after eleminating cache effects, a fundamental challenge in memory access remains: the 
     fixed mapping between physical addresses and the underlying \gls{dram} layout. It is insufficient 
     to merely perform \gls{dram} accesses. Rather, precise access to specific \gls{dram} rows is required to
-    induce bit flips in adjacent victim rows, denoted as P2. Targeted. The physical address is 
+    induce bit flips in adjacent victim rows, denoted as \hyperref[sec:attack-primitives]{P2. Targeted}. The physical address is 
     composed of bits that are partitioned into rank, channel, bank, row, and column, which 
     collectively determine the location where the data is stored~\cite{paperReliableReverseEngineering}.
     However, the details of this mapping are not publicly disclosed. Knowledge of the \gls{dram} 

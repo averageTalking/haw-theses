@@ -1,2 +1,57 @@
 \section{Introduction} \label{sec:introduction}
-  This is a test.
+  % Setting up the scene and protagonist [DRAM]
+    In modern computing systems Memory serves as a fundamental part, directly influencing overall 
+    performance, energy efficiency, and system reliability~\cite{paperRHARetrospective}. Ensuring that stored information 
+    cannot be altered without authorization is a basic security requirement, as unauthorized 
+    modifications would compromise both the integrity of computations and the system as a whole~\cite{paperTriggeringRHHardwareFault}.
+    \\
+    In \gls{dram}, each bit of data is stored in a single memory cell composed of a capacitor and a 
+    transistor~\cite{paperRowhammeronaRPi}. Over decades of technological progress, improvements in transistor and capacitor 
+    scaling have enabled \gls{dram} to serve as the Predominant technology used for main memory across a wide 
+    range of devices, from cloud servers and laptops to mobile phones~\cite{paperOnDRAM}.
+    \\
+    The demand for increasingly large memory capacities within a limited physical footprint has driven 
+    continuous reductions in \gls{dram} cell size and increases in density. These changes allow memory cells 
+    to operate with lower voltages and smaller charges, resulting in higher storage capacity and reduced 
+    energy consumption~\cite{paperAnotherFlip}.
+    \\
+    The extensive use of \gls{dram} as main memory implies that potential security flaws within the technology 
+    can have broad impact on dependent computing systems~\cite{paperOnDRAM}. Operations performed on a given memory 
+    address must remain strictly confined to that address and must not inadvertently affect the contents 
+    of other memory locations~\cite{paperRHARetrospective}. As memory technologies continue to scale toward smaller physical 
+    dimensions, \gls{dram} chips become increasingly susceptible to disturbance effects, in which the behavior 
+    of a memory cell can unintentionally influence adjacent cells~\cite{paperRHARetrospective}, causing the stored value of a 
+    \gls{dram} cell to change without explicit modification, a phenomenon known as a bit flip~\cite{paperAnotherFlip}.
+
+  % Conflict [Rowhammer]
+    In 2014, Kim et al.~\cite{paperFlippingBits} demonstrated that \gls{dram} is vulnerable to disturbance errors, showing that 
+    repeated activations of a memory row can induce charge leakage in neighboring cells. Such leakage 
+    may alter stored values, which in turn can be exploited to escape sandboxes or escalate privileges 
+    on a local system~\cite{paperRowhammeronaRPi}
+    \\
+    Initial verification of the Rowhammer phenomenon was conducted using FPGA-based memory controllers. 
+    Later studies extended these attacks to native x86 systems as well as ARM-based platforms~\cite{paperRowhammeronaRPi}. 
+    Early speculation suggested that Rowhammer attacks on ARM devices might be infeasible, largely due 
+    to the presumed slower response of ARM memory controllers. However, this assumption was later disproven 
+    when bit flips were successfully observed on ARM hardware~\cite{paperDrammer}.
+
+  % Research Question
+    Previous studies primarily focused on mobile phones or Chromebooks~\cite{paperHalfDouble, paperDrammer, paperDRAMA, paperBlacksmith}. Subsequently 
+    on older Raspberry Pi models, leaving it uncertain whether the latest generations exhibit similar 
+    vulnerabilities. This uncertainty is further compounded by the differences in \gls{lpddr} memory, which 
+    due to power and die area constraints, behaves differently from standard \gls{ddr} memory~\cite{paperBlacksmith}. In the 
+    context of this Bachelor thesis, we want to analyze to what extent modern Raspberry Pi platforms, 
+    specifically the Raspberry Pi 4B and Raspberry Pi 5, are susceptible to bit flips when subjected to 
+    Rowhammer access patterns?
+    \\
+
+  % Outline
+    \noindent
+    \textbf{Outline.} The thesis is organized into six sections. Background introduces cache and \gls{dram} 
+    architectures and general Rowhammer techniques. Methodology describes the experimental design, 
+    measurement procedures, and evaluation criteria. The Section Attack Primitives describes the 
+    fundamental techniques required to execute Rowhammer attacks effectively, including uncached, 
+    targeted, and fast access patterns by analyzing and evaluating the corresponding experiments 
+    of these primitives. Related Work reviews prior research on Rowhammer attacks. Discussion and Limitations 
+    examines the implications of the results and the study's constraints. Conclusion summarizes the 
+    findings and outlines potential directions for future work.

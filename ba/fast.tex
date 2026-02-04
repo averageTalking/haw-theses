@@ -1,6 +1,6 @@
 \section{Fast} \label{sec:fast}
     To achieve \hyperref[sec:attack-primitives]{P3. Fast}, memory accesses must be issued at a rate that 
-    exceeds the DRAM refresh behavior, ensuring sufficiently frequent activation's of the same DRAM rows. 
+    exceeds the \gls{dram} refresh behavior, ensuring sufficiently frequent activation's of the same \gls{dram} rows. 
     This section therefore analyzes access and refresh characteristics, examines the impact of existing 
     mitigation mechanisms and the extent to which they must be bypassed to support effective hammering 
     on ARM-based systems such as the Raspberry Pi devices.
@@ -75,5 +75,51 @@
             any victim cell close to its disturbance threshold.
 
     \subsection{TRR Bypass} \label{subsec:trr-bypass}
-        This is a test.
+        Although the absence of observed bit flips points toward effective mitigation on Raspberry Pi platforms, 
+        these \gls{dram} devices were produced recently in 2020 and likely deploy an improved mitigation scheme, as noted in~\cite{paperBlacksmith}.
+        Prior work research~\cite{paperHalfDouble, paperTRRespass, paperBlacksmith, paperTRRScope} 
+        has demonstrated that protection mechanisms such as \gls{trr} can 
+        often be circumvented through carefully engineered access patterns. To assess whether such 
+        bypasses are relevant in this context, this section analyzes \gls{trr} behavior in detail and evaluates 
+        the applicability of \gls{trr}-aware fuzzing techniques on Raspberry Pi devices.
+        \\
+        One of the most important terms for this is the \gls{mac}, which specifies the limit on the number of
+        consecutive activations a single memory row can sustain within one refresh interval. When 
+        the \gls{mac} is reached and further accesses exceed this boundary, the device either executes all 
+        required refresh commands before allowing additional row activations or enters \gls{trr} mode to refresh only 
+        the adjacent victim rows~\cite{paperTRRScope,datasheetLPDDR4}.
+        \\
+        \gls{trr} bypass can be attempted using Rowhammer fuzzers, which are designed to generate variations in 
+        inputs or execution patterns that may provoke unexpected system behavior~\cite{webFuzzTests, webFuzzing}. Specifically, 
+        in the context of Rowhammer, this approach targets the circumvention of TRRespass. For this purpose, 
+        TRRespass is employed, what represents a scalable black-box Rowhammer fuzzer introduced in 2020 by 
+        Frigo et al.~\cite{paperTRRespass}. It is designed for "\gls{trr}-aware" Rowhammer analysis and exploitation, primarily on 
+        x86 systems. The tool automatically identifies access patterns capable of bypassing \gls{trr} based on two 
+        parameters: cardinality and location.
+        \\
+        The use of hugepages is critical for TRRespass functionality. In modern processor architectures, the 
+        \gls{cpu} and \gls{os} must keep track of mappings between virtual pages and their corresponding physical 
+        memory locations. As the number of memory pages increases, locating the corresponding physical memory mappings become
+        more time-consuming. Larger page sizes reduce the number of page entries that need to be 
+        traversed~\cite{webHugepagesDebian}. TRRespass relies on hugepages to obtain large, physically contiguous memory regions, 
+        which are necessary for reliably mapping virtual to physical addresses and targeting specific \gls{dram} 
+        rows. Without hugepages, many hammering strategies either fail to function reliably or do not work at 
+        all, as indicated in~\cite{paperTRRespass}.
+        \\
+        For the evaluation of TRRespass, three out of five test devices were successfully used. The remaining 
+        two devices, referred to as Raspberry Pi 5 with 4 and 8~GB RAM, encountered an unexpected error during the pre-allocation of a single 1~GB hugepage, which 
+        could not be resolved even after rebuilding the kernel multiple times. Due to the underlying smaller 
+        hugepage sizes, TRRespass only works suboptimally and less reliably, which is why these results are 
+        not discussed. On the devices where hugepages were functional, TRRespass was executed with varying 
+        parameters, access patterns, and \gls{dram} mappings, including reverse-engineered mappings as well as 
+        those provided by DRAMA~\cite{paperDRAMA}, Memory Aware~\cite{paperMemoryAware}, and DRAM MaUT~\cite{paperDRAMMaUT}. 
+        Across all evaluated devices, we did not observe any effective access pattern capable of inducing bit flips.
+        Even after multiple experiments varying in runtime length of 5 to 10 and in some cases also over 20 hours 
+        all tested access patterns, including N-sided, 2-sided, and 3-sided, results in no observable or reproducible 
+        bit flips on any of our test devices
+        \\
+        These findings suggest that the Raspberry Pi 4 and 5 models 
+        are either not vulnerable to Rowhammer attacks or exhibit the same limitations observed in certain 
+        LPDDR4x devices studied by~\cite{paperBlacksmith}. Additional details are discussed in the Section 
+        "\hyperref[sec:discussion-and-limitations]{Discussion and Limitations}".
         

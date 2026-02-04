@@ -1,2 +1,42 @@
 \section{Introduction} \label{sec:introduction}
-  This is a test
+  \gls{dram} is the dominant main memory technology used in contemporary computing 
+  systems~\cite{paperOnDRAM}. \gls{dram} stores each bit of information in a memory cell that 
+  consists of a capacitor and an access transistor. Due to charge leakage in the 
+  capacitor, periodic refresh operations are required to maintain data integrity. 
+  Otherwise, the stored data may be lost over time~\cite{paperTriggeringRHHardwareFault}.
+  \\
+  The need to accommodate ever-larger memory capacities in constrained physical space 
+  has led to a continuous reduction in \gls{dram} cell dimensions and a corresponding increase 
+  in memory density. Consequently, memory cells can function with lower operating voltages 
+  and smaller charge levels, enabling higher storage capacity and improved energy 
+  efficiency~\cite{paperAnotherFlip}. Unfortunately, this scaling led to a problem known as disturbance 
+  error. A hardware-induced failure that arises from cell-to-cell interference in scaled 
+  memory technologies~\cite{paperRHARetrospective}, leading in bit flips.
+  \\
+  Kim et al.~\cite{paperFlippingBits} exploited this error in 2014 as an attack, also known as Rowhammer. 
+  Over the years, this attack was further developed, first on FPGA-based memory 
+  controller, then x86 followed involuntarily, and later the attack also reached ARM 
+  systems~\cite{paperRowhammeronaRPi}. Primarily on mobile phones and 
+  chromebooks~\cite{paperDrammer,paperTRRespass,paperBlacksmith,paperDRAMA}. Ultimately, 
+  it also found its way onto embedded systems and single-board computers. In recent years, 
+  analyses have been carried out on some older Raspberry Pi models. However, due to 
+  power and die area restrictions in LPDDR4~\cite{paperBlacksmith} as well as temperature controlled 
+  refresh rate~\cite{thesisDRAMA, datasheetLPDDR4, docJEDECLPDDR4, docJEDECLPDDR4x}, this attack 
+  remains relevant for contemporary Raspberry Pi models.
+  \\
+  While this bachelor thesis limits itself to the theory, analysis, and evaluation of 
+  experiments, the practical work focuses on the implementation of a Rowhammer-based proof 
+  of concept. This proof of concept is used to demonstrate the occurrence of bit flips on 
+  modern Raspberry Pi platforms, specifically the Raspberry Pi 4B and Raspberry Pi 5.
+  \\
+  \\
+  \textbf{Outline.} The remainder of this thesis is structured as follows. The background section 
+  provides an overview of the technical foundations required for this work. The methodology 
+  section describes the practical approach used to design, implement, and evaluate the proof 
+  of concept. The lab setup section details the configuration of the test systems and 
+  experimental environment. The attack primitives section introduces the fundamental techniques 
+  required to construct the attack, followed by sections that describe the individual attack 
+  primitives in terms of implementation, design choices, and practical constraints. The 
+  discussion and limitations section analyzes the practical challenges encountered during 
+  the development of the proof of concept. Finally, the conclusion summarizes the results of 
+  this work.

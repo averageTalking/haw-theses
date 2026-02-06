@@ -1,6 +1,52 @@
 \section{Background} \label{sec:background}
   \subsection{DRAM Architecture} \label{subsec:dram-architecture}
-    This is a test.
+    % DRAM in General
+    \gls{dram} is widely employed as the primary memory technology in 
+    computers, smartphones, and servers~\cite{thesisDRAMA, paperRHinDRAM}. Its internal organization is based on a 
+    hierarchical structure of two-dimensional cell matrices arranged in rows and columns~\cite{paperRHinDRAM, paperRowhammerOnSteroids, paperDrammer}, 
+    with each cell storing  a single bit of data using a capacitor that is controlled by 
+    an access transistor, where exactly 
+    one capacitor and one transistor are required per stored bit~\cite{paperRowhammerOnSteroids,thesisDRAMA}.
+    \\
+    The widespread adoption of \gls{dram} stems from its advantages, 
+    including low latency, high storage density, and cost-effectiveness per bit~\cite{paperRHinDRAM}. 
+    However, despite these benefits, \gls{dram} exhibits several inherent weaknesses. Over the years, \gls{dram} 
+    capacity has increased significantly while the physical size of memory chips has remained largely 
+    unchangedleading manufacturers to integrate an increasing number of memory cells within the 
+    same die area to meet scaling memory demands~\cite{paperOnDRAM,paperTriggeringRHHardwareFault}. In 
+    addition, \gls{dram} suffers from inherent data retention challenges caused by leakage mechanisms 
+    such as gate-induced drain leakage and subthreshold leakage~\cite{paperFlippingBits, paperRHinDRAM}. 
+    Disturbance errors can arise when sufficient interactions occur between circuit components, e.g., capacitors,
+    transistors, or wires, that are intended to remain isolated~\cite{paperRHinDRAM}.
+    \\
+    % DRAM Structure
+    The structural organization of \gls{dram}, as illustrated in
+    \hyperref[fig:dram-architecture]{Figure~\ref{fig:dram-architecture}} and \hyperref[fig:lppdr-physical-structure]{Figure~\ref{fig:lppdr-physical-structure}}, is composed of 
+    several fundamental components that together enable data storage and access. At the lowest level, 
+    the transistor functions as a switch that controls access to the data stored within a memory 
+    cell~\cite{webPhysicalStructure,paperRowhammerOnSteroids, thesisDRAMA}. The capacitor 
+    itself is responsible for storing a single bit of information in the form of an electric charge, 
+    where a charged state represents a logical one and an uncharged state represents a logical 
+    zero~\cite{thesisDRAMA}. A \gls{dram} cell is therefore defined by the combination of exactly one transistor and 
+    one capacitor connected to both a wordline and a bitline, where the stored charge indicates a binary
+    value~\cite{paperDrammer}.
+    \\
+    The wordline runs horizontally across a row of cells and controls the access transistors, 
+    thereby enabling or disabling access to all cells within the corresponding row simultaneously~\cite{paperRHinDRAM}. 
+    In contrast, the bitline runs vertically along the same column and connects the cells to the sense 
+    amplifier, which is responsible detecting the small voltage differences on the bitline to a stable
+    logic level for reliable data interpretation~\cite{webSenseAmplifier}.
+    \\
+    At a higher level of abstraction, memory cells are organized into banks, each forming a grid 
+    of rows and columns~\cite{webPhysicalStructure}. A \gls{dram} bank consists of many memory cells, associated sense 
+    amplifiers, and a dedicated row buffer that stores the most recently accessed row for that 
+    specific bank~\cite{paperRowhammerOnSteroids,paperFlippingBits}. The presence of multiple banks enables memory requests to be processed 
+    in parallel, thereby improving overall performance~\cite{thesisDRAMA}. Beyond banks, \gls{dram} modules are 
+    connected to the processor through channels, which are independent data buses that operate 
+    simultaneously to increase the memory bandwidth~\cite{paperRowhammerOnSteroids, thesisDRAMA}. Finally, a memory package 
+    encapsulates one or more \gls{dram} dies and typically includes multiple channels, providing the 
+    physical and electrical interface between the memory subsystem and the rest of the 
+    system~\cite{webPhysicalStructure}.
 
     \begin{figure}[htbp]
       \centering
@@ -17,7 +63,40 @@
     \end{figure}
   
   \subsection{Refresh Behavior} \label{subsec:refresh-behavior}
-    This is a test.
+    % Volatile Memory
+    \gls{dram} is a volatile memory, meaning that all stored data is lost when the 
+    power supply is interrupted. Even while power is applied, stored information must be 
+    actively maintained, as the capacitors in \gls{dram} cells gradually lose their charge over 
+    time. To preserve data integrity, the memory controller therefore issues periodic refresh 
+    operations or regular read and write commands, even when the memory is otherwise 
+    idle~\cite{paperRowhammerOnSteroids, webSDRAMMemory, thesisDRAMA}. If a \gls{dram} cell loses too much charge before being refreshed, 
+    a disturbance error may arise, resulting in incorrect data being stored~\cite{paperFlippingBits}.
+    \\
+    % Access Behavior of Reading, Writing, and Refreshing
+    During a refresh operation or a normal memory access, an entire row of \gls{dram} cells is 
+    activated and loaded into the dedicated row buffer. This process is initiated by activating 
+    the corresponding wordline, which enables all access transistors in the selected row and 
+    connects the capacitors to their respective bitlines. The row buffer temporarily stores 
+    the data by sensing the charge from the cells, while the contents of the original 
+    row is overwritten. Subsequently, the data stored in the row buffer is restored back 
+    into the \gls{dram} array, ensuring that the original information is preserved~\cite{paperRHinDRAM,paperRowhammerOnSteroids, thesisDRAMA}.
+    \\
+    % Row Hit and Row Conflict
+    When a memory access targets data that resides in a row already opened into the row buffer, 
+    the request can be served immediately without requiring additional row activation or precharge 
+    operations. This scenario is referred to as a row hit~\cite{thesisDRAMA}. In contrast, a row conflict 
+    occurs when an access targets a different row 
+    within the same bank. In this case, the currently open row must first be closed by writing 
+    the contents of the row buffer back to the corresponding cells. Only after this operation 
+    can the new row be activated and fetched into the row buffer~\cite{thesisDRAMA}.
+    \\
+    % Refresh
+    The refresh behavior of \gls{dram} is governed by technology-specific timing parameters. For 
+    DDR4 memory, the default refresh window, denoted as \texttt{tREFI}, is 64 ms. In comparison, 
+    LPDDR4 employs a shorter refresh interval of 32 ms and supports dynamic, temperature-based 
+    refresh adjustments that are configured through the MR4 Mode Register~\cite{docJEDECLPDDR4,paperBlacksmith}. 
+    The higher the temperature, the shorter the refresh interval. Conversely, the lower 
+    the temperature, the longer the refresh interval (See~\hyperref[fig:temperature-based-refresh-rates]{Figure~\ref{fig:temperature-based-refresh-rates}} for details)~\cite{paperBlacksmith,docJEDECLPDDR4,docJEDECLPDDR4x}.
     
     \begin{figure}[htbp]
       \centering
@@ -27,7 +106,56 @@
     \end{figure}
   
   \subsection{Rowhammer and Techniques} \label{subsec:rowhammer-and-techniques}
-    This is a test.
+    % Rowhammer
+    % The design principles underlying DRAM introduce a security problem that is independent of the 
+    % operating system and even of virtualization technologies [159]. This vulnerability is known 
+    % as Rowhammer. Rowhammer is a software-induced hardware fault that affects DRAM chips [38]. 
+    % It arises as a consequence of continued memory scaling, where smaller cell structures are 
+    % placed increasingly close to one another, thereby increasing the likelihood that the behavior 
+    % of one cell can influence spatially adjacent memory cells [5, 18, 159]. Kim et al. [5] observed 
+    % that the growing density of modern memory chips makes them particularly susceptible to 
+    % disturbance errors, as charge can leak into adjacent cells during every memory access [48].
+    % \\
+    % Specifically, repeated accesses to the same memory row -referred to as hammering an aggressor 
+    % row - can induce sufficient electrical disturbance to cause bit flips in a neighboring row that 
+    % is vulnerable to such interference, known as the victim row. Triggering bit flips through 
+    % Rowhammer therefore constitutes a race against the internal DRAM refresh mechanism, as the 
+    % attacker must perform enough memory accesses within a refresh interval to generate sufficient 
+    % disturbance in adjacent rows [18, 48].
+    % \\
+    % Implications
+    This vulnerability has enabled a wide range of powerful attacks, including privilege 
+    escalation [TODO], sandbox escapes [TODO], ASLR defeating [TODO], cryptography breaking [TODO], 
+    and denial-of-service attacks [TODO]. These attacks affect desktop systems [TODO], mobile devices [TODO], 
+    and cloud environments [TODO], even without exploiting traditional software vulnerabilities. Moreover,
+    Rowhammer attacks can be triggered from diverse execution contexts, such as JavaScript 
+    environments [TODO], network-based attacks [TODO], or across virtual 
+    machines [TODO]~\cite{paperRowhammerOnSteroids,paperDrammer,paperTriggeringRHHardwareFault, paperRowhammeronaRPi}.
+    % \\
+    % Physical Explanation of Rowhammer
+    % TODO
+    \\
+    % Techniques
+    Based on these underlying physical mechanisms, several characteristic Rowhammer techniques 
+    have emerged. These techniques primarily differ in the number of neighboring rows they target 
+    and in their ability to bypass modern mitigation mechanisms.
+    \\
+    A single-sided attack performs frequent accesses, or hammering, to only one row adjacent to a 
+    victim row. This approach is often combined with accesses to other rows within the same bank 
+    to induce bit flips in the neighboring victim 
+    row~\cite{webAnotherFlip, paperAnotherFlip,paperDrammer, paperRHinDRAM}. In contrast, a 
+    double-sided attack repeatedly hammers two rows located on opposite sides of a victim row, 
+    effectively sandwiching it. This increases the likelihood of inducing bit flips but requires
+    partial knowledge of virtual-to-physical address mappings to correctly position the aggressor 
+    rows~\cite{paperRHinDRAM, paperAnotherFlip,paperDrammer}. The many-sided attack extends this concept by employing multiple aggressor 
+    rows and distributed access patterns to evade \gls{trr} mitigation mechanisms 
+    that monitor only limited access behaviors~\cite{paperTRRespass, paperHalfDouble}. Finally, The one-location attack is a 
+    technique in which the attacker repeatedly accesses a single \gls{dram} row at high frequency. 
+    Unlike traditional attacks that hammer multiple rows, this approach relies on modern memory 
+    controllers that preemptively close rows instead of strictly following an open-page policy. 
+    By continuously re-opening the same row, the attacker induces repeated row activations and 
+    conflicts, which can lead to bit flips in rows adjacent to the hammered location, despite 
+    only targeting a single row~\cite{paperAnotherFlip, paperNethammer}.
 
     \begin{figure}[htbp]
       \centering
@@ -49,7 +177,7 @@
     copies of frequently used data and instructions from main memory (\gls{ram}) that the \gls{cpu} is likely 
     to access imminently~\cite{webCache, webCPUCache}. By holding data that the \gls{cpu} may repeatedly access, caches 
     serve as a buffer between the \gls{cpu} and main memory, significantly reducing the time required 
-    for repeated data accesses~\cite{webWhatsACache_1, webCPUCache}. Cached data typically mirrors the contents of slower 
+    for repeated data accesses~\cite{webWhatsACache-1, webCPUCache}. Cached data typically mirrors the contents of slower 
     storage devices such as \gls{ram} or disks~\cite{webCache}. Common types of caches include \gls{cpu} caches, memory 
     caches, and browser caches~\cite{webCache}; however, only \gls{cpu} caches are relevant in the context of the 
     Rowhammer attack. \\
@@ -64,7 +192,14 @@
     exploiting temporal and spatial locality, ensuring that frequently or recently used data 
     remains close to the \gls{cpu}. \\
     The memory hierarchy organizes storage components according to their speed, latency, and 
-    cost, as illustrated in Figure. Memory Hierarchy. Higher levels of the hierarchy, such as 
+    cost, as illustrated in~\hyperref[fig:memory-hierarchy]{Figure~\ref{fig:memory-hierarchy}}. Memory Hierarchy. Higher levels of the hierarchy, such as 
     \gls{cpu} caches, are smaller but faster, while lower levels are larger but significantly slower. 
     Due to their proximity to the \gls{cpu} and implementation using \gls{sram}, caches provide access 
     speeds approximately 10-100 times faster than \gls{dram}~\cite{webCacheVsRAM}.
+
+    \begin{figure}[htbp]
+      \centering
+      \frame{\includegraphics[width=\linewidth]{img/memory-hierarchy.pdf}}
+      \caption{Memory Hierarchy}
+      \label{fig:memory-hierarchy}
+    \end{figure}

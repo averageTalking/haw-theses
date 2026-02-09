@@ -1464,7 +1464,7 @@ Sandboxing—and its Application to AES},
 }
 
 @article{paperGuardION,
-  author = {{{Martin Heckel, and Florian Adamsky}}},
+  author = {{{Victor van der Veen, Martina Lindorfer, and Yanick Fratantonio}}},
   title = {GuardION: Practical Mitigation of DMA-Based Rowhammer Attacks on ARM},
   year = {2018},
   doi = {10.1007/978-3-319-93411-2_5},
@@ -1591,4 +1591,75 @@ Sandboxing—and its Application to AES},
   year = {2010},
   doi = {10.1109/IIRW.2010.5706509},
   urldate = {2026-02-06}
+}
+
+@online{blogVirtToPhys,
+  author = {{{Niels Hagoort}}},
+  title = {How is Virtual Memory Translated to Physical Memory?},
+  url = {https://www.vmware.com/docs/how-is-virtual-memory-translated-to-physical-memory},
+  urldate = {2026-02-09},
+  year = {2020}
+}
+
+@online{blogVirtualMemory,
+  author = {{{Xianwei Zhang}}},
+  title = {Virtual Memory},
+  url = {https://people.cs.pitt.edu/~xianeizhang/notes/vm.html},
+  urldate = {2026-02-09},
+  year = {2015}
+}
+
+@online{webVirtualAddress,
+  author = {{{NordVPN}}},
+  title = {Virtual address},
+  url = {https://nordvpn.com/de/cybersecurity/glossary/virtual-address/?srsltid=AfmBOor2uu2i2fjTsiQ9Fy-Sem10K6rX5hm2kaN893oCegcqyIR9hhEZ},
+  urldate = {2026-02-09},
+}
+
+@software{toolEnableARMPMU,
+  author = {{{rdolbeau}}},
+  title = {enable_arm_pmu},
+  year = {2025},
+  url = {https://github.com/rdolbeau/enable_arm_pmu/tree/d5f5e9a09624c9f2450e13e285e8c6220a3a8d46},
+  urldate = {2026-02-09}
+}
+
+@manual{docRDTSC,
+  author = {{{Felix Cloutier}}},
+  title = {RDTSC — Read Time-Stamp Counter},
+  year = {2023},
+  url = {https://www.felixcloutier.com/x86/rdtsc},
+  urldate = {2026-02-09}
+}
+
+@manual{docPMUSERENR,
+  author = {{{Arm Limited}}},
+  title = {PMUSERENR, Performance Monitors User Enable Register},
+  year = {2024},
+  url = {https://df.lth.se/~getz/ARM/SysReg/AArch32-pmuserenr.html},
+  urldate = {2026-02-09}
+}
+
+@manual{docPMCR,
+  author = {{{Arm Limited}}},
+  title = {PMCR_EL0, Performance Monitors Control Register},
+  year = {2024},
+  url = {https://df.lth.se/~getz/ARM/SysReg/pmu.pmcr_el0.html},
+  urldate = {2026-02-09}
+}
+
+@manual{docCNTENSET,
+  author = {{{Arm Limited}}},
+  title = {PMCNTENSET_EL0, Performance Monitors Count Enable Set Register},
+  year = {2024},
+  url = {https://df.lth.se/~getz/ARM/SysReg/AArch64-pmcntenset_el0.html},
+  urldate = {2026-02-09}
+}
+
+@manual{docPMCCFILTR,
+  author = {{{Arm Limited}}},
+  title = {PMCCFILTR, Performance Monitors Cycle Count Filter Register},
+  year = {2024},
+  url = {https://df.lth.se/~getz/ARM/SysReg/AArch32-pmccfiltr.html},
+  urldate = {2026-02-09}
 }

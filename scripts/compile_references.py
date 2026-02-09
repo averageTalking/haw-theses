@@ -59,7 +59,7 @@ type_mapping = {
     "Book": "book"
 }
 
-date = "06-feb-2026"
+date = "09-feb-2026"
 csv_file = f"references_{date}.csv"
 bib_file = f"references_{date}.bib"
 everything = False  # True = alle Quellen, False = nur "Nicht begonnen"

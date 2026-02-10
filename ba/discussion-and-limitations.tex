@@ -1,2 +1,79 @@
 \section{Discussion and Limitations} \label{sec:discussion-and-limitations}
-  This is a test.
+  % Page Policy
+  In this work, an issue was observed when using the Knock-Knock tool~\cite{toolKnockKnock} to 
+  reverse engineer the \gls{dram} address mapping. Specifically, the tool reported the 
+  failure condition “\textit{Valley between peaks not pronounced enough}”. As a 
+  consequence, no part of the mapping could be retrieved from the measurements.
+  \\
+  A closely related issue has been reported in prior work. The authors of~\cite{paperKnockKnock} 
+  encountered the same problem on \gls{lpddr}-based devices, including the Raspberry 
+  Pi 4 with 4 GB of RAM and the Nvidia Jetson Nano. They attributed this 
+  behavior to the presence of a closed page policy, as their latency measurements 
+  showed only a single distribution rather than clearly separable peaks. Similar 
+  behavior was observed on additional platforms, including the Raspberry Pi 4 
+  with both 4 GB and 8 GB of RAM, as well as the newer Raspberry Pi 5 with 4~GB, 
+  8~GB, and 16~GB of RAM, when analyzed using the Knock-Knock tool~\cite{toolKnockKnock}.
+  \\
+  Under a closed page policy, the memory controller immediately closes the 
+  currently active row after each memory access~\cite{thesisPagePolicies, paperKnockKnock}. In contrast, an open 
+  page policy, which is the default in most systems, keeps a \gls{dram} row active 
+  in the row buffer until a subsequent access targets a different row, at which 
+  point the currently open row must be closed~\cite{paperAnotherFlip, thesisPagePolicies}.
+  \\
+  Based on the measurements conducted in this work, the most likely 
+  explanation for the observed behavior is not the presence of a closed page 
+  policy, but rather an unclear limitation of the Knock-Knock methodology on 
+  the evaluated platforms. Although the tool fails with the error message, the measurements 
+  demonstrate that row hits and row conflicts can, in principle, be 
+  distinguished, indicating that the row buffer is not always closed. This 
+  apparent contradiction is further supported by other studies~\cite{paperDRAMMaUT, paperMemoryAware}, which 
+  evaluated the same device, namely the Raspberry Pi 4. Consequently, this 
+  limitation does not arise from the \gls{dram} configuration itself, but from the 
+  constraints of the Knock-Knock methodology. While the underlying memory behavior 
+  allows distinguishing row hits from row conflicts, the tool fails to recover the 
+  mapping due to its thresholding and peak-detection assumptions.
+
+  % Refresh Control
+  After successfully porting TRRespass to ARM, extensive testing was performed 
+  over several hours using different configurations and multiple runs in an attempt 
+  to bypass \gls{trr} mechanisms and induce bit flips. Despite these efforts, no effective 
+  hammering pattern emerged when using the fuzzer.
+  \\
+  Similar limitations have been reported in~\cite{paperBlacksmith} on some of their tested Micron
+  LPDDR4x devices as they were unable to trigger bitflips; however, the official 
+  publication does not specify the exact models or their architectures. Especially 
+  newer modules manufactured in 2020 were affacted due to improved mitigation 
+  mechanisms such as strengthened \gls{trr} implementations. As a result, its effectiveness 
+  on \gls{lpddr} devices was shown to be platform-dependent and not guaranteed across all 
+  chips.
+  \\
+  Blacksmith also did not work on these devices out of the box without reverse 
+  engineering the \gls{trr} behavior. Its default configurations assumed \gls{trr} distances, 
+  hammering amplitudes, and refresh alignments that did not correspond to the actual 
+  \gls{trr} behavior of certain LPDDR4x devices. The failure on some LPDDR4x modules was 
+  attributed to several factors. First, \gls{trr} distances were larger and more irregular 
+  than assumed by the default parameter ranges. Second, effective hammering patterns 
+  required longer consecutive hammering phases and precise alignment with specific 
+  refresh commands. Third, correct refresh alignment was critical but not accounted 
+  for in the initial implementation~\cite{toolBlacksmith}. Finally, the required reverse engineering 
+  depended on control over refresh commands, which is generally unavailable outside 
+  controlled test platforms.
+  \\
+  These findings directly relate to the limitations of the present work. In the 
+  evaluation, the authors had full control over the refresh commands on 
+  their test devices, which enabled them to reverse engineer the \gls{trr} behavior. In 
+  contrast, the experimental setup used in this work does not provide access to 
+  refresh control, thereby preventing a comparable analysis of \gls{trr} mechanisms. 
+  Consequently, the lack of refresh awareness and the restricted fuzzing capabilities 
+  limit the reliable identification of effective attack patterns.
+  \\
+  To make Blacksmith-like approaches work on similar \gls{lpddr} devices without refresh 
+  control, alternative strategies are needed. These include probabilistic or exhaustive 
+  fuzzing with extended parameter ranges to compensate for unknown \gls{trr} distances and 
+  refresh behavior, as well as accepting longer runtimes and repeated attempts, since 
+  effective patterns require alignment with refresh intervals that cannot be directly 
+  controlled. However, without explicit control over refresh commands, the probability 
+  of accidentally achieving the correct refresh alignment remains small, particularly
+  given larger \gls{trr} distances and irregular refresh behavior. Achieving such an alignment 
+  would require very long runtimes and many repeated attempts, rendering the approach 
+  impractical in most realistic settings.

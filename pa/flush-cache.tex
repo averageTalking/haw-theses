@@ -76,7 +76,8 @@
         A notable issue encountered during these experiments is the occurrence of zero latency readings when using 
         cache-bypass kernel modules, despite an active \gls{pmu} and relaxed paranoid 
         settings. This behavior is observed specifically on Raspberry Pi 5 systems, and its underlying cause 
-        remains unresolved at this stage.
+        remains unresolved at this stage, as the issue affects only the kernel module on all Raspberry Pi 5 devices, 
+        despite it having previously worked correctly. Userspace functionality remains unaffected.
         \\
         % System Control Register on EL1 (SCTLR\_EL1)
         In contrast to the ARMv7 architecture, ARMv8 defines the \texttt{SCTLR\_EL1} system control register, which includes 

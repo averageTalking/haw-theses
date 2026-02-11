@@ -1,3 +1,80 @@
 \clearpage
 \section{Conclusion} \label{sec:conclusion}
-  This is a test.
+  This thesis examined the resilience of contemporary Raspberry Pi platforms against 
+  disturbance-based memory faults. In particular, it investigated whether the Raspberry 
+  Pi 4 and Raspberry Pi 5 exhibit susceptibility to Rowhammer-induced bit flips when 
+  exposed to controlled hammering access patterns. The objective was to determine the 
+  extent to which these modern embedded systems remain vulnerable to software-triggered 
+  \gls{dram} disturbance errors.
+  \\
+  % Central Findings and Research Question
+  The conducted experiments yielded several central findings. With regard to cache 
+  bypass mechanisms, two out of four investigated approaches proved to be feasible. 
+  Cache bypass could be achieved either through eviction strategies or by flushing 
+  the cache using maintenance instructions. These methods enabled uncached memory 
+  accesses required for effective hammering attempts.
+  \\
+  Concerning \gls{dram} mapping, the DRAMA tool~\cite{toolDrama} was successfully ported to 
+  the ARM architecture. The adapted implementation provided accurate \gls{dram} address 
+  mappings for the respective test platforms.
+  \\
+  In terms of outrunning the refresh mechanism, the TRRespass tool~\cite{toolTRRespass} 
+  was likewise ported successfully to ARM systems. Although the tool operated as intended, 
+  it does not identify any effective access patterns for the test devices.
+  \\
+  % Answer of the research question to what extent it was concluded -> Limitations
+  Based on the experimental evaluation, it was concluded that modern Raspberry Pi 
+  models, including Raspberry Pi 4 and Raspberry Pi 5 with RAM configurations ranging 
+  from 4~GB to 16~GB, did not exhibit susceptibility to Rowhammer under the tested 
+  conditions. However, certain limitations prevent a definitive conclusion regarding 
+  absolute immunity. In particular, the potential applicability of advanced 
+  techniques such as Blacksmith~\cite{toolBlacksmith} and the influence of the \gls{dram} page 
+  policy restrict the scope of the conclusion.
+  \\
+  % Comparison with Expectations and Prior Literature
+  The absence of observable bit flips contrasts with prior expectations. Earlier studies 
+  indicated that previous models, such as the Raspberry Pi 3, were susceptible to Rowhammer 
+  attacks~\cite{paperRHonRi3B+}, and GPU-based hammering~\cite{paperOpenGL} on the Raspberry 
+  Pi 4. The lack of observable bit flips in the current study is likely due to active 
+  \gls{trr} mechanisms, which mitigate disturbance effects and prevent reliable fault induction.
+  \\
+  % Implications for Security
+  The findings narrow the immediate Rowhammer threat landscape for modern Raspberry Pi 
+  platforms. As of the time of this study, experimental results indicate that these 
+  devices are effectively resilient to conventional software-induced Rowhammer attacks.
+  \\
+  % Contribution and Scientific Value
+  This work provides the first systematic evaluation of Rowhammer susceptibility on the 
+  Raspberry Pi 5 across multiple RAM configurations, including 4~GB, 8~GB, and 16~GB variants. 
+  It empirically demonstrates that two practical cache-bypass methods are implementable on 
+  the Raspberry Pi 4 and Raspberry Pi 5. Furthermore, despite achieving successful cache 
+  bypass and accurate \gls{dram} mapping, no effective hammering patterns could be induced.
+  \\
+  The results offer indirect evidence for the effectiveness of \gls{trr} as a mitigation 
+  mechanism on ARM-based single-board computers. The study extends prior research that 
+  focused primarily on the Raspberry Pi 3 and partially on the Raspberry Pi 4. It 
+  provides clear experimental evidence that, under the applied conditions, no 
+  reproducible bitflips occur.
+  \\
+  In addition, the a \gls{dram} Address Function reverse engineer approach using foundation of 
+  \cite{paperDRAMA} was successfully ported to ARM systems 
+  and specifically adapted for the Raspberry Pi platform. Similarly, a fully ported and 
+  published version of the TRRespass tool~\cite{toolTRRespass} for 
+  ARM systems was developed, thereby enabling further evaluation and experimentation.
+  \\
+  % Future Work
+  Several open questions and potential extensions arise from this work.
+  \\
+  First, advanced investigations into \gls{trr} bypass techniques should be conducted. This 
+  includes integrating and evaluating Blacksmith-style frequency-based hammering. 
+  Furthermore, vendor-specific \gls{trr} behavior on \gls{lpddr} memory should be analyzed to 
+  determine mitigation thresholds and activation logic. The development of adaptive 
+  hammering techniques aimed at bypassing \gls{trr} and generating effective disturbance 
+  patterns represents another important research direction.
+  \\
+  Second, further analysis of the page policy and memory controller behavior is 
+  required. The active \gls{dram} page policy could be characterized using ~\cite{paperNethammer}.
+  Additionally, the impact of the page policy on row activation frequency, 
+  row buffer behavior, and overall disturbance feasibility should be evaluated. 
+  Finally, methods to influence or manipulate page policy behavior should be 
+  investigated in order to assess worst-case scenarios.

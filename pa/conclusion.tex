@@ -1,3 +1,34 @@
 \clearpage
 \section{Conclusion} \label{sec:conclusion}
-  This is a test.
+  % Revisit the problem context
+  The present study addresses the practical challenge of evaluating memory 
+  disturbance effects on contemporary Raspberry Pi platforms. Specifically, 
+  it focuses on implementing a Rowhammer-based proof of concept to investigate 
+  whether repeated memory accesses can induce observable bit flips on the 
+  Raspberry Pi 4 and 5. This work bridges the gap between theoretical 
+  vulnerability assessments and experimental verification on modern embedded 
+  ARM systems.
+  \\
+  % Degree of Objective Fulfillment
+  Regarding the degree of objective fulfillment, the proof-of-concept was successfully 
+  designed and implemented on both the Raspberry Pi 4 and 5 platforms. The implementation 
+  incorporates two practical cache-bypass techniques - eviction-based strategies and cache 
+  maintenance instructions, enabling uncached memory access for experimental hammering attempts.
+  Furthermore, the \gls{dram} mapping functionality was fully integrated using the ported DRAMA 
+  tool for ARM, allowing targeted memory row analysis on each test device. TRRespass 
+  was successfully ported but did not generate effective access patterns, demonstrating 
+  the current limitations of inducing Rowhammer bit flips on modern Raspberry Pi hardware.
+  \\
+  While all core modules of the proof-of-concept are operational and verified, inherent 
+  hardware protections such as \gls{trr}, or page policy 
+  behavior prevent reproducible bit flips, limiting the observable impact 
+  of the implemented hammering techniques.
+  \\
+  This work provides a fully operational and documented Rowhammer proof-of-concept 
+  specifically tailored to the Raspberry Pi 4 and 5 across multiple RAM configurations of 
+  4~GB, 8~GB, and 16~GB. It establishes an ARM-adapted and publicly available combination 
+  of the DRAMA and TRRespass tools, thereby facilitating further research on embedded 
+  platforms. Moreover, the results confirm that, under standard operating conditions, 
+  modern Raspberry Pi devices exhibit resilience against conventional software-induced 
+  Rowhammer attacks, underscoring the effectiveness of contemporary embedded mitigation 
+  mechanisms.

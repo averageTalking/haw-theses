@@ -1,2 +1,88 @@
 \section{Methodology} \label{sec:methodology}
-  This is a test.
+  % In General
+  This chapter describes the methodological framework applied in this thesis 
+  with the focus placed on theory, analysis and evaluation of the experiments. 
+  It outlines the research design, the applied methodological approach, as 
+  well as the procedures for data collection, analysis, and evaluation used 
+  to assess the susceptibility of modern Raspberry Pi models to Rowhammer 
+  attacks.
+
+  \subsection{Research Design} \label{subsec:research-design}
+    % Research Type & Objective
+    This study is quantitative using experimental testing to confirm or refute 
+    specific hypotheses in order to obtain empirical evidence and clarity 
+    regarding the susceptibility of various modern Raspberry Pi models to 
+    Rowhammer attacks.
+    \\
+    % Methodological Approach
+    From a methodological perspective, the study primarily adopts a deductive approach. Existing 
+    Rowhammer theories are tested on Raspberry Pi platforms by starting from established theoretical 
+    foundations, formulating hypotheses derived from these theories, and subsequently validating or 
+    refuting them through controlled experiments. In general, this deductive approach is characterized by 
+    the investigation of an existing theory, followed by the derivation of hypotheses, the execution of 
+    experiments, and the confirmation or falsification of the proposed assumptions. \\
+    In addition to the deductive core, the methodology incorporates an inductive approach in a supporting 
+    role. Experimental observations obtained during testing may reveal unexpected system behavior. Based 
+    on these measured results, new hypotheses or insights can be derived. In general terms, the inductive 
+    approach involves the derivation of theory from empirical research by identifying patterns in 
+    observations and formulating new hypotheses or theoretical considerations. Overall, the study is 
+    classified as predominantly deductive, complemented by inductive elements that emerge from experimental 
+    findings. 
+    \\
+    % Test Devices
+    The experimental setup included Raspberry Pi 4 models with 4~GB and 8~GB of RAM, as well as 
+    Raspberry Pi 5 models with 4~GB, 8~GB, and 16 GB of RAM 
+    (see \hyperref[tab:experimental-setups]{Table~\ref{tab:experimental-setups}}). 
+    The Raspberry Pi 4 devices are equipped 
+    with a Quad Core ARMv8 Cortex-A72 \gls{cpu} at 1.8~GHz, featuring 32~KB data and 48~KB instruction L1 
+    cache per core and a 1~MB L2 cache, which collectively provide approximately 50\% higher performance 
+    than the Raspberry Pi 3B~\cite{webProcessors}. The Raspberry Pi 5 devices include a Quad Core ARMv8 Cortex-A76 \gls{cpu} 
+    at 2.4~GHz, with 64~KB data and instruction L1 cache per core, 512~KB L2 cache per core, and a 
+    shared 2~MB L3 cache. In aggregate, the new features present in BCM2712 deliver a performance 
+    uplift of 2-3x over Raspberry Pi 4 for common \gls{cpu} or I/O-intensive use cases~\cite{webProcessors}.
+    The selected ARM-based single-board computers were provided for the purpose of this study.
+    The devices are comparable in terms of architecture, and overall system design, which 
+    enables a controlled comparison of Rowhammer susceptibility.
+
+    \begin{table}[h!]
+      \centering
+      \caption{Experimental setups}
+      \label{tab:experimental-setups}
+      \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \textbf{Platform} & \textbf{Processor} & \textbf{Architecture} & \textbf{SoC} & \textbf{DRAM} \\ \hline
+        Raspberry Pi 4B & ARMv8 & aarch64 & Broadcom BCM2711 & 4 GB LPDDR4 \\ \hline
+        Raspberry Pi 4B & ARMv8 & aarch64 & Broadcom BCM2711 & 8 GB LPDDR4 \\ \hline
+        Raspberry Pi 5 & ARMv8 & aarch64 & Broadcom BCM2712 & 4 GB LPDDR4x \\ \hline
+        Raspberry Pi 5 & ARMv8 & aarch64 & Broadcom BCM2712 & 8 GB LPDDR4x \\ \hline
+        Raspberry Pi 5 & ARMv8 & aarch64 & Broadcom BCM2712 & 16 GB LPDDR4x \\ \hline
+      \end{tabular}
+    \end{table}
+
+    % Data Sources
+    The primary data sources consisted of related academic papers from conferences such 
+    as ACM, IEEE, and others, providing the theoretical foundation. Supplementary 
+    technical documentation, datasheets, and glossaries to clarify hardware specifications 
+    and terminology. Additionally, GitHub repositories containing Rowhammer 
+    proof-of-concept implementations were utilized, adapted, and applied to 
+    the target devices.
+    \\
+    % Data Collection
+    Data collection involved the experimental execution of Rowhammer attacks on each 
+    Raspberry Pi model, combined with the observation of system behavior. Outcomes 
+    were systematically recorded and logged to facilitate further hypothesis formation. 
+    Data collection was conducted exclusively on the experimental devices to derive 
+    conclusions from the observed results and to support the generation of subsequent 
+    hypotheses.
+
+  \subsection{Evaluation} \label{subsec:evaluation}
+    To ensure the reliability and validity of results, experiments were repeated under 
+    controlled environmental conditions to minimize external interference. Observed 
+    outcomes were analyzed using statistical tests to assess the significance and
+    consistency of the findings.
+    \\
+    % Ethical Considerations
+    The experiments were conducted on the provided devices in a controlled setup. 
+    The study focuses on the responsible, academic investigation of Rowhammer 
+    vulnerabilities, with results intended solely for theoretical analysis and 
+    evaluation, avoiding any risk to other systems.

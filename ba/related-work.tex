@@ -1,2 +1,83 @@
 \section{Related Work} \label{sec:related-work}
-  This is a test.
+  % Rowhammer in General
+  It all began in 2014, when Kim et al.~\cite{paperFlippingBits} discovered the rowhammer vulnerability 
+  in the former DDR3 of an x86 system and talks about their technical details.
+  \\
+  Seaborn et al.~\cite{paperExploitingTheDRAM} subsequently developed a working  probabilistic  exploit 
+  that use this effect for local privilege escalation on year later.
+  \\
+  Shortly thereafter, in 2016, Gruss et al.~\cite{paperRowhammerjs} demonstrated a Rowhammer attack 
+  in JavaScript that did not rely on the \texttt{CLFLUSH} instruction, instead 
+  evicting cache lines from the CPU cache. This work showed that the previously 
+  considered essential instruction was no longer required and revealed a wide 
+  range of additional exploitation possibilities of the vulnerability.
+  \\
+  In the same year, Pessl et al.~\cite{paperDRAMA} introduced an automated reverse-engineering 
+  approach to identify DRAM addressing functions using their tool~\cite{toolDrama}. Their 
+  method leveraged timing-based measurements to systematically reconstruct the 
+  mapping of physical addresses to DRAM channels, ranks, and banks, thereby enabling 
+  more precise and targeted memory-based attacks.
+  \\
+  Schwarz et al.~\cite{thesisDRAMA} extended the theoretical and practical foundations of 
+  DRAMA introduced by Pessl et al., adapting the approach for ARM-based systems. 
+  Although the original implementation was not publicly available, their work 
+  provided the basis for our thesis to port DRAMA to ARM, enabling systematic 
+  analysis of DRAM buffer on modern ARM platforms.
+  \\
+  % Rowhammer on ARM platforms
+  Earlier Rowhammer attacks primarily targeted x86 systems, largely because 
+  the unprivileged \texttt{CLFLUSH} instruction enables efficient 
+  exploitation~\cite{paperFlippingBits, paperRHonRi3B+}. As ARM has become the dominant architecture 
+  in mobile devices, researchers have attempted to adapt these x86-oriented 
+  techniques; however, this translation is challenging, and some have even 
+  suggested that Rowhammer attacks on ARM might be infeasible, partly due 
+  to the potentially slower memory controllers that could prevent the bug 
+  from being triggered~\cite{paperDrammer,paperTriggeringRHHardwareFault}.
+  \\
+  Nevertheless, subsequent studies demonstrated that Rowhammer can indeed be 
+  exploited on ARM by identifying alternative methods to bypass these 
+  architectural limitations. \cite{paperDrammer} were the first study of Rowhammer prevalence 
+  on ARM-based devices, including Android smartphones and Chromebooks, as it 
+  was released from Van der Veen et al. in 2016. They provide a deterministic 
+  Rowhammer attack that cannot be mitigated by current defenses by leveraging 
+  user-accessible DMA buffers on Android devices, which allow memory accesses 
+  to bypass the CPU caches and directly interact with DRAM.
+  \\
+  Lipp et al.~\cite{paperARMageddon} demonstrated in 2016 cache side-channel attacks on ARM 
+  based mobile devices without requiring privileged instructions and to 
+  replace \texttt{CLFLUSH}, enabling fine-grained timing attacks on ARM.
+  \\
+  Subsequently, the authors of~\cite{thesisCacheAttacksandRH} extended such cache attacks on ARM 
+  architectures to practical exploitation scenarios, including keystroke 
+  inference, attacks on cryptographic algorithms, and the induction of 
+  Rowhammer faults. This methodology serves as a foundation in our thesis, 
+  where it is adopted as one approach to effectively bypass the CPU cache.
+  \\
+  Zhang et al.~\cite{paperTriggeringRHHardwareFault} validates in 2018 the attack on ARMv8-based single-board 
+  computers, namely by Amlogic S905X SBC by reliably trigger bitflips through 
+  ARM cache maintenance instructions analogous to the case of x86.
+  \\
+  % Previous attacks on Raspberry Pi's
+  Bekele et al.~\cite{paperRHonRi3B+} demonstrated the susceptibility of the Raspberry Pi 3B+ 
+  to Rowhammer attacks by leveraging ARM cache maintenance instructions. In 
+  addition, they analyzed the impact of DSB on attack effectiveness and examined 
+  the likelihood of inducing repeated bit flips at specific memory locations.
+  \\
+  Plin et al.~\cite{paperKnockKnock} introduced in 2025 a black-box approach to reverse-engineer 
+  DRAM address mappings without relying on proprietary hardware documentation, 
+  evaluating their method on a comparable platform, namely the Raspberry Pi 4. 
+  However, they observed and induced a closed-page policy on this system, influencing 
+  the effectiveness of reconstructing the underlying DRAM address mapping dramatically.
+  \\
+  % Research Gap
+  Previous studies have demonstrated the susceptibility of Rowhammer on older 
+  Raspberry Pi models. However, no other embedded systems within the Raspberry Pi 
+  series were evaluated. To date, research on Rowhammer has been limited almost 
+  exclusively to the Raspberry Pi 4, while the Raspberry Pi 5 remains entirely 
+  unexplored. Whereas the Raspberry Pi 4 has only been scarcely investigated and 
+  explored to trigger Rowhammer faults with GPU-based memory access patterns~\cite{paperOpenGL} 
+  in 2025.
+  \\
+  Consequently, it remains an open question whether modern Raspberry Pi platforms, 
+  such as the Raspberry Pi 4 and Raspberry Pi 5, are susceptible to software-induced 
+  Rowhammer attacks.

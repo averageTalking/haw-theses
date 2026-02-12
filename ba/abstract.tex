@@ -1,21 +1,48 @@
 \begin{titlepage}
     \section*{Abstract}
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt 
-        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo 
-        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit 
-        amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor 
-        invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et 
-        justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem 
-        ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
-        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos 
-        et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus 
-        est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit 
-        esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et 
-        iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait 
-        nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
-        euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, 
-        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. 
-        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
+        % Set the Scene
+        Low-cost single-board computers like the Raspberry Pi series, especially 
+        Raspberry Pi 4 and 5, are compact, energy-efficient platforms designed 
+        to deliver versatile computing across a wide range of applications. They 
+        rely on main memory to provide fast, temporary storage for actively processed 
+        data. Each bit of data in \gls{dram} is stored in a single memory cell that 
+        represents a binary value through the presence or absence of electrical 
+        charge in capacitor~\cite{paperFlippingBits, paperRowhammeronaRPi, paperDrammer}.
+        % Conflict
+        As \gls{dram} cell dimensions continue to shrink in order to increase memory 
+        density within limited physical space, technological progress enhances 
+        capacity and efficiency while simultaneously amplifying susceptibility 
+        to disturbance effects. \gls{dram} must be able to operate reliably without 
+        compromising integrity due to charge loss. Repeated gate-induced 
+        drain- and subthreshold leakage~\cite{paperFlippingBits, paperRHinDRAM} can cause sufficient charge 
+        loss and disturbance, ultimately leading memory cells to flip 
+        from 0 to 1 or vice versa. Such Software-induced fault, namely as 
+        Rowhammer, deliberately exploit these effects by triggering accelerated 
+        charge loss and disturbance errors, thereby corrupting memory contents 
+        in a way that can enable privilege escalation and other severe security 
+        consequences.
+        % Experiments
+        In this paper, we systematically evaluate the feasibility of mounting 
+        rowhammer on modern Raspberry Pi platforms. To enable uncached accesses 
+        to \gls{dram}, we examined multiple cache bypass techniques, of which cache 
+        eviction strategies and ARM cache maintenance instructions proved effective. 
+        Furthermore, we performed targeted accesses to specific \gls{dram} banks and 
+        rows by reverse engineering the \gls{dram} address mapping using the DRAMA 
+        approach and subsequently verifying the derived mappings.
+        % Climax Experiment
+        To outrun \gls{dram} refresh and circumvent \gls{trr}-based mitigation's, we ported 
+        and adapted TRRespass to identify efficient hammering access patterns 
+        capable of inducing bit flips to test the vulnerability.
+        % Validate Climax Experiment
+        Under the evaluated conditions, we could not observe any susceptibility 
+        on modern Raspberry Pi models varying in model and ram configuration to 
+        Rowhammer. However, factors such as potential \gls{trr} behavior and the 
+        influence of \gls{dram} page policies preclude a definitive claim of immunity.
+        % Return the protagonist to initial scene
+        The results show that \gls{dram} in modern Raspberry Pi models remains intact 
+        under tested Rowhammer conditions, demonstrating no observable compromise 
+        of memory integrity.
         \\
-        \textit{\textbf{Keywords}: Lorem, ipsum, dolor, sit, amet}
+        \textit{\textbf{Keywords}: Rowhammer, \gls{dram}, Raspberry Pi, Address Mapping, \gls{trr}}
+
 \end{titlepage}

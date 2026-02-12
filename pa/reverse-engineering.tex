@@ -47,7 +47,7 @@
         without relying on iterative function checks. Instead, it computes the nullspace of conflicting 
         address sets.
         \\
-        A major advantage of this tool is that it is a platform-agnostic design. It supports a wide range of 
+        A major advantage of this tool~\cite{toolKnockKnock} is that it is a platform-agnostic design. It supports a wide range of 
         architectures, including x86\_64, ARMv8, and POWER9/10, which makes it suitable for all 
         test devices used in this work.
         \\
@@ -66,6 +66,18 @@
         The same behavior was observed not only on the tested Raspberry Pi 4 but also consistently 
         across all Raspberry Pi 5 devices examined in this work. Further details and implications of 
         this issue are discussed in "Discussion and Limitations" of~\cite{paperBachelorarbeit}.
+        \\
+        % TODO
+        Due to this limitation, we briefly adopted a closed page policy in theory. Since many tasks require 
+        an open page policy, we had to find another way to trigger the Rowhammer bug. Based on the findings 
+        of Gruss et al. [24], who showed that the memory controller's page policy significantly influences 
+        how the Rowhammer vulnerability can be triggered, we were able to pursue an approach aimed at 
+        exploiting the Rowhammer bug even under a closed-page policy, which was further confirmed by [98].
+        This approach is based on the realization that one-location hammering is also possible with a closed 
+        side policy [24, 98]. To implement this approach, we used the FlipFloyd tool foundation [130] 
+        and adapted it to our ARM-based systems by changing the cache flush instructions and integrating 
+        the performance counter \texttt{PMCCNTR\_EL0}. This enables us to carry out the attack without 
+        having to know the exact physical DRAM address mapping.
 
     \subsubsection{Row Hit, Row Conflict Distinction} \label{subsubsec:row-hit-row-conflict-distinction}
         Distinguishing row hits from row conflicts is a fundamental requirement for reverse engineering 

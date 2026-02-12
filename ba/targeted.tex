@@ -154,9 +154,11 @@
             \label{fig:combinations-rpi5}
         \end{figure}
 
-        Figures \hyperref[fig:combinations-rpi4]{Figure~\ref{fig:combinations-rpi4}} and 
+        In this work, not only the original DRAMA ARM port without Hugepages was used, 
+        but also the TRRespass DRAMA ARM port, which supports Hugepages.
+        \hyperref[fig:combinations-rpi4]{Figure~\ref{fig:combinations-rpi4}} and 
         \hyperref[fig:combinations-rpi5]{Figure~\ref{fig:combinations-rpi5}} depict the 
-        distribution of detected XOR combinations for the Raspberry Pi 4 
+        distribution of detected XOR combinations with the original DRAMA port for the Raspberry Pi 4 
         and Raspberry Pi 5 devices, respectively. In some cases, the analysis yields multiple 
         candidate functions, including rare additional simple bank bits and, in certain instances,
         more complex XOR combinations. These occurrences are observed significantly more often on 
@@ -167,7 +169,7 @@
         combinations represent false positives, particularly since they occur infrequently and do not 
         exhibit consistency across multiple runs.
         \\
-        When compared to \gls{dram} address mappings reported in related studies, the 
+        When compared to \gls{dram} address mappings reported in related studies, both of our ported ARM DRAMA 
         mappings derived in this work closely resemble those described in~\cite{paperMemoryAware} and~\cite{paperDRAMMaUT}, as summarized
         in \hyperref[tab:mappings]{Table~\ref{tab:mappings}}.
 
@@ -181,8 +183,9 @@
                 Raspberry Pi 4B & DRAM MaUT~\cite{paperDRAMMaUT} & (12), (13), (14), (11 XOR 12) \\
                 Raspberry Pi 3B+ & Flipping Bits Like a Pro~\cite{paperProFlipping} & (13 XOR 14), (14), (15) \\
                 Exynos 7420 & DRAMA~\cite{paperDRAMA} & (14), (15), (16) \\
-                Raspberry Pi's 4 & Rowhammer on Raspberry Pi's~\cite{paperPraxisarbeit} & (6), (12), (13), (14) \\
-                Raspberry Pi's 5 & Rowhammer on Raspberry Pi's~\cite{paperPraxisarbeit} & (6), (12) \\
+                Raspberry Pi's 4 & Original DRAMA ARM Port~\cite{paperPraxisarbeit} & (6), (12), (13), (14) \\
+                Raspberry Pi's 5 & Original DRAMA ARM Port~\cite{paperPraxisarbeit} & (6), (12) \\
+                Raspberry Pi's 4 and 5 & TRRespass DRAMA ARM Port~\cite{paperPraxisarbeit} & (12), (13), (14) \\
                 \hline
             \end{tabular}
             \caption{Comparison between Related Work Mappings and own Thesis Mappings}

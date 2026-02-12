@@ -124,7 +124,7 @@
         selected addresses, identified through pagemap. Between each access, cache flush instructions 
         such as \texttt{DC CIVAC} are executed, and each address pair is probed for approximately 100.000 iterations. The 
         access latencies between these addresses are recorded, and after averaging across multiple measurements, 
-        the results are consolidated into a single .log file. From this consolidated data, histograms representing 
+        the results are consolidated into a single \texttt{.log} file. From this consolidated data, histograms representing 
         the distribution of row hits and row conflicts are generated, which helps reduce measurement noise.
         \\
         The measurement workflow can be implemented at different temporal resolutions. In the low-resolution 
@@ -186,7 +186,11 @@
         observed combinations are aggregated, sorted, and saved to \texttt{combinations.dat}, thereby increasing 
         statistical confidence and reducing the influence of outliers.
         \\
-        A third challenge involved result visualization. The original DRAMA code only printed XOR functions 
+        In fact, two DRAMA tools were ported, which, while similar in purpose, 
+        differ in execution. The original DRAMA tool does not utilize 
+        hugepages, whereas the DRAMA implementation within TRRespass relies on hugepages for memory allocation.
+        \\
+        Additionally, result visualization was improved. The original DRAMA code only printed XOR functions 
         and masks to the terminal, without any automated post-processing or visualization. To address this, 
         all detected XOR and non-XOR combinations are counted in \texttt{measure.cpp} and written to \texttt{combinations.dat}. 
         A Python script, \texttt{plot.py}, reads this file, separates XOR and non-XOR functions, sorts bit combinations 

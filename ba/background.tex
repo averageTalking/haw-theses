@@ -107,8 +107,16 @@
   
   \subsection{Rowhammer and Techniques} \label{subsec:rowhammer-and-techniques}
     % Rowhammer
-    % TODO
-    % \\
+    The \gls{dram} architecture inherently introduces a security vulnerability, known 
+    as Rowhammer, which is independent of the operating system or virtualization 
+    layers~\cite{thesisDRAMA, paperDrammer}. This software-induced 
+    hardware fault arises because increasing memory density places cells closer 
+    together, heightening the chance of interference between neighboring 
+    cells~\cite{paperFlippingBits,paperRowhammerOnSteroids,paperTriggeringRHHardwareFault, thesisDRAMA}. 
+    Repeatedly accessing a specific row, termed the aggressor row, can induce 
+    sufficient disturbance in adjacent victim rows to flip bits before the internal 
+    refresh can restore them.
+    \\
     % Implications
     This vulnerability has enabled a wide range of powerful attacks, including privilege 
     escalation~\cite{paperAnotherFlip, paperRowhammerjs, paperExploitingTheDRAM, paperDrammer}, 

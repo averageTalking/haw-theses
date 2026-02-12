@@ -1,21 +1,42 @@
 \begin{titlepage}
     \section*{Abstract}
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt 
-        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo 
-        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit 
-        amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor 
-        invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et 
-        justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem 
-        ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
-        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos 
-        et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus 
-        est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit 
-        esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et 
-        iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait 
-        nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
-        euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, 
-        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. 
-        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
+        % Set the Scene
+        Single-board computers such as Raspberry Pi 4 and 5, represent compact 
+        and power-efficient systems intended for diverse areas of applications. 
+        These platforms depend on main memory to supply fast and temporary storage 
+        for data currently being processed. In \gls{dram}, each bit is maintained within 
+        an individual memory cell, where a binary state is encoded by the existence 
+        or absence of electrical charge in a capacitor~\cite{paperFlippingBits, paperRowhammeronaRPi, paperDrammer}.
+        % Conflict
+        As \gls{dram} cells are further miniaturized to achieve higher memory densities 
+        within constrained physical space, advances in technology improve storage 
+        capacity and energy efficiency but also increase vulnerability to disturbance 
+        phenomena. Reliable \gls{dram} requires maintaining data integrity despite charge 
+        leakage. Repeated gate-induced drain- and subthreshold leakage~\cite{paperFlippingBits, paperRHinDRAM} can 
+        accelerate charge loss and intensify cell-to-cell interference, eventually 
+        causing bits to flip from 0 to 1 or vice versa. Rowhammer leverages this 
+        behavior by intentionally provoking rapid, repeated row activations that 
+        intensify charge loss and disturbance errors. As a result, memory contents 
+        may be corrupted, potentially facilitating privilege escalation and other 
+        critical security impacts.
+        % Experiments
+        In this work, a Rowhammer proof-of-concept was developed for the Raspberry 
+        Pi 4 and 5. Cache bypass methods were implemented via eviction strategies 
+        and ARM cache maintenance instructions, enabling direct \gls{dram} access. \gls{dram} 
+        address mapping was reconstructed by ported ARM-compatible DRAMA tool to 
+        allow targeted row accesses.
+        % Climax Experiment
+        Additionally, TRRespass was adapted to ARM to test effective access patterns 
+        for hammering designed to induce bit flips.
+        % Validate Climax Experiment
+        The proof-of-concept integrates all functional components, ranging from 
+        cache-bypass mechanisms and targeted \gls{dram} access to effective hammering 
+        patterns, into a framework designed to experimentally assess susceptibility 
+        to Rowhammer on contemporary Raspberry Pi hardware. While the full proof-of-concept 
+        successfully executed on multiple devices and RAM configurations, no 
+        reproducible bit flips were observed. Hardware protections and \gls{dram} page 
+        policies limit the effectiveness of hammering patterns, demonstrating the 
+        practical challenges in exploiting Rowhammer on these platforms.
         \\
-        \textit{\textbf{Keywords}: Lorem, ipsum, dolor, sit, amet}
+        \textit{\textbf{Keywords}: Rowhammer, \gls{dram}, Raspberry Pi, Address Mapping, \gls{trr}}
 \end{titlepage}

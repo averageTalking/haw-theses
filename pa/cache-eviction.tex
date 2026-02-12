@@ -53,7 +53,7 @@
         L2 caches, exhibiting inclusive behavior~\cite{docSharedUnit, webInclusivness}.
 
     \subsubsection{Eviction Development} \label{subsubsec:eviction-development}
-        The cache eviction mechanism used in this work is based on the libflush framework and relies on the 
+        The cache eviction mechanism used in this work is based on the libflush tool~\cite{toolArmageddon} and relies on the 
         construction and use of eviction sets. 
         \\
         % Eviction Set Structure
@@ -82,7 +82,7 @@
         \input{listings/cache-set-determination.tex}
 
         %% Build and Integration Adjustments
-        The libflush library was built for the ARMv8 architecture.
+        Libflush~\cite{toolArmageddon} was built for the ARMv8 architecture.
         A system-wide installation without Android dependencies was performed. The provided example application was subsequently 
         built and executed
         which additionally generated measurement plots. To streamline the build process, the Makefile in 
@@ -103,10 +103,10 @@
         sufficiently fast, as previously proposed eviction strategies have been shown to be too slow~\cite{paperCacheAccessPattern}. 
         In this work, the cache eviction implementation proposed by Lipp et~al.~\cite{toolArmageddon} is used. This approach is 
         applicable only to devices with a known eviction strategy~\cite{thesisDRAMA}, and therefore the default configuration 
-        provided by the libflush tool is adopted (see \hyperref[lst:default]{Figure~\ref{lst:default}}).
+        provided by the libflush tool~\cite{toolArmageddon} is adopted (see \hyperref[lst:default]{Figure~\ref{lst:default}}).
         \input{listings/default.h.tex}
 
-        The relevant configuration parameters are defined in the default libflush configuration. The parameter 
+        The relevant configuration parameters are defined in the default libflush~\cite{toolArmageddon} configuration. The parameter 
         \texttt{NUMBER\_OF\_SETS} specifies the total number of cache sets considered for eviction and determines 
         how addresses are indexed to cache sets. The parameters \texttt{LINE\_LENGTH\_LOG2} and \texttt{LINE\_LENGTH} 
         define the cache line size of 64~bytes and its base-2 logarithm, which are required for address calculations. 

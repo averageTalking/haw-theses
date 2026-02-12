@@ -17,7 +17,7 @@
         Non-temporal data refers to data that is accessed once and not reused in the near future, exhibiting 
         low temporal locality, such as streaming data, which ideally should not be cached in order to avoid 
         cache pollution~\cite{paperTriggeringRHHardwareFault}. This cache-bypassing capability facilitates Rowhammer 
-        attacks on x86 architectures, as demonstrated in~\cite{paperANewApproach}. However, as discussed in~\cite{paperDrammer}, ARMv8-A 
+        attacks on x86 architectures, as demonstrated in~\cite{paperANewApproach}. However, as mentioned in~\cite{paperDrammer, paperTriggeringRHHardwareFault, datasheetARMReferenceManual}, ARMv8-A 
         non-temporal memory access instructions merely provide a hint to the memory system that caching is 
         not required, and in practice the accessed data is still cached. Although the ARMv8-A instruction set 
         includes non-temporal load and store instructions, such as \texttt{LDNP} and \texttt{STNP}, it is generally considered 
@@ -35,7 +35,7 @@
     
     \subsection{Uncached memory} \label{subsec:uncached-memory}
         Another approach is the use of explicitly uncached memory. This method allocates memory regions that 
-        are explicitly marked as uncached, for example via ION, such that every memory access goes directly 
+        are explicitly marked as uncached, for example via Android ION, such that every memory access goes directly 
         to \gls{dram} without interacting with the \gls{cpu} cache. This approach is particularly well suited for mobile 
         ARM platforms, such as ARMv7 and ARMv8 systems, where cache flush instructions are sometimes privileged, 
         cache eviction is often too slow, and non-temporal stores are still cached in practice~\cite{toolRowhammering}. An 
@@ -47,7 +47,7 @@
         Android, this technique suffers from platform-specific memory management limitations. The Android 
         ION memory management framework is tightly coupled to the Android kernel and userspace stack and is 
         not available on standard Raspberry Pi Linux distributions. Consequently, user-accessible \gls{dma} buffers 
-        provided by ION cannot be allocated or controlled on a Raspberry Pi, rendering this cache-bypass 
+        provided by Android ION cannot be allocated or controlled on a Raspberry Pi, rendering this cache-bypass 
         technique inapplicable in that environment.
         \\
         In the context of this work, the previously discussed methods are therefore unsuitable or impractical. 

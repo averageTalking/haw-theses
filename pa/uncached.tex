@@ -16,7 +16,7 @@
         attacks. In particular, \cite{paperANewApproach} introduce a Rowhammer approach based on x86 non-temporal instructions. 
         Non-temporal data refers to data that is accessed once and not reused in the near future, exhibiting 
         low temporal locality, such as streaming data, which ideally should not be cached in order to avoid 
-        cache pollution~\cite{paperTriggeringRHHardwareFault}. This cache-bypassing capability significantly facilitates Rowhammer 
+        cache pollution~\cite{paperTriggeringRHHardwareFault}. This cache-bypassing capability facilitates Rowhammer 
         attacks on x86 architectures, as demonstrated in~\cite{paperANewApproach}. However, as discussed in~\cite{paperDrammer}, ARMv8-A 
         non-temporal memory access instructions merely provide a hint to the memory system that caching is 
         not required, and in practice the accessed data is still cached. Although the ARMv8-A instruction set 

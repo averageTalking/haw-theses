@@ -114,7 +114,7 @@
       tag.
       \begin{figure}[htbp]
           \centering
-          \frame{\includegraphics[width=\linewidth]{img/direct-mapped-cache.pdf}}
+          \frame{\includegraphics[height=0.3\textheight]{img/direct-mapped-cache.pdf}}
           \caption{Direct-mapped cache~\cite{thesisCacheAttacksandRH}}
           \label{fig:direct-mapped-cache}
       \end{figure}
@@ -184,15 +184,15 @@
       The number of cache sets is determined by the cache size, the cache line size, and the set associativity. 
       This relationship can be expressed as
       \[
-      2^{\text{Index}} = \frac{\text{Cache Size}}{\text{Line Size} \times \text{Set associativity}}
+      2^{\text{Index}} = \frac{\text{Cache Size}}{\text{Line Size} \times \text{Set associativity}}.
       \]
       Applying this formula to the L2 cache of the Raspberry Pi 4 results in
       \[
-      \text{Number of sets} = \frac{1024 \times 1024}{64 \times 16} = 1024 = 2^{10}
+      \text{Number of sets} = \frac{1024 \times 1024}{64 \times 16} = 1024 = 2^{10}.
       \]
       Similarly, for the L2 cache of the Raspberry Pi 5, the number of cache sets is given by
       \[
-      \text{Number of sets} = \frac{512 \times 1024}{64 \times 8} = 1024 = 2^{10}
+      \text{Number of sets} = \frac{512 \times 1024}{64 \times 8} = 1024 = 2^{10}.
       \]
       These calculations show that, despite differences in cache size and associativity, both systems employ 
       the same number of cache sets at the L2 cache level.

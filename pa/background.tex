@@ -108,7 +108,7 @@
       In a direct-mapped cache, each main memory entry is mapped to exactly one cache location. As a 
       consequence, multiple distinct memory addresses can also map to the same cache location~\cite{thesisCacheAttacksandRH}.
       \\
-      An illustrative example is shown in \hyperref[fig:direct-mapped-cache]{Figure~\ref{fig:direct-mapped-cache}}, which depicts a cache with a total size of 4~KB, 
+      An illustrative example is shown in~\cref{fig:direct-mapped-cache}, which depicts a cache with a total size of 4~KB, 
       consisting of 128 cache locations and a cache line size of 64~bytes. In this configuration, an address 
       is divided into three fields: 6 bits for the block offset, 7 bits for the index, and 19 bits for the 
       tag.
@@ -132,7 +132,7 @@
       cache, each memory block can be placed in any one of N cache lines within a specific set.
       \\
       Each memory address maps to exactly one cache set, and addresses that map to the same set are called 
-      congruent addresses, as illustrated in \hyperref[fig:n-way-associative-cache]{Figure~\ref{fig:n-way-associative-cache}}. 
+      congruent addresses, as illustrated in~\cref{fig:n-way-associative-cache}. 
       When all cache lines of a set are occupied and a new block needs to be loaded, the cache replacement 
       policy determines which existing cache line is evicted in order to accommodate the new data~\cite{thesisCacheAttacksandRH}.
 
@@ -159,6 +159,7 @@
               \end{tabular}%
           }
       \end{table}
+
       \begin{table}[h!]
           \centering
           \caption{RPi5 Cache: \texttt{lscpu {-}{-}cache}}
@@ -176,7 +177,8 @@
               \end{tabular}%
           }
       \end{table}
-      \hyperref[tab:rpi4-cache]{Tables \ref{tab:rpi4-cache}} and \ref{tab:rpi5-cache} summarize the cache configurations of the Raspberry 
+
+      \cref{tab:rpi4-cache} and \cref{tab:rpi5-cache} summarize the cache configurations of the Raspberry 
       Pi 4 and Raspberry Pi 5, respectively. These tables provide 
       an overview of cache sizes, associativity, cache levels, and the number of cache sets for the different 
       cache hierarchies present on both platforms.

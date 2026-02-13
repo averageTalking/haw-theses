@@ -17,7 +17,7 @@
     population on the motherboard, and BIOS settings, according to~\cite{paperReliableReverseEngineering}. Therefore, 
     it is necessary to reverse-engineer the \gls{dram} address mapping for all test devices. This 
     process leverages the fact that \gls{dram} consistently follows a hierarchical organization, as 
-    described in the \hyperref[sec:background]{Background} section of this thesis. As a consequence of this 
+    described in~\cref{sec:background}. As a consequence of this 
     structure, memory access latencies vary depending on the physical location of data within 
     the hardware~\cite{thesisDRAMA}.
         
@@ -107,7 +107,7 @@
             \label{fig:row-hit-conflict}
         \end{figure}
 
-        \hyperref[fig:row-hit-conflict]{Figure~\ref{fig:row-hit-conflict}} illustrates the resulting 
+        \cref{fig:row-hit-conflict} illustrates the resulting 
         histograms across all test devices. On the Raspberry Pi 4, 
         Row Hits are observed in the range of approximately 210-260 CPU cycles, while Row Conflicts 
         occur shortly before or after 300 CPU cycles, demonstrating a clear separation. For the 
@@ -156,8 +156,7 @@
 
         In this work, not only the original DRAMA ARM port without Hugepages was used, 
         but also the TRRespass DRAMA ARM port, which supports Hugepages.
-        \hyperref[fig:combinations-rpi4]{Figure~\ref{fig:combinations-rpi4}} and 
-        \hyperref[fig:combinations-rpi5]{Figure~\ref{fig:combinations-rpi5}} depict the 
+        \cref{fig:combinations-rpi4} and \cref{fig:combinations-rpi5} depict the 
         distribution of detected XOR combinations with the original DRAMA port for the Raspberry Pi 4 
         and Raspberry Pi 5 devices, respectively. In some cases, the analysis yields multiple 
         candidate functions, including rare additional simple bank bits and, in certain instances,
@@ -171,7 +170,7 @@
         \\
         When compared to \gls{dram} address mappings reported in related studies, both of our ported ARM DRAMA 
         mappings derived in this work closely resemble those described in~\cite{paperMemoryAware} and~\cite{paperDRAMMaUT}, as summarized
-        in \hyperref[tab:mappings]{Table~\ref{tab:mappings}}.
+        in~\cref{tab:mappings}.
 
         \begin{table}[ht]
             \centering

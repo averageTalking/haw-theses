@@ -21,7 +21,7 @@
     \\
     % DRAM Structure
     The structural organization of \gls{dram}, as illustrated in
-    \hyperref[fig:dram-architecture]{Figure~\ref{fig:dram-architecture}} and \hyperref[fig:lppdr-physical-structure]{Figure~\ref{fig:lppdr-physical-structure}}, is composed of 
+    \cref{fig:dram-architecture} and \cref{fig:lppdr-physical-structure}, is composed of 
     several fundamental components that together enable data storage and access. At the lowest level, 
     the transistor functions as a switch that controls access to the data stored within a memory 
     cell~\cite{webPhysicalStructure,paperRowhammerOnSteroids, thesisDRAMA}. The capacitor 
@@ -96,7 +96,7 @@
     LPDDR4 employs a shorter refresh interval of 32~ms and supports dynamic, temperature-based 
     refresh adjustments that are configured through the MR4 Mode Register~\cite{docJEDECLPDDR4,paperBlacksmith}. 
     The higher the temperature, the shorter the refresh interval. Conversely, the lower 
-    the temperature, the longer the refresh interval (See~\hyperref[fig:temperature-based-refresh-rates]{Figure~\ref{fig:temperature-based-refresh-rates}} for details)~\cite{paperBlacksmith,docJEDECLPDDR4,docJEDECLPDDR4x}.
+    the temperature, the longer the refresh interval (see \cref{fig:temperature-based-refresh-rates} for details)~\cite{paperBlacksmith,docJEDECLPDDR4,docJEDECLPDDR4x}.
     
     \begin{figure}[htbp]
       \centering
@@ -157,14 +157,14 @@
     A \textbf{single-sided} attack performs frequent accesses, or hammering, to only one row adjacent to a 
     victim row. This approach is often combined with accesses to other rows within the same bank 
     to induce bit flips in the neighboring victim 
-    row~\cite{webAnotherFlip, paperAnotherFlip,paperDrammer, paperRHinDRAM}, as can be seen from the \hyperref[fig:hammering-techniques]{Figure~\ref{fig:hammering-techniques}a}. In contrast, a 
+    row~\cite{webAnotherFlip, paperAnotherFlip,paperDrammer, paperRHinDRAM}, as can be seen from the \cref{fig:hammering-techniques}a. In contrast, a 
     \textbf{double-sided} attack repeatedly hammers two rows located on opposite sides of a victim row, 
-    effectively sandwiching it (see \hyperref[fig:hammering-techniques]{Figure~\ref{fig:hammering-techniques}b}). This increases the likelihood of inducing bit flips but requires
+    effectively sandwiching it (see \cref{fig:hammering-techniques}b). This increases the likelihood of inducing bit flips but requires
     partial knowledge of virtual-to-physical address mappings to correctly position the aggressor 
-    rows~\cite{paperRHinDRAM, paperAnotherFlip,paperDrammer}. In \hyperref[fig:hammering-techniques]{Figure~\ref{fig:hammering-techniques}c}, the \textbf{many-sided} attack extends this concept by employing multiple aggressor 
+    rows~\cite{paperRHinDRAM, paperAnotherFlip,paperDrammer}. In \cref{fig:hammering-techniques}c, the \textbf{many-sided} attack extends this concept by employing multiple aggressor 
     rows and distributed access patterns to evade \gls{trr} mitigation mechanisms 
     that monitor only limited access behaviors~\cite{paperTRRespass, paperHalfDouble}. Finally, the \textbf{one-location} attack is a 
-    technique in which the attacker repeatedly accesses a single \gls{dram} row at high frequency, as seen in \hyperref[fig:hammering-techniques]{Figure~\ref{fig:hammering-techniques}d}. 
+    technique in which the attacker repeatedly accesses a single \gls{dram} row at high frequency, as seen in \cref{fig:hammering-techniques}d. 
     Unlike traditional attacks that hammer multiple rows, this approach relies on modern memory 
     controllers that preemptively close rows instead of strictly following an open-page policy. 
     By continuously re-opening the same row, the attacker induces repeated row activations and 
@@ -206,7 +206,7 @@
     exploiting temporal and spatial locality, ensuring that frequently or recently used data 
     remains close to the \gls{cpu}. \\
     The memory hierarchy organizes storage components according to their speed, latency, and 
-    cost, as illustrated in~\hyperref[fig:memory-hierarchy]{Figure~\ref{fig:memory-hierarchy}}. Memory Hierarchy. Higher levels of the hierarchy, such as 
+    cost, as illustrated in~\cref{fig:memory-hierarchy}. Memory Hierarchy. Higher levels of the hierarchy, such as 
     \gls{cpu} caches, are smaller but faster, while lower levels are larger but significantly slower. 
     Due to their proximity to the \gls{cpu} and implementation using \gls{sram}, caches provide access 
     speeds approximately 10-100 times faster than \gls{dram}~\cite{webCacheVsRAM}.

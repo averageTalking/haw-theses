@@ -22,8 +22,7 @@
         parallel, the Raspberry Pi devices were physically inspected by unscrewing them in order to 
         identify the \gls{dram} manufacturer, the component markings, and the FBGA numbers. Using the “FBGA 
         to component marking decoder” provided on the official manufacturer website~\cite{webFBGADecoder}, the exact 
-        part numbers of the \gls{dram} components were determined, as summarized in 
-        \hyperref[tab:fbga-part-number-decoder]{Table~\ref{tab:fbga-part-number-decoder}}.
+        part numbers of the \gls{dram} components were determined, as summarized in~\cref{tab:fbga-part-number-decoder}.
         
         \begin{table}[h!]
             \centering
@@ -58,8 +57,7 @@
         either performs all required refresh commands before allowing further row activations or enters 
         \gls{trr} mode, in which only the adjacent victim rows are refreshed~\cite{datasheetLPDDR4}.
         \\
-        An analysis of the relevant mode register configuration, as summarized in 
-        \hyperref[tab:mode-register-assignments]{Table~\ref{tab:mode-register-assignments}}, 
+        An analysis of the relevant mode register configuration, as summarized in~\cref{tab:mode-register-assignments}, 
         reveals that \texttt{MR0} is used for mode selection, controlling either RFM or 
         or \gls{trr} operation. Specifically, \gls{trr} control applies only when \texttt{MR0 OP[2] = 0b}, whereas RFM is 
         selected when \texttt{MR0 OP[2] = 1b}. The \gls{trr} mode itself is defined by \texttt{MR24 OP[7]}, where 
@@ -152,7 +150,7 @@
         inspection of the kernel configuration using \texttt{/boot/config-\$(uname -r)} revealed that 
         while the architecture fundamentally supports HugePages, the kernel was compiled without 
         enabling either Transparent HugePages or HugeTLBFS. As a result, HugePages were enabled by 
-        natively rebuilding the Linux kernel, as described in \hyperref[sec:lab-setup]{Lab Setup}.
+        natively rebuilding the Linux kernel, as described in~\cref{sec:lab-setup}.
         \\
         According to the Debian arm64 kernel documentation, HugeTLB page sizes of 2 MB and 1 GB are 
         supported, but 1 GB HugeTLB pages must be pre-allocated at boot time via kernel command line 

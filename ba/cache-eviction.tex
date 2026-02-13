@@ -28,12 +28,12 @@
         \\
         The functionality of the \textit{Flush+Reload} attack proceeds in several steps. First, the attacker maps a target 
         binary, such as a shared library or executable, into their own virtual address space using a system call 
-        like \texttt{mmap}, as seen in \hyperref[fig:flush-and-reload]{Figure~\ref{fig:flush-and-reload}a}. Next, a specific cache line associated 
+        like \texttt{mmap}, as seen in \cref{fig:flush-and-reload}a. Next, a specific cache line associated 
         with this shared memory region is evicted from the entire cache hierarchy, including the \gls{llc}, using a cache 
-        flush instruction (see \hyperref[fig:flush-and-reload]{Figure~\ref{fig:flush-and-reload}b}). After the victim process is 
-        scheduled and executes (see \hyperref[fig:flush-and-reload]{Figure~\ref{fig:flush-and-reload}c}), the attacker re-accesses the previously 
+        flush instruction (see \cref{fig:flush-and-reload}b). After the victim process is 
+        scheduled and executes (see \cref{fig:flush-and-reload}c), the attacker re-accesses the previously 
         flushed memory location. The access latency is then measured to distinguish between a cache hit and a cache 
-        miss, as seen in \hyperref[fig:flush-and-reload]{Figure~\ref{fig:flush-and-reload}d}. A low access time indicates that the data was reloaded 
+        miss, as seen in \cref{fig:flush-and-reload}d. A low access time indicates that the data was reloaded 
         into the cache, whereas a high access time indicates that the data was fetched from main memory.
         \begin{figure}[htbp]
             \centering
@@ -94,11 +94,11 @@
         identify which cache sets are used during a victim’s computations~\cite{thesisCacheAttacksandRH}. The attack operates in a manner similar 
         to \textit{Evict+Time}. In the priming phase, the attacker accesses congruent addresses that map to a target cache set, 
         thereby occupying one or more specific cache sets with memory controlled by the adversary, as seen in 
-        \hyperref[fig:prime-and-probe]{Figure~\ref{fig:prime-and-probe}a}. During the victim 
+        \cref{fig:prime-and-probe}a. During the victim 
         execution phase, the victim program is scheduled and may fill the cache sets with its own addresses (see 
-        \hyperref[fig:prime-and-probe]{Figure~\ref{fig:prime-and-probe}b}).  If the program uses addresses that map to the same 
+        \cref{fig:prime-and-probe}b).  If the program uses addresses that map to the same 
         cache set as the attacker's addresses, it will, therefore, evict addresses that the attacker used to occupy the cache set. 
-        In the probing phase, as seen in \hyperref[fig:prime-and-probe]{Figure~\ref{fig:prime-and-probe}c}, 
+        In the probing phase, as seen in \cref{fig:prime-and-probe}c, 
         the attacker reaccesses the previously used addresses and measures the access times to determine which cache lines remain 
         resident. If an address has been evicted, it must be reloaded from main memory, resulting in a significantly higher access 
         time. Due to the pseudo-random cache replacement policy, it is possible that accesses during the probing phase evict 

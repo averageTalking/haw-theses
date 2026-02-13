@@ -1,33 +1,42 @@
-\section{Attack Primitives} \label{sec:attack-primitives}
+\section{Overview of Challenges} \label{sec:overview-of-challenges}
   For Rowhammer attacks to be feasible, three fundamental prerequisites must be satisfied, commonly referred
   to as attack primitive~\cite{presRHAttacksWalkthrough, toolRowhammering}. These primitives define the necessary properties of memory accesses that 
   enable the electrical disturbance of \gls{dram} cells required for inducing bit flips.
   
-  \begin{description}
-    \item[P1. Uncached]
-      The first prerequisite requires that memory accesses bypass 
-      the \gls{cpu} cache and reach the \gls{dram} directly. \gls{dram} cells are only electrically stressed when the memory controller opens 
-      and closes the corresponding \gls{dram} row, which occurs exclusively on accesses that are not served by the cache. 
-      Ensuring that each memory access physically toggles \gls{dram} cells, rather than being handled by the \gls{cpu} cache, 
-      is therefore essential. This condition is critical because Rowhammer relies on high-frequency direct \gls{dram} 
-      activations, which can only be achieved when cached accesses are avoided. If memory accesses remain cached, 
-      the hammering speed is reduced by orders of magnitude and falls far below the threshold necessary to discharge 
-      adjacent cells. Consequently, forcing cache misses or using uncached memory regions is mandatory to generate 
-      the required activation frequency.
-    \item[P2. Targeted]
-      The second prerequisite specifies that memory accesses must be directed to 
-      precisely chosen physical \gls{dram} rows. To accomplish this, an attacker must determine how virtual addresses are mapped onto the 
-      underlying physical \gls{dram} structures in order to identify aggressor rows that surround a specific victim row. 
-      This process requires reconstructing the \gls{dram} address mapping scheme. Only with accurate knowledge of this 
-      mapping can hammering be focused such that specific adjacent rows are repeatedly activated. Without correct 
-      targeting, hammering becomes largely probabilistic and rarely, if ever, results in disturbances of victim data.
-    \item[P3. Fast]
-      The third prerequisite demands that memory accesses occur at a rate that outpaces 
-      the \gls{dram} refresh mechanism. The attack fundamentally depends on hammering aggressor rows faster than refresh cycles can restore 
-      the electrical charge in adjacent victim cells. Achieving this requires a high access throughput to the same 
-      \gls{dram} rows with minimal delay between consecutive activations. In practice, this also implies that mitigation 
-      mechanisms designed to limit activation frequency or to increase refresh activity - such as \gls{trr} 
-      or an increased refresh rate - often need to be bypassed. Without overcoming such defenses, the hammering 
-      intensity remains insufficient to reliably induce bit flips.
-  \end{description}
+  \begin{tcolorbox}[challengebox={C1. Uncached}] \label{ch:uncached}
+    Bypass the \gls{cpu} cache to achieve direct \gls{dram} access.
+  \end{tcolorbox}
+
+  In~\cref{sec:uncached}, we discuss the first prerequisite, which requires that memory accesses bypass 
+  the \gls{cpu} cache and reach the \gls{dram} directly. \gls{dram} cells are only electrically stressed when the memory controller opens 
+  and closes the corresponding \gls{dram} row, which occurs exclusively on accesses that are not served by the cache. 
+  Ensuring that each memory access physically toggles \gls{dram} cells, rather than being handled by the \gls{cpu} cache, 
+  is therefore essential. This condition is critical because Rowhammer relies on high-frequency direct \gls{dram} 
+  activations, which can only be achieved when cached accesses are avoided. If memory accesses remain cached, 
+  the hammering speed is reduced by orders of magnitude and falls far below the threshold necessary to discharge 
+  adjacent cells. Consequently, forcing cache misses or using uncached memory regions is mandatory to generate 
+  the required activation frequency.
+
+  \begin{tcolorbox}[challengebox={C2. Targeted}] \label{ch:targeted}
+    Use DRAM address functions to map virtual addresses to physical rows and precisely target aggressor rows.
+  \end{tcolorbox}
+
+  In~\cref{sec:targeted}, we specify the second prerequisite, where memory accesses must be directed to 
+  precisely chosen physical \gls{dram} rows. To accomplish this, an attacker must determine how virtual addresses are mapped onto the 
+  underlying physical \gls{dram} structures in order to identify aggressor rows that surround a specific victim row. 
+  This process requires reconstructing the \gls{dram} address mapping scheme. Only with accurate knowledge of this 
+  mapping can hammering be focused such that specific adjacent rows are repeatedly activated. Without correct 
+  targeting, hammering becomes largely probabilistic and rarely, if ever, results in disturbances of victim data.
+
+  \begin{tcolorbox}[challengebox={C3. Fast}] \label{ch:fast}
+    Bypass mitigation mechanisms to achieve sufficiently rapid memory accesses for reliable Rowhammer activation.
+  \end{tcolorbox}
+
+  Finally in~\cref{sec:targeted}, we demand that memory accesses occur at a rate that outpaces 
+  the \gls{dram} refresh mechanism. The attack fundamentally depends on hammering aggressor rows faster than refresh cycles can restore 
+  the electrical charge in adjacent victim cells. Achieving this requires a high access throughput to the same 
+  \gls{dram} rows with minimal delay between consecutive activations. In practice, this also implies that mitigation 
+  mechanisms designed to limit activation frequency or to increase refresh activity - such as \gls{trr} 
+  or an increased refresh rate - often need to be bypassed. Without overcoming such defenses, the hammering 
+  intensity remains insufficient to reliably induce bit flips.
   

@@ -38,6 +38,7 @@
 ]{hyperref}
 \usepackage{glossaries-extra} % load after hyperref
 \usepackage{cleveref}
+\usepackage{tcolorbox}
 
 \input{abbrev}
 
@@ -71,6 +72,22 @@
   showstringspaces=false,
   tabsize=2,
   captionpos=b
+}
+
+\tcbset{
+  challengebox/.style={
+    colback=gray!10,
+    colframe=gray!50,
+    fonttitle=\bfseries,
+    coltitle=black,
+    title=#1,
+    boxrule=0.8pt,
+    arc=4pt,
+    left=6pt,
+    right=6pt,
+    top=4pt,
+    bottom=4pt
+  }
 }
 
 \renewcommand{\baselinestretch}{1.3}

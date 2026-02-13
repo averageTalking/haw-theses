@@ -44,13 +44,9 @@
     across different models.
     \\
     % Data Sources
-    The study primarily draws upon technical documentation, datasheets, and glossaries 
-    to obtain detailed information regarding the hardware and system behavior, forming the 
-    primary basis for the study's analysis. GitHub 
-    repositories containing Rowhammer experiments were consulted to understand and adapt 
-    methodologies for the target architecture. Additionally, relevant academic 
-    literature from conferences such as \textit{ACM} or \textit{IEEE} was reviewed to support the 
-    theoretical foundations.
+    The study primarily draws upon technical documentation, datasheets, and relevant academic literature
+    forming the primary foundation for the study's analysis, complemented by GitHub repositories on 
+    Rowhammer experiments to understand and adapt methodologies for the target architecture
     \\
     % Data Collection
     Data is collected through monitoring and documenting system responses after observations 
@@ -58,7 +54,7 @@
     \\
     % Data Analysis
     The data analysis involved the development and application of scripts to process 
-    experimental outputs, complemented by Python-based visualizations that enabled 
+    experimental outputs, complemented by visualizations that enabled 
     direct comparison across devices. Multiple logging 
     formats, including \texttt{.log}, \texttt{.dat}, and \texttt{JSON}, were employed to ensure comprehensive 
     data capture and support reproducibility. The resulting findings were interpreted 
@@ -70,6 +66,11 @@
     conducted within a controlled environment to minimize external interference, 
     and incorporated statistical analyses to assess the significance, reliability, 
     and comparability of the measured outcomes.
+    \\
+    The experiments were carried out on the provided devices within a secured setup 
+    to prevent any accidental harm. This study emphasizes the responsible and 
+    academic investigation of Rowhammer vulnerabilities, with results intended solely for 
+    analysis and evaluation, without posing any risk to other systems.
 
   \subsection{Requirements} \label{subsec:requirements}
     To ensure a structured and reliable experimental evaluation of Rowhammer attacks on Raspberry Pi platforms, 
@@ -98,6 +99,6 @@
       
     \subsubsection{Non-functional requirements} \label{subsubsec:non-functional-requirements}
       The implementation requires root privileges in user space to execute privileged instructions.
-      All \hyperref[tab:experimental-setups]{Raspberry Pi 4 and Raspberry Pi 5 devices} must operate in ARMv8 (AArch64) mode. The 
+      All Raspberry Pi 4 and Raspberry Pi 5 devices must operate in ARMv8 (AArch64) mode. The 
       system must meet requirements regarding performance and efficiency and include robust error-handling mechanisms. 
       Reproducibility is essential, such that repeated measurements yield similar results under comparable conditions.

@@ -1,34 +1,29 @@
 \section{Lab Setup} \label{sec:lab-setup}
-  The laboratory setup was designed to establish a consistent and reproducible environment for both system 
+  The laboratory setup was designed by us to establish a consistent and reproducible environment for both system 
   configuration and experimental execution, ensuring all devices, software, and development workflows were properly 
   prepared prior to conducting experiments.
 
   \subsection{System Setup} \label{subsec:system-setup}
     % Github Setup
-    The initial configuration of the laboratory environment involved setting up the necessary repositories for development 
-    and documentation. A dedicated \textit{GitHub} repository was created for coding purposes on all 
-    \hyperref[tab:experimental-setups]{test devices}, which contained the experimental programs, ported and adapted code, 
-    and the main software required for running the experiments. In addition, separate repositories were established for 
-    managing \textit{Obsidian} markdown files and \textit{LaTeX} documents related to the thesis work. The Obsidian repository 
-    was used to maintain a glossary, track status updates, organize the table of contents, and store key points in a structured 
-    manner. The \textit{LaTeX} repository served as the location for the fully elaborated final version of the thesis document.
+    The initial configuration of the laboratory environment involved setting up the necessary repositoriy for development~\cite{toolHamOnRaspi}.
+    for coding purposes on all test devices, which contained the experimental programs, ported and adapted code, 
+    and the proof-of-concept implementation.
     \\
     % Pi Setup
-    For the Raspberry Pi systems, both public and private keys were generated for \textit{WireGuard} and \textit{\gls{ssh}} connections. 
-    The corresponding public keys were transmitted to enable secure access on all devices. Functionality tests 
-    were conducted to ensure all hosts and systems were operational. Direct access from the laptop to the Pi systems 
-    was established by placing the authorized keys in the \texttt{.ssh/authorized\_keys} file on each device. All relevant IP 
-    addresses were added to the \texttt{/etc/hosts} file on the laptop. \textit{Visual Studio Code} was configured with the 
+    For the Raspberry Pi systems, we generated both public and private keys for \textit{WireGuard} and \textit{\gls{ssh}} connections. 
+    The corresponding public keys were transmitted to enable secure access on all devices. We tested 
+    all hosts and systems to confirm proper operation. We established direct access from the laptop to the Pi systems 
+    by placing the authorized keys in the \texttt{.ssh/authorized\_keys} file on each device and added all relevant IP 
+    addresses to the \texttt{/etc/hosts} file on the laptop. We also configured \textit{Visual Studio Code} with the 
     Remote \textit{\gls{ssh}} extension, alongside additional extensions for \textit{Python}, \textit{C}, and other required languages.
     \\
     % Unequal Versions of Header and Kernel
     Following the completion of system setup, multiple Raspberry Pi platforms with varying hardware configurations were 
-    prepared for experimentation. \hyperref[tab:experimental-setups]{Table~\ref{tab:experimental-setups}} summarizes the experimental setups used in this 
-    work, including the platform, processor architecture, \gls{soc}, and available \gls{dram}. All platforms were based on the ARMv8 architecture, 
+    prepared for experimentation. All platforms were based on the ARMv8 architecture, 
     providing a common architectural baseline while differing in memory capacity and \gls{soc} generation.
-    At the outset of the project, the test systems did not contain the data referenced in \hyperref[tab:experimental-setups]{Table~\ref{tab:experimental-setups}}, and the test 
-    environments were based on different operating systems. In addition, software versions and system architectures 
-    varied across the platforms, resulting in Raspberry Pi devices that were not aligned with each other. These 
+    At the outset of the project, the test systems did not contain the previously referenced data, differed in processor 
+    and architecture, and were based on different operating systems and kernel versions, 
+    leaving the Raspberry Pi devices misaligned and inconsistent with one another. These 
     discrepancies affected the consistency of the experimental setup.
     The term ARM denotes a family of \gls{risc} architectures~\cite{webARMandX86}, within which ARMv7-A and ARMv8-A constitute two major 
     application-profile generations. The ARMv7-A architecture is limited to 32-bit execution, 

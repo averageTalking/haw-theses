@@ -57,14 +57,14 @@
         construction and use of eviction sets. 
         \\
         % Eviction Set Structure
-        The eviction set structure, as defined in \hyperref[lst:eviction-set-structure]{Figure~\ref{lst:eviction-set-structure}}, consists of multiple virtual 
+        The eviction set structure, as defined in \hyperref[lst:eviction-set-structure]{Listing~\ref{lst:eviction-set-structure}}, consists of multiple virtual 
         addresses that are congruent, meaning that they map to the same cache set. Accessing all addresses contained 
         in an eviction set therefore ensures that a targeted cache line occupying the same set can be evicted from the cache.
         \input{listings/eviction-set-structure.tex}
 
         % Eviction Function
         The actual eviction procedure is implemented as a nested loop structure that repeatedly accesses the virtual 
-        addresses contained in an eviction set (see \hyperref[lst:eviction-function]{Figure~\ref{lst:eviction-function}}). During execution, 
+        addresses contained in an eviction set (see \hyperref[lst:eviction-function]{Listing~\ref{lst:eviction-function}}). During execution, 
         all addresses are iterated over multiple times, thereby generating sustained pressure on the corresponding cache set. 
         These repeated memory accesses are intended to reliably force the eviction of a target cache line. The behavior 
         of the eviction routine is governed by several configuration parameters. Together, these 
@@ -74,7 +74,7 @@
 
         %  Cache Set Determination
         To correctly construct eviction sets, it is necessary to determine the cache set index of a given memory 
-        address (see \hyperref[lst:cache-set-determination]{Figure~\ref{lst:cache-set-determination}}). This is achieved by computing the set index from the 
+        address (see \hyperref[lst:cache-set-determination]{Listing~\ref{lst:cache-set-determination}}). This is achieved by computing the set index from the 
         physical address of the memory location. The calculation is performed by shifting the physical address by 
         \texttt{LINE\_LENGTH\_LOG2} bits, corresponding to the cache line size, and then taking the result modulo 
         the total number of cache sets. This computation ensures that all addresses selected for an eviction set 
@@ -103,7 +103,7 @@
         sufficiently fast, as previously proposed eviction strategies have been shown to be too slow~\cite{paperCacheAccessPattern}. 
         In this work, the cache eviction implementation proposed by Lipp et~al.~\cite{toolArmageddon} is used. This approach is 
         applicable only to devices with a known eviction strategy~\cite{thesisDRAMA}, and therefore the default configuration 
-        provided by the libflush tool~\cite{toolArmageddon} is adopted (see \hyperref[lst:default]{Figure~\ref{lst:default}}).
+        provided by the libflush tool~\cite{toolArmageddon} is adopted (see \hyperref[lst:default]{Listing~\ref{lst:default}}).
         \input{listings/default.h.tex}
 
         The relevant configuration parameters are defined in the default libflush~\cite{toolArmageddon} configuration. The parameter 

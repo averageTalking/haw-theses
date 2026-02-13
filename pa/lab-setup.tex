@@ -4,48 +4,35 @@
   prepared prior to conducting experiments.
 
   \subsection{System Setup} \label{subsec:system-setup}
-    % Github Setup
-    The initial configuration of the laboratory environment involved setting up the necessary repositoriy for development~\cite{toolHamOnRaspi}.
-    for coding purposes on all test devices, which contained the experimental programs, ported and adapted code, 
-    and the proof-of-concept implementation.
-    \\
     % Pi Setup
-    For the Raspberry Pi systems, we generated both public and private keys for \textit{WireGuard} and \textit{\gls{ssh}} connections. 
-    The corresponding public keys were transmitted to enable secure access on all devices. We tested 
-    all hosts and systems to confirm proper operation. We established direct access from the laptop to the Pi systems 
-    by placing the authorized keys in the \texttt{.ssh/authorized\_keys} file on each device and added all relevant IP 
-    addresses to the \texttt{/etc/hosts} file on the laptop. We also configured \textit{Visual Studio Code} with the 
-    Remote \textit{\gls{ssh}} extension, alongside additional extensions for \textit{Python}, \textit{C}, and other required languages.
+    For the Raspberry Pi systems, we generated public and private keys for WireGuard and SSH, 
+    distributed the public keys to enable secure access, and verified connectivity on all devices. 
+    Direct access from the laptop was established by configuring authorized keys on each Pi and 
+    updating the laptop's \texttt{/etc/hosts} with all relevant IP addresses.
     \\
     % Unequal Versions of Header and Kernel
-    Following the completion of system setup, multiple Raspberry Pi platforms with varying hardware configurations were 
-    prepared for experimentation. All platforms were based on the ARMv8 architecture, 
+    After completing the system setup, we prepared multiple Raspberry Pi platforms for 
+    experimentation. All platforms were based on the ARMv8 architecture, 
     providing a common architectural baseline while differing in memory capacity and \gls{soc} generation.
     At the outset of the project, the test systems did not contain the previously referenced data, differed in processor 
     and architecture, and were based on different operating systems and kernel versions, 
     leaving the Raspberry Pi devices misaligned and inconsistent with one another. These 
     discrepancies affected the consistency of the experimental setup.
-    The term ARM denotes a family of \gls{risc} architectures~\cite{webARMandX86}, within which ARMv7-A and ARMv8-A constitute two major 
-    application-profile generations. The ARMv7-A architecture is limited to 32-bit execution, 
-    whereas ARMv8-A, supports both 32-bit and 64-bit computation~\cite{paperTriggeringRHHardwareFault}. Although ARMv7-A processors remain in 
-    use, ARMv8-A processors have become the predominant architecture in contemporary industrial applications.
+    \\
     On the Raspberry Pi 4 devices, older system installations were used. These systems ran Arch Linux ARM and reported 
-    a \gls{cpu} identified as an ARMv7 Processor revision 3 (v7l) on all Raspberry Pis 4. The kernel versions differed between 
-    the devices, with version \texttt{6.12.25-1-rpi} on the 4 GB model and version \texttt{6.12.21-1-rpi} on the 8 GB model. 
-    Kernel modules can be successfully run on Raspberry Pi 4 devices. However, the system architecture was armv7l. 
-    In this configuration, user-mode execution lacks certain cache maintenance instructions, such as \texttt{dc civac}, \texttt{dc cvac}, 
-    and \texttt{dc zva}. This limitation is inherent to the ARMv7-A architecture, where cache maintenance instructions are 
-    restricted to privileged modes.
+    a \gls{cpu} identified as an ARMv7 Processor revision 3 (v7l), which were limited to 32-bit 
+    execution~\cite{webARMandX86}. The kernel versions differed between 
+    these devices, with version \texttt{6.12.25-1-rpi} on the 4 GB model and version \texttt{6.12.21-1-rpi} on the 8 GB model. 
+    Raspberry Pi 4 devices can run kernel modules, but the armv7l architecture restricts user-mode execution from 
+    performing cache maintenance instructions like \texttt{DC CICAC}, which are limited to privileged modes.
+    \\
     The Raspberry Pi 5 devices also initially ran older system installations based on Arch Linux ARM. These systems 
-    reported an ARMv8 Processor revision 1 (v8l) and used the aarch64 architecture. The kernel version installed was 
-    \texttt{6.12.47.1-rpi-16k}. During initial testing, discrepancies were observed between the kernel and header versions on 
-    the Raspberry Pi 5 systems. This mismatch led to complications when attempting to build and insert kernel modules. 
-    Due to this incompatibility, kernel modules could not be fully compiled or loaded, as successful compilation 
-    requires header files that exactly match the running kernel version.
-    The objective at this stage was to align the kernel and header versions on the Raspberry Pi 5 systems. However, 
-    a persistent version mismatch was encountered. After performing a full system upgrade using the command
+    reported an ARMv8 Processor revision 1 (v8l) and used the aarch64 architecture, which supports both 
+    32-bit and 64-bit computation~\cite{paperTriggeringRHHardwareFault}. The Raspberry Pi 5 ran the kernel version 
+    \texttt{6.12.47.1-rpi-16k} but mismatched headers between kernel and header prevented successful compilation and insertion of kernel modules.
+    After performing a full system upgrade using the command
     \texttt{pacman -Syu linux-rpi-16k linux-rpi-16k-headers}, the kernel was updated, but no corresponding newer header 
-    package was available. As a result, the kernel and headers remained at different versions. Attempts to manually 
+    package was available. As a result, the kernel and header versions remained different. Attempts to manually 
     downgrade the kernel were also unsuccessful. Installing a cached kernel package (\texttt{linux-rpi-16k-6.12.46-1}) via 
     \texttt{pacman -U} and rebooting did not result in the expected kernel version, even though the package was present on 
     the system. Other kernel versions could be installed successfully, but still without matching header versions. 
@@ -60,63 +47,28 @@
     construction and timing-based profiling, thereby establishing a consistent and reliable experimental environment 
     across all platforms.
     \\
-    % Reinstall Systems [Requirements]
-    The hardware required for this process included a Raspberry Pi, a desktop computer, network cables, USB-C cables, 
-    Micro HDMI to HDMI adapters, a mouse, a keyboard, a laptop, and a micro SD card with an adapter. Software 
-    requirements consisted of the Raspberry Imager~\cite{webRaspberryImager} installed on the laptop and backups of the Raspberry Pi, including 
-    programs, boot files, \texttt{.ssh/authorized\_keys}, \texttt{/etc/wireguard/wg0.conf}, and the \gls{motd} 
-    configuration.
-    \\
     % Reinstall Systems [Workflow]
-    The installation workflow began by inserting the micro SD card into the laptop and launching the Raspberry Imager 
-    program. The device model and desired operating system were selected, followed by the micro SD card. Configuration 
-    settings were edited to specify the hostname, username, password, disable WiFi since all Raspberry Pis were 
-    connected via \gls{lan}, set the timezone to Berlin, configure the keyboard layout to German, and enable \gls{ssh} with public 
-    key authentication using the pre-existing \texttt{authorized\_keys} file. The micro SD card was then flashed and inserted 
-    into the Raspberry Pi again, which was powered on for automatic boot. Connectivity was verified via ping commands from the 
-    laptop.
-    \\
-    Subsequently, the Raspberry Pi was updated and upgraded using \texttt{sudo apt update} and \texttt{sudo apt upgrade}, followed by a 
-    reboot. The root password was set, and the \gls{ssh} configuration for root access was restored from backup. \gls{ssh} access 
-    from the laptop to both user and root accounts on the Pi was verified. The \gls{motd} was configured by emptying the 
-    existing file, creating a new executable script, and inserting backup content. Differences in user and root shell 
-    configurations were resolved by backing up \texttt{.bashrc} files, copying the user shell configuration to root, and sourcing 
-    the new configuration.
-    \\
-    WireGuard installation and configuration were completed on the Raspberry Pi, enabling the \gls{vpn} service, verifying 
-    its status, and ensuring connectivity from the laptop. Internet connectivity was enforced over HTTPS by modifying 
-    the apt configuration and sources list files, followed by updating package information. Essential tools, including 
-    \texttt{git}, \texttt{linux-perf}, \texttt{tmux}, and \texttt{i2c-tools}, were installed. The \textit{GitHub} repositories 
-    were cloned, and \textit{Git} configuration was initialized with the appropriate username and email.
-    \\
+    We reinstalled the Raspberry Pi systems using the Raspberry Imager, configuring the hostname, user credentials, 
+    LAN-only connectivity, timezone, keyboard layout, and SSH with pre-existing public keys. After flashing and automatic 
+    boot, we verified connectivity. We updated and upgraded the systems, and unified shell 
+    configurations. We installed and verified WireGuard VPN, enforced internet connectivity over HTTPS, and installed 
+    essential development tools. We cloned our GitHub repository~\cite{toolHamOnRaspi} for the developing the proof-of-concept and configured Git 
+    with the appropriate user credentials.
     % Requirements & Automated Setup
     For Python development, a virtual environment was created, and all additional dependencies were installed.
     \\
     % Natively Rebuild the Kernel
-    The kernel was rebuilt natively on the target system to enable the required memory management features 
-    while maintaining compatibility with the existing Raspberry Pi environment. The procedure began with a 
-    full system update, including updating the package index and upgrading all installed packages, followed 
-    by a system reboot to ensure that all updates were applied correctly.
-    \\
-    Subsequently, all necessary build dependencies were installed. These included standard compilation tools 
+    Since Hugepages were not enabled on this kernel configuration, we applied the necessary 
+    modifications to activate Hugepage support by rebuilding the kernel natively on the target systems.
+    The procedure began with installing necessary build dependencies. These included standard compilation tools 
     as well as libraries required for building the Linux kernel and device tree binaries for the Raspberry Pi 
     platform. The official Raspberry Pi Linux kernel source code~\cite{toolLinuxKernel} was then cloned, restricted to the latest 
-    commit of the \texttt{rpi-6.12.y}.
+    commit of \texttt{rpi-6.12.y}.
     \\
-    To preserve compatibility with the currently running system, the configuration of the active kernel was 
-    reused as the baseline for the new build by copying the existing kernel configuration into the build 
-    directory. Based on this configuration, kernel options were adjusted to enable support for the HugeTLB 
-    file system and Transparent Hugepages within the memory management subsystem. The correctness of these 
-    configuration changes was verified directly in the kernel configuration file.
-    \\
-    After configuration, the kernel image, kernel modules, and device tree were compiled using all 
-    available processor cores. The compiled kernel modules were installed into the system. The newly 
-    built kernel image, along with the corresponding device 
-    tree binaries and overlays required for system boot, was then deployed to the boot firmware directory. 
-    A reboot was performed to activate the new kernel.
-    \\
-    Finally, the successful installation was verified by checking the running kernel version and confirming 
-    the availability of Hugepage support through system interfaces, ensuring that both HugeTLB and Transparent 
+    We reused the active kernel configuration as a baseline, modifying options to enable HugeTLB and 
+    Transparent Hugepage support. We then compiled the kernel, modules, and device tree using all available 
+    cores, installed the modules, and deployed the new kernel and device tree binaries to the boot directory. 
+    After reboot, we verified the running kernel version and confirmed that both HugeTLB and Transparent 
     Hugepages were correctly enabled and recognized by the operating system.
     \\
     % DVFS

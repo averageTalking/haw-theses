@@ -43,7 +43,7 @@
             disturbance mechanism cannot be entirely eliminated in current technology nodes. Moreover, hardware-based 
             approaches may introduce additional latency, increase energy consumption, or raise implementation complexity.
             \\
-            \textbf{\gls{ecc}} can correct single-bit errors using stored parity information. However, 
+            \textbf{\gls{ecc}} can correct single-bit errors using stored parity information~\cite{paperRHARetrospective, webTenYearsOfRH, paperECC}. However, 
             \gls{ecc} can only detect and correct single-bit flips and is insufficient for addressing multi-bit flips, which 
             have become increasingly common~\cite{paperTriggeringRHHardwareFault}.
             \\
@@ -76,7 +76,7 @@
 
     \subsection{TRR Bypass} \label{subsec:trr-bypass}
         Although the absence of observed bit flips points toward effective mitigation on Raspberry Pi platforms, 
-        these \gls{dram} devices were produced recently in 2020 and likely deploy an improved mitigation scheme, as noted in~\cite{paperBlacksmith}.
+        these devices were produced recently in 2020 and likely deploy an improved mitigation scheme, as noted in~\cite{paperBlacksmith}.
         Prior work research~\cite{paperHalfDouble, paperTRRespass, paperBlacksmith, paperTRRScope} 
         has demonstrated that protection mechanisms such as \gls{trr} can 
         often be circumvented through carefully engineered access patterns. To assess whether such 

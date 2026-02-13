@@ -6,8 +6,8 @@
     \\
     In the context of \gls{gpu} cache eviction, prior work has shown that by cleverly evicting the cache of an 
     integrated \gls{gpu}, access to main memory can be achieved with significantly reduced latency, enabling 
-    memory accesses~\cite{paperPwning}. This approach exploits the relatively simple cache structures 
-    of integrated \gls{gpu}s, which can be evicted efficiently in order to achieve main-memory accesses~\cite{paperOpenGL, paperPwning}.
+    memory accesses~\cite{paperPwning,paperTriggeringRHHardwareFault}. This approach exploits the relatively simple cache structures 
+    of integrated \gls{gpu}s, which can be evicted efficiently in order to achieve main-memory accesses~\cite{paperOpenGL, thesisDRAMA, paperPwning}.
     \\
     CPU cache eviction is considerably more complex~\cite{paperARMageddon}. This complexity arises from higher cache associativity, 
     the presence of multiple cache levels, and sophisticated cache replacement policies. Nevertheless, 
@@ -83,8 +83,8 @@
     \subsubsection{Cache Management} \label{subsubsec:cache-management}
         %% Cache Replacement Policy
         When a cache is full and a cache miss occurs, buffered code and data must be evicted from the cache to make room for new 
-        cache entries. The heuristic used to decide which cache entry to evict is referred to as the cache replacement 
-        policy, which aims to select the entry that is least likely to be used in the near future. The chosen 
+        cache entries~\cite{paperARMageddon}. The heuristic used to decide which cache entry to evict is referred to as the cache replacement 
+        policy, which aims to select the entry that is least likely to be used in the near future~\cite{paperTriggeringRHHardwareFault}. The chosen 
         replacement policy directly influences the number and access patterns required for an effective eviction 
         strategy~\cite{thesisCacheAttacksandRH}.
         \\
@@ -101,10 +101,10 @@
         In a multi-level cache hierarchy, it must be decided which cache levels store copies of data. A 
         higher-level cache is called inclusive with respect to a lower-level cache if all cache lines present in 
         the lower-level cache are also stored in the higher-level cache. Caches are considered exclusive if 
-        a cache line can reside in only one of two cache levels~\cite{thesisCacheAttacksandRH}. If a cache is neither inclusive nor exclusive, 
+        a cache line can reside in only one of two cache levels~\cite{thesisExploitingMicroOpt, thesisCacheAttacksandRH}. If a cache is neither inclusive nor exclusive, 
         it is referred to as non-inclusive.
         \\
-        On the Raspberry Pi 4, the L2 cache is inclusive with respect to the L1 cache. On the Raspberry Pi 5, the 
+        On the Raspberry Pi 4, the L2 cache is inclusive with respect to the L1 cache~\cite{docCortexA72}. On the Raspberry Pi 5, the 
         cache hierarchy is strictly inclusive with respect to the L1 data cache and weakly inclusive with respect 
         to the L1 instruction cache~\cite{docCortexA76}. The L3 cache is neither strictly inclusive nor strictly exclusive, but 
         rather non-inclusive, with a dynamic allocation policy that depends on the access pattern~\cite{docSharedUnit, webInclusivness}. 
@@ -159,7 +159,7 @@
         % Eviction Strategy
         Cache attack techniques such as \textit{Flush+Reload} and \textit{Flush+Flush} typically rely on the 
         unprivileged x86 \texttt{CLFLUSH} instruction to evict cache lines. In contrast, ARMv8-A \gls{cpu}s do 
-        not provide an unprivileged flush instruction, which makes cache eviction strategies necessary instead. 
+        not provide an unprivileged flush instruction~\cite{paperDrammer}, which makes cache eviction strategies necessary instead~\cite{thesisCacheAttacksandRH}. 
         In order to obtain the high-frequency measurements required by modern cache attacks, eviction must be 
         sufficiently fast, as previously proposed eviction strategies have been shown to be too slow~\cite{paperCacheAccessPattern}. 
         The Lipp et al.~\cite{paperARMageddon,toolArmageddon} approach is 

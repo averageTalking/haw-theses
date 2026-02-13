@@ -38,7 +38,7 @@
         are explicitly marked as uncached, for example via Android ION, such that every memory access goes directly 
         to \gls{dram} without interacting with the \gls{cpu} cache. This approach is particularly well suited for mobile 
         ARM platforms, such as ARMv7 and ARMv8 systems, where cache flush instructions are sometimes privileged, 
-        cache eviction is often too slow, and non-temporal stores are still cached in practice~\cite{toolRowhammering}. An 
+        cache eviction is often too slow, and non-temporal stores are still cached in practice~\cite{paperDrammer, paperTriggeringRHHardwareFault, datasheetARMReferenceManual, toolRowhammering} An 
         important advantage of this method is that it does not require special privileges or permissions. 
         Previous work takes advantage of \gls{dma} buffers exposed to userspace through the Android ION memory 
         management interface~\cite{paperDrammer}. 

@@ -14,7 +14,7 @@
         % Flush+Reload
         The \textbf{\textit{Flush+Reload}} attack was introduced by Gullasch et al.~\cite{paperCacheGames} and later extended by
         Yarom and Falkner~\cite{paperFlushReload}. It exploits shared memory between an attacker and a victim and provides very 
-        fine-grained resolution~\cite{paperRowhammerjs}. The basic idea proposed in~\cite{paperCacheGames} is 
+        fine-grained resolution~\cite{thesisMicroAttacks, paperRowhammerjs}. The basic idea proposed in~\cite{paperCacheGames} is 
         to use the \texttt{clflush} instruction to evict monitored memory locations from the cache and then 
         check whether these locations have been reloaded after the victim program has executed a small number of 
         instructions. Yarom and Falkner~\cite{paperFlushReload} further observed that the \texttt{clflush} instruction evicts cache 
@@ -68,7 +68,7 @@
         Gruss et al.~\cite{paperFlushFlush} demonstrated the effectiveness of \textit{Flush+Flush} by constructing a covert channel with a 
         transmission rate nearly seven times faster than previously published channels. Since \textit{Flush+Flush} does not 
         perform any memory accesses, it causes no cache misses at all, and the number of cache hits is reduced to a 
-        minimum due to the continuous cache flushes as seen in~\cite{paperFlushFlush} or on all of our test devices.
+        minimum due to the continuous cache flushes as seen in~\cite{paperFlushFlush} or on all of our test devices~\cite{thesisMicroAttacks}.
         \\ \\ % Evict+Time
         The \textbf{\textit{Evict+Time}} attack measures how evicting a specific cache set affects the execution time~\cite{thesisCacheAttacksandRH}. 
         Initially, the execution time of the victim is measured. Subsequently, a specific cache set is evicted, and the victim 
@@ -101,11 +101,11 @@
         In the probing phase, as seen in \cref{fig:prime-and-probe}c, 
         the attacker reaccesses the previously used addresses and measures the access times to determine which cache lines remain 
         resident. If an address has been evicted, it must be reloaded from main memory, resulting in a significantly higher access 
-        time. Due to the pseudo-random cache replacement policy, it is possible that accesses during the probing phase evict 
+        time. Due to the pseudo-random cache replacement policy~\cite{thesisCacheAttacksandRH}, it is possible that accesses during the probing phase evict 
         previously accessed attacker addresses, which can lead to false positives.
         \\
         Prime+Probe has been used in several attacks. In 2015, Irazoqui et al. applied \textit{Prime+Probe} to attack the OpenSSL 
-        AES implementation in a cloud environment~\cite{paperSharedCacheAttack}. In the same year, Liu et al. used \textit{Prime+Probe} to construct a 
+        AES implementation in a cloud environment~\cite{paperSharedCacheAttack}. In the same year, Liu et al.~\cite{paperLastLevelCacheAttack} used \textit{Prime+Probe} to construct a 
         cross-core covert channel and to attack ElGamal decryption in GnuPG~\cite{paperLastLevelCacheAttack}.
         \begin{figure}[htbp]
             \centering
@@ -130,7 +130,7 @@
         \textbf{\textit{Evict+Reload}} was introduced by Gruss et al. in 2015 as a variant of \textit{Flush+Reload} that replaces the 
         flush instruction with cache eviction~\cite{paperCacheTemplateAttacks}. While it has no practical use on x86 CPUs due to the availability 
         of the unprivileged \texttt{clflush} instruction, it is applicable to ARM CPUs that lack an unprivileged 
-        cache flush instruction. Cache eviction in \textit{Evict+Reload} requires filling a cache set with a sufficient 
+        cache flush instruction~\cite{paperDrammer}. Cache eviction in \textit{Evict+Reload} requires filling a cache set with a sufficient 
         number of congruent addresses so that the replacement policy evicts the target address. The number of 
         required addresses and the access pattern depend on the cache replacement policy, and using too few addresses 
         or accessing them insufficiently results in a low eviction rate~\cite{thesisCacheAttacksandRH}. Gruss et al. later demonstrated 

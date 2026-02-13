@@ -6,7 +6,7 @@
     hierarchical structure of two-dimensional cell matrices arranged in rows and columns~\cite{paperRHinDRAM, paperRowhammerOnSteroids, paperDrammer}, 
     with each cell storing  a single bit of data using a capacitor that is controlled by 
     an access transistor, where exactly 
-    one capacitor and one transistor are required per stored bit~\cite{paperRowhammerOnSteroids,thesisDRAMA}.
+    one capacitor and one transistor are required per stored bit~\cite{paperRHinDRAM, paperRowhammerOnSteroids,thesisDRAMA}.
     \\
     The widespread adoption of \gls{dram} stems from its advantages, 
     including low latency, high storage density, and cost-effectiveness per bit~\cite{paperRHinDRAM}. 
@@ -27,7 +27,7 @@
     cell~\cite{webPhysicalStructure,paperRowhammerOnSteroids, thesisDRAMA}. The capacitor 
     itself is responsible for storing a single bit of information in the form of an electric charge, 
     where a charged state represents a logical one and an uncharged state represents a logical 
-    zero~\cite{thesisDRAMA}. A \gls{dram} cell is therefore defined by the combination of exactly one transistor and 
+    zero~\cite{paperRevisitingDRAM, thesisDRAMA}. A \gls{dram} cell is therefore defined by the combination of exactly one transistor and 
     one capacitor connected to both a wordline and a bitline, where the stored charge indicates a binary
     value~\cite{paperDrammer}.
     \\
@@ -64,10 +64,10 @@
   
   \subsection{Refresh Behavior} \label{subsec:refresh-behavior}
     % Volatile Memory
-    \gls{dram} is a volatile memory, meaning that all stored data is lost when the 
+    \gls{dram} is a volatile memory, implying that all stored data is gone when the 
     power supply is interrupted. Even while power is applied, stored information must be 
     actively maintained, as the capacitors in \gls{dram} cells gradually lose their charge over 
-    time. To preserve data integrity, the memory controller therefore issues periodic refresh 
+    time~\cite{paperFlippingBits}. To preserve data integrity, the memory controller therefore issues periodic refresh 
     operations or regular read and write commands, even when the memory is otherwise 
     idle~\cite{paperRowhammerOnSteroids, webSDRAMMemory, thesisDRAMA}. If a \gls{dram} cell loses too much charge before being refreshed, 
     a disturbance error may arise, resulting in incorrect data being stored~\cite{paperFlippingBits}.
@@ -79,7 +79,7 @@
     connects the capacitors to their respective bitlines. The row buffer temporarily stores 
     the data by sensing the charge from the cells, while the contents of the original 
     row is overwritten. Subsequently, the data stored in the row buffer is restored back 
-    into the \gls{dram} array, ensuring that the original information is preserved~\cite{paperRHinDRAM,paperRowhammerOnSteroids, thesisDRAMA}.
+    into the \gls{dram} array, ensuring that the original information is preserved~\cite{paperRHinDRAM, thesisDRAMA, paperRowhammerOnSteroids, thesisDRAMA}.
     \\
     % Row Hit and Row Conflict
     When a memory access targets data that resides in a row already opened into the row buffer, 
@@ -159,7 +159,7 @@
     to induce bit flips in the neighboring victim 
     row~\cite{webAnotherFlip, paperAnotherFlip,paperDrammer, paperRHinDRAM}, as can be seen from the \cref{fig:hammering-techniques}a. In contrast, a 
     \textbf{double-sided} attack repeatedly hammers two rows located on opposite sides of a victim row, 
-    effectively sandwiching it (see \cref{fig:hammering-techniques}b). This increases the likelihood of inducing bit flips but requires
+    effectively sandwiching it (see \cref{fig:hammering-techniques}b)~\cite{paperAnotherFlip}. This increases the likelihood of inducing bit flips but requires
     partial knowledge of virtual-to-physical address mappings to correctly position the aggressor 
     rows~\cite{paperRHinDRAM, paperAnotherFlip,paperDrammer}. In \cref{fig:hammering-techniques}c, the \textbf{many-sided} attack extends this concept by employing multiple aggressor 
     rows and distributed access patterns to evade \gls{trr} mitigation mechanisms 
@@ -199,7 +199,7 @@
     requests data already present in one of its cache levels. In this case, the cache provides 
     the data immediately, bypassing the need to access main memory. This results in extremely 
     low latency, as cache access is several orders of magnitude faster than \gls{dram} access. 
-    Conversely, a cache miss happens when the requested data is not stored in the cache. The 
+    Conversely, a cache miss happens when the requested data is not stored in the cache~\cite{paperOverviewOfCacheMemory}. The 
     \gls{cpu} must then retrieve the data from \gls{dram}, which introduces significantly higher latency 
     due to slower access times. Once retrieved, the data is typically placed in the cache to 
     accelerate potential future accesses. Cache hits improve overall system performance by 

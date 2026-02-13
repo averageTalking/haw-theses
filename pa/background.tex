@@ -76,16 +76,16 @@
     to locate the corresponding page frame. If the entry is found, the translation 
     is completed and cached in the \gls{tlb}. If no entry exists, the system may need to 
     retrieve the page from storage, which represents the worst-case 
-    scenario.
+    scenario~\cite{blogVirtToPhys}.
 
   \subsection{Timing Measurement} \label{subsec:timing-measurement}
     Timing serves as the basic for identifying \gls{dram} accesses and is an 
     essential part of executing or reverse engineering rowhammer attacks, particularly 
     when adapting such attacks to ARM-based systems for the development of Proof of Concept (PoC)
     implementations. On x86 architectures, high-resolution timestamps can be obtained 
-    in an unprivileged context using the \gls{rdtsc} instruction. The \gls{rdtsc} 
+    in an unprivileged context using the \gls{rdtsc} instruction~\cite{toolKnockKnock, toolMemoryAware, toolBlacksmith, toolFlipfloyd}. The \gls{rdtsc} 
     instruction provides an unprivileged mechanism for acquiring sub-nanosecond timing information.
-    It functions as a fine-grained timer by returning a high-resolution count of CPU clock cycles.
+    It functions as a fine-grained timer by returning a high-resolution count of CPU clock cycles~\cite{docRDTSC}.
     In contrast, ARM architectures, specifically ARMv7-A and ARMv8-A, do not offer a 
     direct counterpart to the \gls{rdtsc} instruction. Instead, high-resolution timing on 
     these systems can be acquired via the \gls{pmu} cycle counter, 
@@ -94,7 +94,7 @@
     kernel space by default~\cite{thesisCacheAttacksandRH, thesisDRAMA}.
     \\
     The \texttt{PMCCNTR\_EL0} register holds the value of the processor cycle counter,
-    monitoring the number of processor clock cycles. It is a 64-bit register 
+    monitoring the number of processor clock cycles~\cite{paperPMCCNTREL0}. It is a 64-bit register 
     integrated within the \gls{pmu} block. Architecturally, the external register 
     \texttt{PMCCNTR\_EL0} bits \texttt{[63:0]} are mapped to the AArch64 system 
     register. The increment behavior of the cycle counter 

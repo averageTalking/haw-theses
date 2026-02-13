@@ -17,7 +17,7 @@
     \\
     \textbf{Cleaning} a cache or cache line refers to writing the contents of dirty cache lines back to main memory 
     and clearing the dirty bits, which makes the contents of the cache and main memory coherent with each 
-    other~\cite{datasheetCortexASeries}. This operation is only applicable to data caches that use a write-back policy. Cache 
+    other~\cite{datasheetCortexASeries, thesisCacheAttacksandRH}. This operation is only applicable to data caches that use a write-back policy. Cache 
     clean and invalidate operations can be performed by cache set or way, or by virtual address.
     \\
     The \textbf{\gls{poc}} is defined as the point at which all blocks that can access memory, such 
@@ -25,9 +25,9 @@
     Commonly, this point corresponds to the main external system memory, as illustrated in~\cref{fig:poc-pou}b. 
     \\
     Closely related is the \textbf{\gls{pou}}, which denotes the point in the memory hierarchy at which the instruction cache, 
-    data cache, and translation table walks of a core are guaranteed to observe the same copy of a memory location~\cite{datasheetCortexASeries}. 
+    data cache, and translation table walks of a core are guaranteed to observe the same copy of a memory location~\cite{datasheetCortexASeries, thesisCacheAttacksandRH}. 
     In a system with Harvard L1 caches and a \gls{tlb} for caching translation table entries, a unified L2 cache represents 
-    the Point of Unification. If no external cache is present, the main memory itself serves as the \gls{pou}~\cite{thesisCacheAttacksandRH}, as 
+    the Point of Unification~\cite{datasheetCortexASeries}. If no external cache is present, the main memory itself serves as the \gls{pou}~\cite{thesisCacheAttacksandRH}, as 
     also shown in~\cref{fig:poc-pou}a.
     \begin{figure}[htbp]
         \centering

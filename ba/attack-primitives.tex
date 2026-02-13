@@ -33,7 +33,7 @@
     Sustain high-frequency row activations with bypassing mitigation mechanisms such as \gls{trr}.
   \end{tcolorbox}
 
-  Third, memory accesses must be sufficiently fast to race against the next \gls{dram} row refresh. The 
+  Third, memory accesses must be sufficiently fast to race against the next \gls{dram} row refresh~\cite{toolRowhammering, webTenYearsOfRH}. The 
   attack depends on hammering memory rows at a higher rate than \gls{dram} refresh cycles can restore 
   charge in adjacent cells. This, in turn, requires achieving high access throughput to the same 
   \gls{dram} rows with minimal delay. To sustain such high-frequency activation, optimal access parameters 

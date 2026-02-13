@@ -38,7 +38,7 @@
         \\
         \textbf{DRAMDig}, introduced by Wang et al.~\cite{paperDRAMDig} in 2020, builds upon DRAMA by incorporating 
         detailed knowledge of specific \gls{dram} chip geometries and processor microarchitecture, thereby 
-        reducing the search space of the exponential-time. This method is employed, for example, by 
+        reducing the search space of the exponential-time~\cite{paperKnockKnock}. This method is employed, for example, by 
         the DRAM MaUT tool~\cite{paperDRAMMaUT}.
         \\
         \textbf{One Bitflip One Cloud Flop}, described by Xiao et al.~\cite{paperOneBitFlipsOneCouldFlops} in 2016, proposes a graph-based 
@@ -47,7 +47,7 @@
         across virtual machines.
         \\
         Common characteristics of DRAMA-based methods include the clustering of addresses into 
-        sets that experience row conflicts or row hits, indicating placement within the same bank. 
+        sets that experience row conflicts or row hits, indicating placement within the same bank~\cite{paperHalfDouble}. 
         These sets are derived by determining which combinations of address bits identify them, 
         often expressed as linear XOR combinations. This approach underlies several attacks 
         and tools, including~\cite{paperDrammer, paperHalfDouble, thesisCacheAttacksandRH}.

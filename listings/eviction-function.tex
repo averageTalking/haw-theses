@@ -1,4 +1,4 @@
-\begin{lstlisting}[language=c,caption=\texttt{Eviction function}, label=lst:eviction-function]
+\begin{lstlisting}[language=c,caption=Function to evict cache lines for constructing eviction sets, label=lst:eviction-function]
 inline void evict(congruent_address_cache_entry_t* congruent_address_cache_entry) {
 	for (unsigned int i = 0; i < ES_EVICTION_COUNTER; i += 1) {
 		for (unsigned int j = 0; j < ES_NUMBER_OF_ACCESSES_IN_LOOP; j++) {

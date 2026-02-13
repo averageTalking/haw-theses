@@ -53,7 +53,7 @@
         L2 caches, exhibiting inclusive behavior~\cite{docSharedUnit, webInclusivness}.
 
     \subsubsection{Eviction Development} \label{subsubsec:eviction-development}
-        The cache eviction mechanism used in this work is based on the libflush tool~\cite{toolArmageddon} and relies on the 
+        The cache eviction mechanism used in this work is based on the libflush source of the armageddon tool~\cite{toolArmageddon} proposed by Lipp et al.~\cite{paperARMageddon} and relies on the 
         construction and use of eviction sets. 
         \\
         % Eviction Set Structure
@@ -96,12 +96,12 @@
         integrated into the local \texttt{cache-bypass} directory structure.
         \\
         % Eviction Strategy
-        Modern cache attack techniques such as \textit{Flush+Reload} and \textit{Flush+Flush} rely on the unprivileged x86 flush 
-        instruction \texttt{clflush} to evict cache lines. With the exception of ARMv8-A CPUs, ARM processors do 
+        Cache attack techniques such as \textit{Flush+Reload} and \textit{Flush+Flush} typically rely on the 
+        unprivileged x86 \texttt{CLFLUSH} instruction to evict cache lines. In contrast, ARMv8-A \gls{cpu}s do 
         not provide an unprivileged flush instruction, which makes cache eviction strategies necessary instead. 
         In order to obtain the high-frequency measurements required by modern cache attacks, eviction must be 
         sufficiently fast, as previously proposed eviction strategies have been shown to be too slow~\cite{paperCacheAccessPattern}. 
-        In this work, the cache eviction implementation proposed by Lipp et~al.~\cite{toolArmageddon} is used. This approach is 
+        The Lipp et al.~\cite{paperARMageddon,toolArmageddon} approach is 
         applicable only to devices with a known eviction strategy~\cite{thesisDRAMA}, and therefore the default configuration 
         provided by the libflush tool~\cite{toolArmageddon} is adopted (see~\cref{lst:default}).
         \input{listings/default.h.tex}

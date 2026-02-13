@@ -18,6 +18,67 @@
     focusing on cache line replacement policies and cache inclusiveness. Finally, the section presents the 
     development of cache eviction mechanisms, covering functionality, implementation details, and eviction 
     strategies.
+
+    \subsubsection{Cache Characteristics} \label{subsubsec:cache-characteristics}
+        \cref{tab:rpi4-cache} and \cref{tab:rpi5-cache} summarize the cache configurations of the Raspberry 
+        Pi 4 and Raspberry Pi 5, respectively. These tables provide 
+        an overview of cache sizes, associativity, cache levels, and the number of cache sets for the different 
+        cache hierarchies present on both platforms.
+
+        \begin{table}[h!]
+            \centering
+            \caption{RPi4 Cache using '\texttt{lscpu {-}{-}cache}' command}
+            \label{tab:rpi4-cache}
+            \resizebox{\textwidth}{!}{%
+                \begin{tabular}{lrrrrrrr}
+                    \hline
+                    NAME & ONE-SIZE & ALL-SIZE & WAYS & TYPE & LEVEL & SETS & COHERENCY-SIZE \\
+                    \hline
+                    L1d & 32K  & 128K  & 2  & Data        & 1 & 256  & 64 \\
+                    L1i & 48K  & 192K  & 3  & Instruction & 1 & 256  & 64 \\
+                    L2  & 1M   & 1M    & 16 & Unified     & 2 & 1024 & 64 \\
+                    \hline
+                \end{tabular}%
+            }
+        \end{table}
+
+        \begin{table}[h!]
+            \centering
+            \caption{RPi5 Cache using '\texttt{lscpu {-}{-}cache}' command}
+            \label{tab:rpi5-cache}
+            \resizebox{\textwidth}{!}{%
+                \begin{tabular}{lrrrrrrr}
+                    \hline
+                    NAME & ONE-SIZE & ALL-SIZE & WAYS & TYPE & LEVEL & SETS & COHERENCY-SIZE \\
+                    \hline
+                    L1d & 64K  & 256K  & 4  & Data        & 1 & 256  & 64 \\
+                    L1i & 64K  & 256K  & 4  & Instruction & 1 & 256  & 64 \\
+                    L2  & 512K & 2M    & 8  & Unified     & 2 & 1024 & 64 \\
+                    L3  & 2M   & 2M    & 16 & Unified     & 3 & 2048 & 64 \\
+                    \hline
+                \end{tabular}%
+            }
+        \end{table}
+        
+        The number of cache sets is determined by the cache size, the cache line size, and the set associativity. 
+        This relationship can be expressed as
+        \[
+        2^{\text{Index}} = \frac{\text{Cache Size}}{\text{Line Size} \times \text{Set associativity}}.
+        \]
+        Applying this formula to the L2 cache of the Raspberry Pi 4 results in
+        \[
+        \text{Number of sets} = \frac{1024 \times 1024}{64 \times 16} = 1024 = 2^{10}.
+        \]
+        Similarly, for the L2 cache of the Raspberry Pi 5, the number of cache sets is given by
+        \[
+        \text{Number of sets} = \frac{512 \times 1024}{64 \times 8} = 1024 = 2^{10}.
+        \]
+        These calculations show that, despite differences in cache size and associativity, both systems employ 
+        the same number of cache sets at the L2 cache level.
+        \\
+        On the Raspberry Pi 4, the L1 instruction cache, L1 data cache, and L2 cache behave as \gls{pipt} caches~\cite{webRPi4Hardware, docCortexA72}. 
+        On the Raspberry Pi 5, the L1 instruction and L1 data caches are \gls{vipt}, but they behave effectively as \gls{pipt}
+        4-way set-associative caches~\cite{docCortexA76}.
     
     \subsubsection{Cache Management} \label{subsubsec:cache-management}
         %% Cache Replacement Policy

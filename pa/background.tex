@@ -108,10 +108,9 @@
       In a direct-mapped cache, each main memory entry is mapped to exactly one cache location. As a 
       consequence, multiple distinct memory addresses can also map to the same cache location~\cite{thesisCacheAttacksandRH}.
       \\
-      An illustrative example is shown in~\cref{fig:direct-mapped-cache}, which depicts a cache with a total size of 4~KB, 
-      consisting of 128 cache locations and a cache line size of 64~bytes. In this configuration, an address 
-      is divided into three fields: 6 bits for the block offset, 7 bits for the index, and 19 bits for the 
-      tag.
+      An example is shown in~\cref{fig:direct-mapped-cache}, illustrating a 4~KB direct-mapped 
+      cache with 128~cache lines of 64~bytes each, where addresses are split into a 6-bit block 
+      offset, 7-bit index, and 19-bit tag.
       \begin{figure}[htbp]
           \centering
           \frame{\includegraphics[height=0.3\textheight]{img/direct-mapped-cache.pdf}}
@@ -143,65 +142,7 @@
           \label{fig:n-way-associative-cache}
       \end{figure}
 
-      \begin{table}[h!]
-          \centering
-          \caption{RPi4 Cache using '\texttt{lscpu {-}{-}cache}' command}
-          \label{tab:rpi4-cache}
-          \resizebox{\textwidth}{!}{%
-              \begin{tabular}{lrrrrrrr}
-                  \hline
-                  NAME & ONE-SIZE & ALL-SIZE & WAYS & TYPE & LEVEL & SETS & COHERENCY-SIZE \\
-                  \hline
-                  L1d & 32K  & 128K  & 2  & Data        & 1 & 256  & 64 \\
-                  L1i & 48K  & 192K  & 3  & Instruction & 1 & 256  & 64 \\
-                  L2  & 1M   & 1M    & 16 & Unified     & 2 & 1024 & 64 \\
-                  \hline
-              \end{tabular}%
-          }
-      \end{table}
-
-      \begin{table}[h!]
-          \centering
-          \caption{RPi5 Cache using '\texttt{lscpu {-}{-}cache}' command}
-          \label{tab:rpi5-cache}
-          \resizebox{\textwidth}{!}{%
-              \begin{tabular}{lrrrrrrr}
-                  \hline
-                  NAME & ONE-SIZE & ALL-SIZE & WAYS & TYPE & LEVEL & SETS & COHERENCY-SIZE \\
-                  \hline
-                  L1d & 64K  & 256K  & 4  & Data        & 1 & 256  & 64 \\
-                  L1i & 64K  & 256K  & 4  & Instruction & 1 & 256  & 64 \\
-                  L2  & 512K & 2M    & 8  & Unified     & 2 & 1024 & 64 \\
-                  L3  & 2M   & 2M    & 16 & Unified     & 3 & 2048 & 64 \\
-                  \hline
-              \end{tabular}%
-          }
-      \end{table}
-
-      \cref{tab:rpi4-cache} and \cref{tab:rpi5-cache} summarize the cache configurations of the Raspberry 
-      Pi 4 and Raspberry Pi 5, respectively. These tables provide 
-      an overview of cache sizes, associativity, cache levels, and the number of cache sets for the different 
-      cache hierarchies present on both platforms.
-      
-      The number of cache sets is determined by the cache size, the cache line size, and the set associativity. 
-      This relationship can be expressed as
-      \[
-      2^{\text{Index}} = \frac{\text{Cache Size}}{\text{Line Size} \times \text{Set associativity}}.
-      \]
-      Applying this formula to the L2 cache of the Raspberry Pi 4 results in
-      \[
-      \text{Number of sets} = \frac{1024 \times 1024}{64 \times 16} = 1024 = 2^{10}.
-      \]
-      Similarly, for the L2 cache of the Raspberry Pi 5, the number of cache sets is given by
-      \[
-      \text{Number of sets} = \frac{512 \times 1024}{64 \times 8} = 1024 = 2^{10}.
-      \]
-      These calculations show that, despite differences in cache size and associativity, both systems employ 
-      the same number of cache sets at the L2 cache level.
-      \\
-
       %% Virtual and Physical Tags and Indexes
-      \noindent
       \gls{cpu} caches can be indexed and tagged using either virtual or physical addresses. When virtual 
       addresses are used, it is possible for the same physical address to be cached in multiple cache lines, 
       which can negatively affect performance. Cache lines are uniquely identified by a tag, which may 
@@ -222,7 +163,4 @@
       \textbf{\gls{vipt}} caches use the virtual address for indexing and the physical 
       address for tagging. This approach offers lower latency than \gls{pipt} caches because index lookup can proceed 
       in parallel with \gls{tlb} translation, although tag comparison must still wait for the physical address.
-      \\
-      On the Raspberry Pi 4, the L1 instruction cache, L1 data cache, and L2 cache behave as \gls{pipt} caches~\cite{webRPi4Hardware, docCortexA72}. 
-      On the Raspberry Pi 5, the L1 instruction and L1 data caches are \gls{vipt}, but they behave effectively as \gls{pipt}
-      4-way set-associative caches~\cite{docCortexA76}.
+      

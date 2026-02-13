@@ -53,11 +53,24 @@
 \bibliography{src.bib}
 
 \lstset{
-  basicstyle=\ttfamily,
-  columns=fullflexible,
+  language=C,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red},
+  identifierstyle=\color{black},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=10pt,
+  backgroundcolor=\color{white},
   frame=single,
+  rulecolor=\color{black},
   breaklines=true,
-  postbreak=\mbox{$\hookrightarrow$\space},
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+  showstringspaces=false,
+  tabsize=2,
+  captionpos=b
 }
 
 \renewcommand{\baselinestretch}{1.3}

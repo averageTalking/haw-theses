@@ -3,7 +3,7 @@
   define the conditions under which the attack can succeed~\cite{presRHAttacksWalkthrough, toolRowhammering}. Specifically, three 
   properties of memory accesses must simultaneously hold.
 
-  \begin{tcolorbox}[challengebox={C1. Uncached}] \label{ch:uncached}
+  \begin{tcolorbox}[challengebox={\hyperref[sec:uncached]{C1. Direct DRAM Activation}}] \label{ch:uncached}
     Ensure direct \gls{dram} row activations by systematically bypassing the \gls{cpu} cache.
   \end{tcolorbox}
 
@@ -17,7 +17,7 @@
   Therefore, forcing cache misses, or alternatively using uncached memory regions, is mandatory 
   to generate the activation frequency necessary for a successful attack.
 
-  \begin{tcolorbox}[challengebox={C2. Targeted}] \label{ch:targeted}
+  \begin{tcolorbox}[challengebox={\hyperref[sec:targeted]{C2. Address Mapping Reconstruction}}] \label{ch:targeted}
     Reconstruct DRAM address functions to map virtual addresses onto precise physical rows and reliably select aggressor rows.
   \end{tcolorbox}
 
@@ -29,7 +29,7 @@
   rows are repeatedly activated. Without correct mapping, hammering becomes largely probabilistic 
   and rarely, if ever, results in disturbances to victim data.
 
-  \begin{tcolorbox}[challengebox={C3. Fast}] \label{ch:fast}
+  \begin{tcolorbox}[challengebox={\hyperref[sec:fast]{C3. Outpacing DRAM Refresh}}] \label{ch:fast}
     Sustain high-frequency row activations with bypassing mitigation mechanisms such as \gls{trr}.
   \end{tcolorbox}
 

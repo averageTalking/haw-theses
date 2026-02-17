@@ -41,7 +41,7 @@
             \caption{\textit{Flush+Reload} - 4-way (columns) cache with 8 sets (rows)~\cite{thesisCacheAttacksandRH}}
             \label{fig:flush-and-reload}
         \end{figure}
-        Experimental results from \textit{Flush+Reload} measurements on the Raspberry Pi 5 reveal three distinct peaks in 
+        As seen in~\cref{fig:result_flushandreload}, the experimental results from \textit{Flush+Reload} measurements on the Raspberry Pi 5 reveal three distinct peaks in 
         access-time histograms: a cache-hit peak, an undefined intermediate peak, and a cache-miss or \gls{dram}-access 
         peak. The undefined peak occurs close to the cache-hit peak but is clearly separated from the \gls{dram}-access 
         peak. This behavior suggests that the eviction strategy on the Raspberry Pi 5 is only partially effective, 
@@ -74,6 +74,7 @@
         Initially, the execution time of the victim is measured. Subsequently, a specific cache set is evicted, and the victim 
         program is measured again to observe changes in execution time.
         \\
+        The results can be taken from~\cref{fig:result_evictandtime}
         On the Raspberry Pi 4, experimental results show a clear separation between cache-resident execution at 
         approximately 175 \gls{cpu} cycles and memory-resident execution at around 349 \gls{cpu} cycles, resulting in a meaningful threshold 
         of about 259 \gls{cpu} cycles. On the Raspberry Pi 5, however, cache and memory access times nearly coincide at roughly 
@@ -113,7 +114,7 @@
             \caption{\textit{Prime+Probe} - 4-way (columns) cache with 8 sets (rows)~\cite{thesisCacheAttacksandRH}}
             \label{fig:prime-and-probe}
         \end{figure}
-        Experimental results show that \textit{Prime+Probe} fails on the Raspberry Pi 4 when using the selected cache eviction 
+        Experimental results, as seen in~\cref{fig:results_primeandprobe}, show that \textit{Prime+Probe} fails on the Raspberry Pi 4 when using the selected cache eviction 
         strategy. On the Raspberry Pi 5, observable responses exhibit unusual behavior. Instead of two distinct peaks 
         corresponding to cache hits and cache misses, a single broad peak spanning approximately 500 to 1000 \gls{cpu} cycles 
         is observed. ARM CPUs employ a pseudo-random cache replacement policy to determine which cache line within a 
@@ -137,7 +138,7 @@
         that effective eviction strategies can even trigger \gls{dram} bit flips, known as Rowhammer, via JavaScript 
         without relying on the privileged \texttt{clflush} instruction~\cite{paperRowhammerjs}.
         \\
-        The results obtained with \textit{Evict+Reload} are consistent with those observed using \textit{Flush+Reload}. On the 
+        The results from~\cref{fig:result_evictandreload} obtained with \textit{Evict+Reload} are consistent with those observed using \textit{Flush+Reload}. On the 
         Raspberry Pi 4, \textit{Evict+Reload} works as expected, showing a clear separation between cache and memory 
         accesses at approximately 123 and 323 \gls{cpu} cycles, respectively, with a threshold of around 222 \gls{cpu} cycles. On 
         the Raspberry Pi 5, \textit{Evict+Reload} exhibits three distinct access-time peaks corresponding to cache hits 
@@ -152,7 +153,7 @@
             \label{fig:result_evictandreload}
         \end{figure}
     
-    \subsubsection{Limitations} \label{subsubsec:limitations}
+    \subsubsection{Limitations} \label{subsubsec:limitations-cache-eviction}
         The presented findings are applicable to ARMv7- and ARMv8-based systems, including platforms such as the 
         Raspberry Pi 4 and Raspberry Pi 5. Cache eviction can serve as an alternative to, or a workaround for, 
         privileged cache maintenance instructions on ARM systems. Some of the presented cache eviction methods 

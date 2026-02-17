@@ -16,7 +16,7 @@
         While cache management instructions in ARMv7-A, referred to as cache maintenance 
         instructions, are privileged in all ARMv7-A processors, they have been exposed to userspace since 
         ARMv8-A. Consequently, it becomes feasible to apply Rowhammer techniques similar to the original 
-        CLFLUSH-based approach on systems using ARMv8-A processors~\cite{paperTriggeringRHHardwareFault}.
+        CLFLUSH-based approach on systems using ARMv8-A processors~\cite{paperTriggeringRHHardwareFault}, as descibed in~\cref{fig:flush-instructions}.
         \begin{figure}[htbp]
             \centering
             \frame{\includegraphics[width=\linewidth]{img/flush-instructions.pdf}}

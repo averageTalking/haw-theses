@@ -105,7 +105,7 @@
         similar prior work. Since access latency reflects the internal structure of banks and rows, 
         measuring timing differences between address pairs can reveal which physical address bits are 
         responsible for bank selection and which correspond to row selection, without relying on proprietary 
-        information. Three types of access patterns are considered~\cite{paperDRAMA} and presented in~\cref{fig:cases}. 
+        information. Three types of access patterns are considered~\cite{paperDRAMA}. 
         \\
         \textbf{Bank Miss} (see~\cref{fig:cases}a): both addresses are mapped to different banks. Since accesses to separate 
         banks do not interfere, this results in low latency, analogous to a Row Hit but across banks.
@@ -195,8 +195,8 @@
         First, the original DRAMA implementation
         relied on x86-specific instructions such as \texttt{RDTSC} and \texttt{CLFLUSH}, which are unavailable on ARM. To 
         address this, these functions were implemented using \texttt{PMCCNTR\_EL0} for 
-        precise timing, and a \texttt{flush\_cache\_line()} function with a selection for one of eight ARM cache maintenance options, similar 
-        to~\cite{toolRowhammer_armv8}, was added to replace \texttt{CLFLUSH}. The \texttt{-march=armv8-a} compiler flag was used to ensure optimized 
+        precise timing, and a flush cache line function with a selection for one of eight ARM cache maintenance options, similar 
+        to~\cite{toolRowhammer-armv8}, was added to replace \texttt{CLFLUSH}. The \texttt{-march=armv8-a} compiler flag was used to ensure optimized 
         ARM code generation.
         \\
         A second challenge concerned measurement stability. The original DRAMA code measured each memory 

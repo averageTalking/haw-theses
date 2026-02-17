@@ -115,9 +115,9 @@
             \label{fig:prime-and-probe}
         \end{figure}
         Experimental results, as seen in~\cref{fig:results_primeandprobe}, show that \textit{Prime+Probe} fails on the Raspberry Pi 4 when using the selected cache eviction 
-        strategy. On the Raspberry Pi 5, observable responses exhibit unusual behavior. Instead of two distinct peaks 
-        corresponding to cache hits and cache misses, a single broad peak spanning approximately 500 to 1000 \gls{cpu} cycles 
-        is observed. ARM CPUs employ a pseudo-random cache replacement policy to determine which cache line within a 
+        strategy. On the Raspberry Pi 5, observable responses exhibit unusual behavior. We observed instead of two distinct peaks 
+        corresponding to cache hits and cache misses, a single broad peak spanning approximately 500 to 1000 \gls{cpu} cycles.
+        ARM CPUs employ a pseudo-random cache replacement policy to determine which cache line within a 
         set is evicted, which introduces additional noise into time-driven cache attacks~\cite{paperTimeDrivenCacheAttacks}. This behavior has been 
         identified as a key factor preventing the successful application of \textit{Prime+Probe} attacks on ARM architectures 
         so far~\cite{paperCacheAccessPattern, thesisCacheAttacksandRH}.

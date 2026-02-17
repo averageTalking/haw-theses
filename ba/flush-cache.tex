@@ -74,18 +74,16 @@
         faster because it does not require waiting for external memory accesses to complete~\cite{paperTriggeringRHHardwareFault, paperRHonRi3B+}.
     
     \subsubsection{Cache Behavior} \label{subsubsec:cache-behavior}
-        \cref{tab:cache-bypass} presents cache bypass measurements obtained under 
+        \Cref{tab:cache-bypass} presents cache bypass measurements obtained under 
         different execution modes and measurement units 
         across several Raspberry Pi platforms. The table reports \gls{cpu} cycle counts for baseline measurements in 
         kernel and user space, as well as measurements obtained using a kernel module and explicit userspace 
-        cache-bypass mechanisms using \texttt{DC CIVAC} und \texttt{STR}. In addition, userspace measurements are also 
-        reported in nanoseconds. The nanosecond 
-        values were measured using POSIX functions.
+        cache-bypass mechanisms using \texttt{DC CIVAC} und \texttt{STR}. In addition, POSIX functions measure userspace timings in nanoseconds.
         \begin{table}[ht]
             \centering
             \begin{tabular}{llccccc}
                 \hline
-                Mode & Unit & RPi4 4GB & RPi4 8GB & RPi5 4GB & RPi5 8GB & RPi5 16GB \\
+                Mode & Unit & RPi4 4~GB & RPi4 8~GB & RPi5 4~GB & RPi5 8~GB & RPi5 16~GB \\
                 \hline
                 kernel baseline & Cycles & 78.71 & 78.16 & - & - & - \\
                 kernel module & Cycles & 416.83 & 468.56 & - & - & - \\
@@ -100,8 +98,8 @@
         The userspace measurements demonstrate a significant increase in \gls{cpu} cycles compared to the respective baselines. 
         On the RPi4, cache-bypassing measurements in userspace range between 431 and 581 cycles, compared to a baseline 
         of approximately 84 cycles. On the RPi5, userspace cache-bypassing measurements range between 416 and 468 cycles, 
-        while the baseline remains at approximately 43 cycles. This clearly indicates a substantial increase in memory 
-        access latency when the cache is bypassed.
+        while the baseline remains at approximately 43 cycles. This clearly indicates that bypassing the cache substantially increases
+        memory access latency.
         \\
         Kernel module measurements confirm a similar trend for the RPi4. Here, cache-bypassing measurements range from 
         432 to 581 \gls{cpu} cycles, compared to a baseline of approximately 78 cycles. For the RPi5, kernel module 

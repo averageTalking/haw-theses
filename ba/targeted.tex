@@ -5,7 +5,10 @@
     induce bit flips in adjacent victim rows, denoted as \hyperref[ch:targeted]{C2. Address Mapping Reconstruction}. The physical address is 
     composed of bits that are partitioned into rank, channel, bank, row, and column, which 
     collectively determine the location where the data is stored~\cite{paperReliableReverseEngineering}.
-    However, the details of this mapping are not publicly disclosed. Knowledge of the \gls{dram} 
+    However, just like on Intel systems, details of this mapping are not publicly disclosed, unlike the 
+    mappings for older CPU models from AMD after they ceased to publish this information with the beginning 
+    of microarchitecture 17h~\cite{webZenCPU, webAMDDeveloperCentral, paperREBankAddressing}.
+    Knowledge of the \gls{dram} 
     address mapping enables a wide range of applications, including application-aware memory 
     channel partitioning, adapted page sizes for improved row buffer utilization, efficient use 
     of emerging hybrid memory technologies, evaluation of the effects of unreliable memory, and 
@@ -38,8 +41,7 @@
         \\
         Wang et al.~\cite{paperDRAMDig} in 2020, builds upon DRAMA by incorporating 
         detailed knowledge of specific \gls{dram} chip geometries and processor microarchitecture, thereby 
-        reducing the search space of the exponential-time~\cite{paperKnockKnock}. This method is employed, for example, by 
-        the DRAM MaUT tool~\cite{paperDRAMMaUT}.
+        reducing the search space of the exponential-time~\cite{paperKnockKnock}. For example, \cite{paperDRAMMaUT} applies this method.
         \\
         Xiao et al.~\cite{paperOneBitFlipsOneCouldFlops} in 2016, proposes a graph-based 
         approach to infer physical-to-\gls{dram} mappings. It relies on timing differences caused by 
@@ -79,24 +81,36 @@
         the inference of the underlying memory structure and is therefore a critical step in memory 
         analysis.
         \\
-        A Row Hit is defined as an access to a memory address whose corresponding row is already 
-        active in the row buffer. In contrast, a Row Conflict occurs when an access targets an 
-        address within the same bank while a different row is active in the row buffer, resulting 
-        in the need to close the previously opened row and open the new one.
-        \\
         This approach builds upon observations from prior work~\cite{paperDRAMA, toolDrama, thesisDRAMA}. In particular, 
-        three primary cases are considered: (1) Bank Miss, in which the addresses reside in different 
-        banks and access times remain low. (2) Row Hit, where both addresses belong to the same bank 
-        and the same row, resulting in low access times. (3) Row Conflict, where addresses are 
-        in the same bank but different rows, producing higher access times. Based on these scenarios, 
+        three primary cases are considered: 
+        \\
+        \textbf{Bank Miss} (see~\cref{fig:cases}a): the addresses reside in different banks and access 
+        times remain low, analogous to a Row Hit but across banks.
+        \\
+        \textbf{Row Hit} (see~\cref{fig:cases}b): An access to a memory address whose corresponding row 
+        is already active in the row buffer. Both of these addresses belong to the same bank and the same 
+        row, resulting in low access times.
+        \\
+        \textbf{Row Conflict} (see~\cref{fig:cases}c): An access targets an 
+        address within the same bank while a different row is active in the row buffer, resulting 
+        in the need to close the previously opened row and open the new one, producing higher access times.
+
+        \begin{figure}[htbp]
+            \centering
+            \frame{\includegraphics[width=\linewidth]{img/cases.pdf}}
+            \caption{Types of access patterns}
+            \label{fig:cases}
+        \end{figure}
+        
+        Based on these scenarios, 
         it is assumed that two distinct peaks will appear in access time distributions: the first 
         peak, corresponding to low-latency events, combines bank misses and row hits, whereas the 
         second peak, associated with higher latencies, represents row conflicts.
         \\
-        To reliably distinguish Row Hits from Row Conflicts, memory access latencies are measured 
+        We measured memory access latencies to reliably distinguish Row Hits from Row Conflicts
         while isolating \gls{dram} from cache effects, using repeated accesses in combination with cache flushes. 
-        Latency histograms are constructed from multiple measurement runs, allowing identification 
-        of distinct peaks. From these histograms, a threshold is determined to separate Row Hits 
+        Latency histograms constructed from multiple measurement runs, allow identification 
+        of distinct peaks. From these histograms, we determine a threshold to separate Row Hits 
         from Row Conflicts, which is subsequently validated using statistical measures such as mean, 
         variance, confidence intervals, and t-tests.
 
@@ -109,7 +123,7 @@
 
         \cref{fig:row-hit-conflict} illustrates the resulting 
         histograms across all test devices. On the Raspberry Pi 4, 
-        Row Hits are observed in the range of approximately 210-260 CPU cycles, while Row Conflicts 
+        We observe Row Hits in the range of approximately 210-260 CPU cycles, while Row Conflicts 
         occur shortly before or after 300 CPU cycles, demonstrating a clear separation. For the 
         Raspberry Pi 5, Row Hits occur at approximately 275 CPU cycles and Row Conflicts at 340 
         CPU cycles, showing a comparable separation but with an approximate 60 CPU cycle shift relative 
@@ -160,7 +174,7 @@
         distribution of detected XOR combinations with the original DRAMA port for the Raspberry Pi 4 
         and Raspberry Pi 5 devices, respectively. In some cases, the analysis yields multiple 
         candidate functions, including rare additional simple bank bits and, in certain instances,
-        more complex XOR combinations. These occurrences are observed significantly more often on 
+        more complex XOR combinations. We observe these occurrences more often on 
         Raspberry Pi 5 devices than on Raspberry Pi 4 devices. However, prior work on 
         reverse-engineering \gls{dram} address mappings consistently reports that ARM platforms rely 
         exclusively on simple XOR functions, which are typically composed of one or two address bits~\cite{paperDRAMA, paperDRAMMaUT}.
@@ -216,11 +230,11 @@
         differences across a larger set of addresses~\cite{paperDRAMA}. This method is feasible and allows validation 
         without hardware access.
         \\
-        The verification can be performed using the DRAMA methodology~\cite{paperDRAMA,toolDrama}. In this approach, memory 
-        access latencies are measured and histograms are constructed to distinguish row hits from row 
+        The verification can be performed using the DRAMA methodology~\cite{paperDRAMA,toolDrama}. In this approach, we measuredmemory 
+        access latencies and constructed histograms to distinguish row hits from row 
         conflicts. Address pairs predicted to map to the same \gls{dram} bank and row, denoted as row hits, or to the same 
-        bank but different rows, indicates as row conflicts, are identified. Access times are measured after flushing 
-        the relevant cache lines to minimize caching effects. Timing histograms are then used to calibrate 
+        bank but different rows, indicates as row conflicts, are identified. After flushing 
+        the relevant cache lines to minimize caching effects, we measured access times. Timing histograms are then used to calibrate 
         a threshold separating row hits from row conflicts. The \gls{dram} mapping is validated by comparing the 
         measured latencies with the predicted relationships, as described in the \hyperref[subsec:drama-approach]{previous section}.
         \\

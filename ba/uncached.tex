@@ -6,8 +6,8 @@
     bypassing the cache are first presented, followed by a focused discussion of two mechanisms that 
     are particularly relevant for Raspberry Pi platforms: cache eviction and cache flushing.
     \\
-    To enable the memory access behavior required for triggering Rowhammer, several cache-bypass 
-    techniques are considered~\cite{presRHAttacksWalkthrough, toolRowhammering}. These techniques include the use of non-temporal memory 
+    We consider several cache-bypass techniques to enable the memory access behavior required for triggering 
+    Rowhammer~\cite{presRHAttacksWalkthrough, toolRowhammering}. These techniques include the use of non-temporal memory 
     accesses, the allocation of uncached memory regions, cache eviction strategies, and explicit cache 
     flush operations. Prior work has shown that triggering Rowhammer on ARM-based devices presents 
     substantial challenges, as successful exploitation requires rapid, repeated access to identical 

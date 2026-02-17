@@ -2,9 +2,14 @@
     After bypassing the cache hierarchy, a fundamental challenge remains, namely the existence of a 
     fixed mapping between physical addresses and the \gls{dram} layout, as noted in~\cite{toolRPI3}. 
     To achieve the \hyperref[ch:targeted]{C2. Address Mapping Reconstruction} attack primitive, it is necessary to access a specific 
-    \gls{dram} row in order to gain bit flips in an adjacent victim row. However, the exact informations of this 
-    physical-to-\gls{dram} address mapping are typically not publicly available, which is also the case for all 
-    our test devices used in this work. Consequently, the only viable approach is to 
+    \gls{dram} row within the same bank in order to gain bit flips in an adjacent victim row through produced row conflicts. 
+    However, the exact informations of this physical-to-\gls{dram} address mapping are typically not publicly available.
+    While AMD provided documentation of the DRAM bank addressing functions for older processor models - specifically in 
+    the BIOS and Kernel Developer's Guide (BKDG) up to microarchitecture 16h~\cite{webAMDDeveloperCentral} - they ceased 
+    to publish this information with the beginning of microarchitecture 17h (released in 2017~\cite{webZenCPU})~\cite{paperREBankAddressing}.
+    Unlike AMD's earlier documentation efforts, Intel has never disclosed the DRAM addressing functions implemented in its 
+    processors~\cite{paperREBankAddressing},which is also the case for all our ARM test devices used in this work.
+    Consequently, the only viable approach is to 
     reverse engineer the \gls{dram} address mapping. This section briefly discusses the available methods, 
     explains why certain approaches are adopted or discarded, and identifies the most 
     effective technique for ARM-based systems such as the Raspberry Pi. In addition, it outlines the 
@@ -19,20 +24,20 @@
         the underlying addressing functions are inferred. This work focuses on three representative methods, which
         are listed below, along with a brief description of each.
         \\ \\
-        \textbf{DRAMA}, introduced by Pessl et al. in 2016~\cite{paperDRAMA}, exploits a row-buffer timing side channel in which 
+        Pessl et al.~\cite{paperDRAMA} in 2016, exploits a row-buffer timing side channel in which 
         row conflicts manifest as increased memory access latency. By observing row hits and row conflicts, physical 
         addresses can be grouped into sets that reside within the same bank and thus share identical channel, DIMM, 
         rank, and bank properties. The underlying \gls{dram} address mapping is inferred by exhaustively evaluating 
         linear addressing functions that distinguish these sets, which are commonly expressed as XOR combinations of 
-        physical address bits. This general methodology underlies several subsequent attacks and tools, including 
-        \textit{Halfdouble}~\cite{paperHalfDouble, toolHalfDouble}, \textit{Drammer}~\cite{paperDrammer,toolDrammer}, and \textit{Cache Attacks and Rowhammer}~\cite{thesisCacheAttacksandRH}.
+        physical address bits. This general methodology underlies several subsequent attacks and tools, 
+        including~\cite{paperHalfDouble, toolHalfDouble, paperDrammer, toolDrammer, thesisCacheAttacksandRH}.
         \\
-        The work titled \textbf{One Bit flips, one cloud flops}, introduced by Xiao et al. in 2016~\cite{paperOneBitFlipsOneCouldFlops}, proposes a 
+        The work introduced by Xiao et al.~\cite{paperOneBitFlipsOneCouldFlops} in 2016, proposes a 
         graph-based approach to infer physical-to-\gls{dram} address mappings. Similar to DRAMA, it relies on 
         timing differences caused by row conflicts, but its primarily aimed at enableing Rowhammer attacks 
         across virtual machines.
         \\
-        \textbf{Knock Knock}, introduced by Plin et al. in 2025~\cite{paperKnockKnock}, reformulates the identification of \gls{dram} parity 
+        Plin et al.~\cite{paperKnockKnock} in 2025, reformulates the identification of \gls{dram} parity 
         masks as a linear algebra problem. Instead of relying on exhaustive search, this method focuses on 
         solving the address mapping directly through algebraic reasoning.
         \\

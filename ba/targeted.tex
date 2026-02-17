@@ -22,37 +22,37 @@
     the hardware~\cite{thesisDRAMA}.
         
     \subsection{Methods} \label{subsec:methods}
-        \textbf{PALLOC}, introduced by Yun et al.~\cite{paperPALLOC} in 2014, uses a dedicated microbenchmark 
+        Yun et al.~\cite{paperPALLOC} in 2014, uses a dedicated microbenchmark 
         that traverses a linked list over the physical address space to enforce constant \gls{dram} 
         access while controlling bank usage.
         \\
-        \textbf{DRAMA}, proposed by Pessl et al.~\cite{paperDRAMA} in 2016, exploits the row-buffer timing side 
+        Pessl et al.~\cite{paperDRAMA} in 2016, exploits the row-buffer timing side 
         channel, where row conflicts cause increased memory access latency. This approach 
         enables the construction of address sets that share channel, rank, and bank 
         properties by performing exhaustive testing of linear addressing functions with an 
         increasing number of coefficients.
         \\
-        \textbf{Reliable RE}, presented by Helm et al.~\cite{paperReliableReverseEngineering} in 2020, extends DRAMA by integrating 
+        Helm et al.~\cite{paperReliableReverseEngineering} in 2020, extends DRAMA by integrating 
         performance counters, which identifies row hits and misses more reliable 
         during the reverse-engineering process.
         \\
-        \textbf{DRAMDig}, introduced by Wang et al.~\cite{paperDRAMDig} in 2020, builds upon DRAMA by incorporating 
+        Wang et al.~\cite{paperDRAMDig} in 2020, builds upon DRAMA by incorporating 
         detailed knowledge of specific \gls{dram} chip geometries and processor microarchitecture, thereby 
         reducing the search space of the exponential-time~\cite{paperKnockKnock}. This method is employed, for example, by 
         the DRAM MaUT tool~\cite{paperDRAMMaUT}.
         \\
-        \textbf{One Bitflip One Cloud Flop}, described by Xiao et al.~\cite{paperOneBitFlipsOneCouldFlops} in 2016, proposes a graph-based 
+        Xiao et al.~\cite{paperOneBitFlipsOneCouldFlops} in 2016, proposes a graph-based 
         approach to infer physical-to-\gls{dram} mappings. It relies on timing differences caused by 
-        row conflicts and, similar to DRAMA, primarily aimed at enabling Rowhammer attacks 
+        row conflicts and, similar to~\cite{paperDRAMA}, primarily aimed at enabling Rowhammer attacks 
         across virtual machines.
         \\
-        Common characteristics of DRAMA-based methods include the clustering of addresses into 
+        Common characteristic approaches include the clustering of addresses into 
         sets that experience row conflicts or row hits, indicating placement within the same bank~\cite{paperHalfDouble}. 
         These sets are derived by determining which combinations of address bits identify them, 
         often expressed as linear XOR combinations. This approach underlies several attacks 
         and tools, including~\cite{paperDrammer, paperHalfDouble, thesisCacheAttacksandRH}.
         \\
-        \textbf{Knock-Knock}, introduced by Plin et al.~\cite{paperKnockKnock} 2025, reformulates the identification of 
+        Plin et al.~\cite{paperKnockKnock} 2025, reformulates the identification of 
         \gls{dram} parity masks as a linear algebra problem. Instead of relying on exhaustive search, it 
         focuses on solving the mapping directly through algebraic reasoning.
 
@@ -67,7 +67,7 @@
         affects Rowhammer behavior and that one-location hammering remains feasible even under a closed-page 
         policy~\cite{paperAnotherFlip, paperNethammer}. These findings indicate that triggering Rowhammer does not fundamentally depend on 
         an open-page policy or precise knowledge of the physical \gls{dram} address mapping. For the evaluation,
-        we focused on testing one-location hammering using the ported FlipFloyd tool on our ARM-based platform. 
+        we focused on testing one-location hammering using the \cite{toolFlipfloyd} tool, which we have ported onto our ARM-based platform. 
         Despite multiple measurement runs exceeding 20 hours in total, we did not observe any bit flips. The 
         most plausible explanations are the presence of \gls{trr} or that the deployed 
         \gls{dram} modules are simply not susceptible to Rowhammer-induced disturbances.

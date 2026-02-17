@@ -27,10 +27,16 @@
         via \texttt{vmalloc} was introduced to accommodate larger arrays. The results are stored in 
         the \texttt{latency.log} file using the corresponding Python script which analyzes all bit positions. 
         The three bits exhibiting the highest average latency deviations are identified. 
-        Analysis across all bit positions revealed that bits \texttt{13}, \texttt{14}, and \texttt{15} 
-        consistently exhibit the highest average latencies, with bit \texttt{16} occasionally appearing 
-        among the most significant.
-        \\
+        Analysis across all bit positions revealed that bits \texttt{12}, \texttt{13}, and \texttt{14} 
+        consistently exhibit the highest average latencies, as seen in~\cref{fig:avg-latency-per-bit}.
+
+        \begin{figure}[htbp]
+            \centering
+            \frame{\includegraphics[width=0.7\linewidth]{img/avg-latency-per-bit.png}}
+            \caption{Average Latency per Bit Position}
+            \label{fig:avg-latency-per-bit}
+        \end{figure}
+        
         Despite these results, a problem arises from the fact that the observed latency deviations are 
         relatively small and do not demonstrate a significant difference. Despite this limited magnitude 
         of deviation, the resulting mapping remains consistent across multiple measurements. This 
@@ -41,8 +47,8 @@
 
     \subsubsection{Algebraic Mapping Inference} \label{subsubsec:algebraic-mapping-inference}
         An alternative approach to physical-to-DRAM mapping inference is based on algebraic techniques 
-        described in~\cite{paperKnockKnock}. As outlined in the Methods section of the targeted approach, the Knock-Knock 
-        method treats identifying parity masks as a linear algebra problem. This technique 
+        described in~\cite{paperKnockKnock}. As outlined in the \hyperref[subsec:methods]{previous section} of the targeted approach, \cite{paperKnockKnock}
+        treats identifying parity masks as a linear algebra problem. This technique 
         directly targets the physical-to-DRAM mapping and enables the recovery of bank and row functions 
         without relying on iterative function checks. Instead, it computes the nullspace of conflicting 
         address sets.
@@ -53,14 +59,21 @@
         \\
         The workflow requires activation of the \gls{pmu} via a kernel module.
         However, both the automatic and manual workflows failed to 
-        recover any valid mapping. In all cases, the execution terminated with the warning “Threshold 
-        quality check failed: Valley between peaks not pronounced enough.” Multiple mitigation attempts 
+        recover any valid mapping. In all cases, the execution terminated with the warning “\textit{Threshold 
+        quality check failed: Valley between peaks not pronounced enough.}” Multiple mitigation attempts 
         were undertaken, including manual threshold selection, parameter tuning for noisy systems, and 
         high-precision measurement runs. Nevertheless, all attempts resulted in an insufficient number 
         of coherent conflict samples, which caused the derivation of bank masks to abort and the row mask 
-        analysis to be skipped entirely.
-        \\
-        This limitation is closely related to the employed closed-page policy. Even the authors of~\cite{paperKnockKnock} 
+        analysis to be skipped entirely, as seen in~\cref{fig:threshold-analysis}.
+
+        \begin{figure}[htbp]
+            \centering
+            \frame{\includegraphics[width=\linewidth]{img/threshold_analysis.png}}
+            \caption{Threshold Analysis}
+            \label{fig:threshold-analysis}
+        \end{figure}
+        
+        This limitation is closely related to the employed closed-page policy~\cite{thesisPagePolicies}. Even the authors of~\cite{paperKnockKnock} 
         reported that they were unable to retrieve any part of the mapping on a Raspberry Pi 4, as the 
         observed latency distribution consisted of a single peak indicative of a closed-page policy. 
         The same behavior was observed not only on the tested Raspberry Pi 4 but also consistently 
@@ -69,11 +82,11 @@
         \\
         Due to this limitation, we briefly adopted a closed page policy in theory. Since many tasks require 
         an open page policy, we had to find another way to trigger the Rowhammer bug. Based on the findings 
-        of Gruss et al. [24], who showed that the memory controller's page policy significantly influences 
+        of Gruss et al.~\cite{paperAnotherFlip}, who showed that the memory controller's page policy significantly influences 
         how the Rowhammer vulnerability can be triggered, we were able to pursue an approach aimed at 
-        exploiting the Rowhammer bug even under a closed-page policy, which was further confirmed by [98].
+        exploiting the Rowhammer bug even under a closed-page policy, which was further confirmed by~\cite{paperNethammer}.
         This approach is based on the realization that one-location hammering is also possible with a closed 
-        side policy [24, 98]. To implement this approach, we used the FlipFloyd tool foundation [130] 
+        side policy~\cite{paperNethammer, paperAnotherFlip}. To implement this approach, we used the FlipFloyd tool foundation~\cite{toolFlipfloyd} 
         and adapted it to our ARM-based systems by changing the cache flush instructions and integrating 
         the performance counter \texttt{PMCCNTR\_EL0}. This enables us to carry out the attack without 
         having to know the exact physical DRAM address mapping.
@@ -92,16 +105,24 @@
         similar prior work. Since access latency reflects the internal structure of banks and rows, 
         measuring timing differences between address pairs can reveal which physical address bits are 
         responsible for bank selection and which correspond to row selection, without relying on proprietary 
-        information. Three types of access patterns are considered~\cite{paperDRAMA}. 
+        information. Three types of access patterns are considered~\cite{paperDRAMA} and presented in~\cref{fig:cases}. 
         \\
-        \textbf{Bank Miss}: both addresses are located in different banks, which results in low access times.
+        \textbf{Bank Miss} (see~\cref{fig:cases}a): both addresses are mapped to different banks. Since accesses to separate 
+        banks do not interfere, this results in low latency, analogous to a Row Hit but across banks.
         \\
-        \textbf{Row Hit}: both addresses reside in the same bank and row, also leading to low access times. 
+        \textbf{Row Hit} (see~\cref{fig:cases}b): both addresses reside in the same bank and row, also leading to low access times. 
         \\
-        \textbf{Row Conflict}: both addresses are in the same bank but different rows, which 
+        \textbf{Row Conflict} (see~\cref{fig:cases}c): both addresses are in the same bank but different rows, which 
         results in high access times.
-        \\
-        Assuming a system with \texttt{N} banks and \texttt{R} rows per bank, the probability \texttt{P} of a bank miss is given by 
+        
+        \begin{figure}[htbp]
+            \centering
+            \frame{\includegraphics[width=\linewidth]{img/cases.pdf}}
+            \caption{Types of access patterns}
+            \label{fig:cases}
+        \end{figure}
+
+        Assuming a system with \(N\) banks and \(R\) rows per bank, the probability \(P\) of a bank miss is given by 
         \[
         P_\text{Bank Miss} = 1 - \frac{1}{N}.
         \]

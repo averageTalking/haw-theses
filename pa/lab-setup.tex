@@ -102,13 +102,8 @@
     and uninterrupted execution of long-duration experiments while maintaining full control over multiple concurrent tasks.
   
   \subsection{Automated Scripts} \label{subsec:automated-scripts}
-    Automated scripts were developed to streamline experiment management. The \texttt{ping\_pis.sh} script checked the reachability 
-    of all HammerPi hosts and summarized the results. The \texttt{start\_pis.sh} script verified host connectivity, opened terminal 
-    tabs for each reachable host, and initiated \gls{ssh} connections while keeping terminals open after session closure. 
-    The \texttt{build\_session.sh} script required a \gls{tmux} session name as an argument, verified host connectivity, skipped hosts 
-    with existing sessions, and created new \gls{tmux} sessions on reachable hosts. The \texttt{kill\_session.sh} script terminated 
-    specified \gls{tmux} sessions across hosts, skipping any hosts without the target session. The \texttt{show\_session.sh} script listed 
-    all \gls{tmux} sessions per reachable host, provided the total session count, and indicated if no sessions were found. Finally, 
-    the \texttt{connect\_with\_session.sh} script attached \gls{ssh} connections to existing \gls{tmux} sessions on reachable hosts, opening a 
-    new terminal tab for each host and skipping hosts without the specified session.
+    Automated scripts were developed to streamline experiment management. They check host reachability, verify connectivity, 
+    and manage terminal sessions. Some scripts open terminals and initiate \gls{ssh} connections to reachable hosts, 
+    while others create, list, attach, or terminate \gls{tmux} sessions, skipping hosts that are unreachable or 
+    already running the relevant session. Session summaries, counts, and status indications are provided automatically.
     

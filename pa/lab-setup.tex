@@ -95,10 +95,10 @@
     For long-term experiments, the \gls{tmux} tool was installed to address the challenge of maintaining continuous processes on the 
     Raspberry Pi systems while allowing the user to disconnect from the \gls{ssh} session. \gls{tmux} is a terminal multiplexer that enables 
     multiple terminal sessions to be created, accessed, and controlled independently within a single \gls{ssh} connection. New 
-    sessions were initiated using \texttt{tmux new -s <session\_name>}, allowing experiments to be executed within an isolated session. 
-    Detachment from a session, performed with \texttt{Ctrl+B} followed by \texttt{D}, permitted the experiment to continue running in the background 
-    even if the \gls{ssh} connection was closed. Detached sessions could later be reattached using \texttt{tmux a -t <session\_name>}, and 
-    sessions that were no longer needed could be terminated with \texttt{tmux kill-session -t <session\_name>}. This setup ensured reliable 
+    sessions were initiated, allowing experiments to be executed within an isolated session. 
+    Detachment from a session permitted the experiment to continue running in the background 
+    even if the \gls{ssh} connection was closed. Detached sessions could later be reattached, and 
+    sessions that were no longer needed could be terminated. This setup ensured reliable 
     and uninterrupted execution of long-duration experiments while maintaining full control over multiple concurrent tasks.
   
   \subsection{Automated Scripts} \label{subsec:automated-scripts}

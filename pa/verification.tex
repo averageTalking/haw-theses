@@ -23,16 +23,16 @@
     correctness of the reverse-engineered \gls{dram} mappings.
 
     \subsubsection{Software-based} \label{subsubsec:software-based}
-        Verification of \gls{dram} mapping is conducted using a software-based, latency-driven methodology, 
+        We conducted the verification of \gls{dram} mapping by using a software-based, latency-driven methodology, 
         following the approach proposed in the DRAMA methodology~\cite{toolDrama}. This method's 
-        Considerations are based on the cases that the system can encounter, specifically bank misses, row hits, 
+        considerations are based on the cases that the system can encounter - specifically bank misses, row hits, 
         and row conflicts, as defined in the reverse engineering process. Each of these scenarios 
         exhibits distinct access latencies, which can be exploited to verify the underlying \gls{dram} mapping.
         \\
         The verification procedure involves several steps. First, it identifies memory addresses that 
         reside within the same or different \gls{dram} rows and banks, as shown in~\cref{lst:find-related-addresses}.
-        Next, access latencies are measured after flushing the relevant cache lines to ensure that the 
-        measurements reflect \gls{dram} behavior rather than cached values. The collected latency data are then organized 
+        Next, we measure access latencies after flushing the relevant cache lines to ensure that the 
+        measurements reflect \gls{dram} behavior rather than cached values. Then we organize the collected latency data  
         into histograms, which allow for the classification of row hits and row conflicts. These timing histograms 
         serve to calibrate a latency threshold, enabling the verification of the \gls{dram} mapping. Specifically, 
         addresses predicted to reside within the same row should exhibit low access latencies, while 
@@ -51,10 +51,10 @@
         to an increased rate of bit flips in memory.
         \\
         % Workflow, Problems, and Solutions
-        Memory allocation is performed via \texttt{mmap}, based on a predefined percentage of available system 
-        memory, specified by \texttt{MEMORY\_IN\_PERCENT}. Virtual addresses are translated to physical 
-        addresses using pagemap. Physical addresses that correspond to the 
-        same \gls{dram} bank are grouped into lists according to a reverse-engineered \gls{dram} mapping.
+        We performed memory allocation \texttt{mmap}, based on a predefined percentage of available system 
+        memory, specified by \texttt{MEMORY\_IN\_PERCENT}. Then the \gls{mmu} translated the virtual to physical 
+        addresses using pagemap. We grouped all of our physical addresses that correspond to the 
+        same \gls{dram} bank into lists according to our reverse-engineered \gls{dram} mapping.
         \\
         The hammering procedure iterates until a predefined number of cycles is reached, as denoted as
         \texttt{TIMES}. In each iteration, two physical addresses from the same bank are 
@@ -74,8 +74,8 @@
         During the hammering phase, two addresses from the same bank are repeatedly accessed while 
         the cache is explicitly flushed after each access. This maximizes \gls{dram} row activations and is 
         intended to induce bit flips. The core idea is to randomly select two distinct addresses within 
-        one bank and repeatedly toogle between both in sequence, flushing the cache lines after each access. This process 
-        is repeated for a large number of cycles, as illustrated in~\cref{lst:hammer_mechanism}.
+        one bank and repeatedly toogle between both in sequence, flushing the cache lines after each access, as illustrated in~\cref{lst:hammer_mechanism}. We repeated this process 
+        for a large number of cycles.
         \input{listings/hammer-mechanism.tex}
         
         % Related Work Mappings

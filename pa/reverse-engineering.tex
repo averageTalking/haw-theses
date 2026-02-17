@@ -1,17 +1,17 @@
 \subsection{Reverse Engineering} \label{subsec:reverse-engineering}
     \subsubsection{Graph-Based Mapping Inference} \label{subsubsec:graph-based-mapping-inference}
-        Building on the timing-channel primitive introduced in~\cite{paperOneBitFlipsOneCouldFlops}, a novel 
-        graph-based algorithm is employed to determine the memory mapping at runtime. 
+        Building on the timing-channel primitive introduced in~\cite{paperOneBitFlipsOneCouldFlops}, we employ a novel 
+        graph-based algorithm to determine the memory mapping at runtime. 
         This approach models each bit in a physical address as a node in a graph and establishes 
         relationships between nodes based on measured memory access latencies. By exploiting the fact 
         that specific latency patterns emerge when addresses differ in particular bit positions, the method 
         enables the automatic and accurate detection of row bits, column bits, and bank bits.
         \\
-        The core idea is implemented using a kernel module, named \texttt{latency.c} which reverse-engineers the physical-to-DRAM 
+        The core idea~\cite{toolRowhammer-armv8} is implemented using a kernel module, named \texttt{latency.c} which reverse-engineers the physical-to-DRAM 
         address mapping by measuring access latencies \texttt{L(i,j)} between pairs of physical addresses that differ 
         in bits \texttt{i} and \texttt{j}. Large access latencies occur only when the two addresses reside in different rows 
         within the same bank, which allows the identification of row, column, and bank bits. On ARMv8 systems, 
-        \texttt{latency.c} specifically focuses on locating the second-lowest row bit by systematically measuring the 
+        it specifically focuses on locating the second-lowest row bit by systematically measuring the 
         latency between addresses that differ in exactly two bits and inferring which bit positions correspond 
         to row differences~\cite{toolRowhammer-armv8}.
         \\
@@ -24,8 +24,8 @@
         \\
         The workflow involves porting, building and executing the tool~\cite{toolRowhammer-armv8} by including several ARM-specific
         adaptations for performance counters and cache flush instructions. In addition, dynamic memory allocation 
-        via \texttt{vmalloc} was introduced to accommodate larger arrays. The results are stored in 
-        the \texttt{latency.log} file using the corresponding Python script which analyzes all bit positions. 
+        via \texttt{vmalloc} was introduced to accommodate larger arrays. The corresponding Python script stores the results in
+        \texttt{latency.log} file and analyzes all bit positions. 
         The three bits exhibiting the highest average latency deviations are identified. 
         Analysis across all bit positions revealed that bits \texttt{12}, \texttt{13}, \texttt{14} 
         consistently exhibit the highest average latencies, while bits \texttt{15} and \texttt{16} appear occasionally,
@@ -123,15 +123,16 @@
             \label{fig:cases}
         \end{figure}
 
-        Assuming a system with \(N\) banks and \(R\) rows per bank, the probability \(P\) of a bank miss is given by 
+        Assuming a system with \(N\) banks and \(R\) rows per bank, the probability \(P\) of a bank miss is given by:
         \[
         P_\text{Bank Miss} = 1 - \frac{1}{N}.
         \]
-        The probability of a row hit is
+        \newpage
+        The probability of a row hit is:
         \[
         P_\text{Row Hit} = \frac{1}{N} \cdot \frac{1}{R}.
         \]
-        while the probability of a row conflict is 
+        while the probability of a row conflict is:
         \[
         P_\text{Row Conflict} = \frac{1}{N} \cdot \left(1 - \frac{1}{R}\right).
         \]
@@ -141,16 +142,16 @@
         right peak corresponds to high access times and consists of row conflicts~\cite{paperRHinDRAM, paperDRAMA}.
         \\
         To accurately distinguish between row hits and row conflicts in \gls{cpu}, it is essential to measure memory 
-        access latencies while eliminating the influence of \gls{cpu} caches. This is achieved by isolating \gls{cpu} from 
+        access latencies while eliminating the influence of \gls{cpu} caches. We achieve this by isolating \gls{cpu} from 
         cache effects, which includes pinning the \gls{cpu} to a single core and repeatedly accessing pairs of randomly 
-        selected addresses, identified through pagemap. Between each access, cache flush instructions 
-        such as \texttt{DC CIVAC} are executed, and each address pair is probed for approximately 100.000 iterations. The 
+        selected addresses, identified through pagemap. Between each access, we are executing cache flush instructions 
+        such as \texttt{DC CIVAC}, and probing each address pair for approximately 100.000 iterations. The 
         access latencies between these addresses are recorded, and after averaging across multiple measurements, 
         the results are consolidated into a single \texttt{.log} file. From this consolidated data, histograms representing 
         the distribution of row hits and row conflicts are generated, which helps reduce measurement noise.
         \\
-        The measurement workflow can be implemented at different temporal resolutions. In the low-resolution 
-        approach, as demonstrated in \texttt{bank-timing-probe.c}, the POSIX function \texttt{clock\_gettime()} is used to record 
+        We implemented the measurement at different temporal resolutions. In the low-resolution 
+        approach, as demonstrated in \texttt{bank-timing-probe.c}, we used the POSIX function \texttt{clock\_gettime()} to record 
         the elapsed time between events with nanosecond precision. However, the limited temporal resolution 
         of \texttt{clock\_gettime()} makes it unreliable for distinguishing the short latency differences between row hits 
         and row conflicts (see~\cref{fig:lowRes}). 
@@ -161,10 +162,10 @@
             \label{fig:lowRes}
         \end{figure}
         To address this limitation, a high-resolution method, exemplified in 
-        \texttt{rowhitconflict.c}, employs the \gls{pmccntr} instead of \texttt{clock\_gettime()}, allowing for finer measurement 
+        \texttt{rowhitconflict.c}, employs the \gls{pmccntr} instead of \texttt{clock\_gettime()}, allowing for fine-grained measurement 
         resolution.
         \\
-        Once latency data is collected, statistical analysis is performed to distinguish row hits from row 
+        Once we collected latency data, statistical analysis is performed to distinguish row hits from row 
         conflicts reliably. This analysis involves evaluating the latency distributions, determining thresholds, 
         and performing statistical validation, including computation of means, variances, confidence intervals, 
         and t-tests. The methodology leverages prior insights from~\cite{paperDRAMA,paperKnockKnock}.
@@ -172,11 +173,11 @@
         A key step is identifying a reliable latency threshold that separates row hits from row conflicts. This 
         is achieved by collecting thousands of latency samples and constructing a smoothed histogram. The main 
         peak corresponding to row hits and the high-latency peak corresponding to row conflicts are identified, 
-        and the threshold is set at the "left foot" of the high-latency peak. The threshold is further validated 
-        by analyzing the peak distance and valley depth; if validation fails, a fallback threshold is applied. 
+        and the threshold is set at the "left foot" of the high-latency peak. We further validated the threshold  
+        by analyzing the peak distance and valley depth. If validation fails, a fallback threshold is applied. 
         This threshold is then used to classify memory accesses as row hits or row conflicts.
         \\
-        For statistical validation, the latency samples are divided into row hit and row conflict groups according 
+        For statistical validation, we divided the latency samples into row hit and row conflict groups according 
         to the threshold index.
         The results including mean, variance, confidence intervals, and the statistical significance 
         of the separation, are printed to ensure that the distinction between row hits and row conflicts is 
@@ -203,8 +204,8 @@
         A second challenge concerned measurement stability. The original DRAMA code measured each memory 
         access only once, which made the results susceptible to noise. To improve robustness, repeated 
         measurements were introduced by defining multiple runs of the entire measurement process. For each 
-        run, memory mapping and random address pools are initialized, access times are measured across 
-        all candidate addresses, and observed XOR combinations are accumulated. After all runs, the 
+        run, the system initializes the memory mapping and random address pools, measures access times across 
+        all candidate addresses, and accumulates the observed XOR combinations. After all runs, the 
         observed combinations are aggregated, sorted, and saved to \texttt{combinations.dat}, thereby increasing 
         statistical confidence and reducing the influence of outliers.
         \\

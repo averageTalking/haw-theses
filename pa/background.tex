@@ -26,7 +26,7 @@
     such as \gls{dram}. This interaction fundamentally relies on the use of memory 
     addresses.
     \\
-    Memory addresses are required because they uniquely identify and locate data, 
+    It requires memory addresses as they uniquely identify and locate data, 
     allowing systems to store and later retrieve the same information reliably, 
     independent of its physical realization. In this context, 
     two types of memory addresses can be distinguished.
@@ -40,15 +40,15 @@
     space corresponding to the installed \gls{ram}~\cite{blogVirtToPhys}. Physical addresses are globally 
     unique within the system~\cite{blogVirtualMemory}.
     \\
-    Processors employ virtual memory systems in which virtual addresses are 
-    translated into physical addresses~\cite{toolRPI3}. These memory translations, also 
-    referred to as mappings, are achieved by the system resolving the physical memory 
+    Processors employ virtual memory systems that translate virtual addresses into 
+    physical addresses~\cite{toolRPI3}. The system achieves these memory translations, also 
+    referred to as mappings, by resolving the physical memory 
     address corresponding to a given virtual address~\cite{blogVirtToPhys}. Page tables play a 
     central role in defining and managing these virtual-to-physical address mappings.
     \\
     A page table consists of numerous \gls{pte}s~\cite{blogVirtToPhys}. Page tables 
     store the mapping between virtual and physical addresses, including associated 
-    attributes, and these entries are used by the \gls{tlb} 
+    attributes. The \gls{tlb} uses these entries
     as a fast cache to accelerate address translation~\cite{blogVirtualMemory, docPageTables}.
     \\
     The kernel provides an interface exposed via \texttt{/proc/pagemap}, which returns a 
@@ -71,8 +71,8 @@
     Functionally, the virtual address is first divided into a virtual page number 
     and a page offset~\cite{blogVirtToPhys}. The page offset is passed through unchanged, as it does 
     not require translation. The virtual page number is then looked up in the \gls{tlb} by 
-    searching for a matching tag. In the case of a \gls{tlb} hit, the physical address is 
-    returned immediately. In the case of a \gls{tlb} miss, the \gls{mmu} accesses main memory 
+    searching for a matching tag. In the case of a \gls{tlb} hit, it returns the physical address 
+    immediately. In the case of a \gls{tlb} miss, the \gls{mmu} accesses main memory 
     to locate the corresponding page frame. If the entry is found, the translation 
     is completed and cached in the \gls{tlb}. If no entry exists, the system may need to 
     retrieve the page from storage, which represents the worst-case 
@@ -96,19 +96,18 @@
     The \texttt{PMCCNTR\_EL0} register holds the value of the processor cycle counter,
     monitoring the number of processor clock cycles~\cite{paperPMCCNTREL0}. It is a 64-bit register 
     integrated within the \gls{pmu} block. Architecturally, the external register 
-    \texttt{PMCCNTR\_EL0} bits \texttt{[63:0]} are mapped to the AArch64 system 
-    register. The increment behavior of the cycle counter 
-    is determined by the configuration of the \texttt{PMCR\_EL0 {LC, D}} control bits, 
-    allowing the counter to advance either on every processor clock cycle or on 
+    \texttt{PMCCNTR\_EL0} bits \texttt{[63:0]} map to the AArch64 system 
+    register. The \texttt{PMCR\_EL0 {LC, D}} control bits determine the increment behavior of the cycle counter,
+    allowing it to advance either on every processor clock cycle or on 
     every 64th processor clock cycle. Following a warm reset, \texttt{PMCCNTR\_EL0} is 
     initialized to an architecturally undefined value~\cite{paperPMCCNTREL0}.
 
   \subsection{Cache Organization} \label{subsec:cache-organization}
       %% Direct-mapped Caches
-      In a direct-mapped cache, each main memory entry is mapped to exactly one cache location. As a 
+      In a direct-mapped cache, each main memory entry map to exactly one cache location. As a 
       consequence, multiple distinct memory addresses can also map to the same cache location~\cite{thesisCacheAttacksandRH}.
       \\
-      An example is shown in~\cref{fig:direct-mapped-cache}, illustrating a 4~KB direct-mapped 
+      As seen in the example of~\cref{fig:direct-mapped-cache}, there is a 4~KB direct-mapped 
       cache with 128~cache lines of 64~bytes each, where addresses are split into a 6-bit block 
       offset, 7-bit index, and 19-bit tag.
       \begin{figure}[htbp]
@@ -125,7 +124,7 @@
       with data fetched from the requested memory address.
 
       %% Set-Associative Caches
-      If the replacement policy is allowed to choose any entry in the cache to hold a the data, the 
+      If the replacement policy can choose any entry in the cache to hold the data, the
       cache is referred to as fully associative~\cite{thesisCacheAttacksandRH}. Modern processors, however, typically employ 
       set-associative caches, which organize cache lines into multiple sets~\cite{thesisCacheAttacksandRH}. In an N-way set-associative 
       cache, each memory block can be placed in any one of N cache lines within a specific set.
@@ -143,14 +142,14 @@
       \end{figure}
 
       %% Virtual and Physical Tags and Indexes
-      \gls{cpu} caches can be indexed and tagged using either virtual or physical addresses. When virtual 
-      addresses are used, it is possible for the same physical address to be cached in multiple cache lines, 
+      \gls{cpu} caches can be indexed and tagged using either virtual or physical addresses. When using virtual 
+      addresses, it is possible for the same physical address to be cached in multiple cache lines, 
       which can negatively affect performance. Cache lines are uniquely identified by a tag, which may 
       be derived from either the virtual or the physical address~\cite{thesisCacheAttacksandRH}.
       \\
       In \textbf{\gls{vivt}} caches, both the index and the tag are derived from the 
       virtual address. Such caches are generally faster because no address translation is required before 
-      lookup; however, the virtual tag is not unique, and shared memory may appear multiple times in the cache.
+      lookup. However, the virtual tag is not unique, and shared memory may appear multiple times in the cache.
       \\
       \textbf{\gls{pipt}} caches use the physical address for both index and tag. 
       This approach avoids duplication of shared memory in the cache, but it is slower because address 

@@ -12,9 +12,9 @@
     \\
     % Methodological Approach
     The study primarily employs a deductive methodology, testing established 
-    Rowhammer theories on Raspberry Pi platforms. It proceeds from existing 
-    theoretical foundations, formulating hypotheses which are subsequently 
-    validated or refuted through targeted experiments. Complementing this, 
+    Rowhammer theories on Raspberry Pi platforms. It builds on existing 
+    theoretical foundations, formulates hypotheses and subsequently validates or refutes them 
+    through targeted experiments. Complementing this, 
     an inductive component is incorporated, as experimental observations may 
     reveal unanticipated behaviors, from which new hypotheses or insights can
     be derived. Overall, the research is predominantly deductive, with 
@@ -49,8 +49,8 @@
     Rowhammer experiments to understand and adapt methodologies for the target architecture
     \\
     % Data Collection
-    Data is collected through monitoring and documenting system responses after observations 
-    of system behavior while execute Rowhammer experiments on both Raspberry generations.
+    We collect data through monitoring and documenting system responses after observations 
+    of system behavior while executing Rowhammer experiments on both Raspberry generations.
     \\
     % Data Analysis
     The data analysis involved the development and application of scripts to process 
@@ -89,8 +89,8 @@
       many-sided hammering. It must allow configuration of the number of iterations and hammer cycles, automatically detect 
       the memory page size, and support configurable initialization patterns, for example using \texttt{0} or \texttt{1}. The amount 
       of allocated \gls{ram} must be adjustable as a percentage of the available memory, and the framework must 
-      incorporate bit masks and bank addressing functions. Automatic detection of hardware characteristics, 
-      including the Raspberry Pi model, \gls{ram} size, and architecture, is required. Furthermore, the system must 
+      incorporate bit masks and bank addressing functions. The system has to automatically detect hardware characteristics, 
+      including the Raspberry Pi model, \gls{ram} size, and architecture. Furthermore, the system must 
       support cache bypass mechanisms, virtual-to-physical-to-\gls{dram} address mapping, and, if feasible, mitigation 
       bypass techniques. Hammering operations must include bit flip detection and classification, such as 
       distinguishing between \texttt{0→1} and \texttt{1→0} transitions, as well as verification of detected bit flips. Experimental 

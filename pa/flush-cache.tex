@@ -1,6 +1,6 @@
 \subsection{Flush cache} \label{subsec:flush-cache}
-    This method for bypassing the cache is recommended because it explicitly invalidates a specific cache 
-    line, ensuring that the next access must be served from \gls{dram}. ARMv8 provides explicit cache maintenance 
+    We recommend this method for bypassing the cache because it explicitly invalidates a specific cache line 
+    and thereby forces the next access to be served from \gls{dram}. ARMv8 provides explicit cache maintenance 
     instructions for this purpose, most notably the \texttt{DC CIVAC} instruction~\cite{thesisDRAMA}. By directly 
     targeting individual cache lines, this approach provides deterministic cache-line invalidation, which 
     guarantees predictable behavior whereby every subsequent access is fetched from \gls{dram}. 
@@ -51,7 +51,7 @@
         \input{listings/dczva.tex}
     
     \subsubsection{Kernel Module} \label{subsubsec:kernel-module}
-        The cache bypass mechanism is further investigated using a Linux kernel module designed for kernel-space 
+        We investigate the cache bypass mechanism further using a Linux kernel module designed for kernel-space 
         latency measurements of memory and cache operations on ARMv8 systems. The primary goal of this module is 
         to determine whether cache hits and cache misses can be statistically distinguished and to visualize this 
         distinction by plotting latency distributions for cache hits versus cache misses.
@@ -60,7 +60,7 @@
         synchronization barriers to measure the latency of individual operations in \gls{cpu} cycles. It implements 
         eight different operation modes, each representing a specific memory access pattern, including store and 
         load operations, cache clean operations using \texttt{DC CVAC}, cache clean and invalidate operations using 
-        \texttt{DC CIVAC}, and cache line zeroing using \texttt{DC ZVA}. Each of these modes is further evaluated with and without 
+        \texttt{DC CIVAC}, and cache line zeroing using \texttt{DC ZVA}. We further evaluate each of these modes with and without 
         explicit synchronization, thereby intentionally exposing different ordering and completion behaviors. 
         In the context of \texttt{CLFLUSH} based Rowhammer attacks on x86 architectures, Xiao et al.~\cite{paperOneBitFlipsOneCouldFlops} observed 
         that the exclusion of memory barrier instructions, such as \gls{dsb} and \gls{isb}, leads to a higher effectiveness in triggering bit flips~\cite{paperTriggeringRHHardwareFault}. 
@@ -68,8 +68,8 @@
         on ARM-based systems. Therefore not all evaluated modes enforce full memory barrier instructions
         after memory operations. This design choice in our experiment enables an analysis of the latency 
         effects resulting from the absence versus the enforcement of such barriers. A baseline mode measures plain memory loads 
-        to serve as a reference for comparison against all cache maintenance modes. Each configuration is 
-        executed repeatedly and averaged over multiple runs to reduce noise. The resulting latency distributions 
+        to serve as a reference for comparison against all cache maintenance modes. We execute each configuration repeatedly and  
+        average the results over multiple runs to reduce noise. The resulting latency distributions 
         are written to a file and intended to be plotted as diagrams, enabling a clear comparison between modes 
         and highlighting the influence of synchronization on latency and measurement comparability.
         \\
@@ -115,7 +115,7 @@
         specific instructions can bypass or influence cache behavior, and to quantify the associated latency costs. 
         The program measures cycle-accurate execution times using ARM performance counters while applying different 
         low-level memory operations. It executes eight predefined instruction patterns involving store, load, clean, 
-        invalidate, and zeroing operations. Each pattern is executed repeatedly under two conditions: with and 
+        invalidate, and zeroing operations. We executed each pattern repeatedly under two conditions: with and 
         without the corresponding cache maintenance instruction.
         \\
         Compared to the kernel-space implementation, several differences arise. The kernel-based \texttt{flush\_kernel.c} 

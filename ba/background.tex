@@ -1,7 +1,7 @@
 \section{Background} \label{sec:background}
   \subsection{DRAM Architecture} \label{subsec:dram-architecture}
     % DRAM in General
-    \gls{dram} is widely employed as the primary memory technology in 
+    The core problem of Rowhammer is the underlying vulnerability in \gls{dram}, which is widely employed as the primary memory technology in 
     computers, smartphones, and servers~\cite{thesisDRAMA, paperRHinDRAM}. Its internal organization is based on a 
     hierarchical structure of two-dimensional cell matrices arranged in rows and columns~\cite{paperRHinDRAM, paperRowhammerOnSteroids, paperDrammer}, 
     with each cell storing  a single bit of data using a capacitor that is controlled by 
@@ -105,7 +105,7 @@
       \label{fig:temperature-based-refresh-rates}
     \end{figure}
   
-  \subsection{Rowhammer and Techniques} \label{subsec:rowhammer-and-techniques}
+  \subsection{Rowhammer Bug} \label{subsec:rowhammer-and-techniques}
     % Rowhammer
     The \gls{dram} architecture inherently introduces a security vulnerability, known 
     as Rowhammer, which is independent of the operating system or virtualization 
@@ -148,8 +148,8 @@
     toggling damages cells~\cite{paperDRAMHCI}, potentially injecting 
     hot-carriers into neighboring rows and increasing their charge 
     leakage~\cite{paperFlippingBits, paperRHinDRAM}.
-    \\
-    % Techniques
+    
+  \subsection{Hammering Techniques} \label{subsec:hammering-techniques}
     Based on these underlying physical mechanisms, several characteristic Rowhammer techniques 
     have emerged. These techniques primarily differ in the number of neighboring rows they target 
     and in their ability to bypass modern mitigation mechanisms.
@@ -157,13 +157,19 @@
     A \textbf{single-sided} attack performs frequent accesses, or hammering, to only one row adjacent to a 
     victim row. This approach is often combined with accesses to other rows within the same bank 
     to induce bit flips in the neighboring victim 
-    row~\cite{webAnotherFlip, paperAnotherFlip,paperDrammer, paperRHinDRAM}, as can be seen from the \cref{fig:hammering-techniques}a. In contrast, a 
+    row~\cite{webAnotherFlip, paperAnotherFlip,paperDrammer, paperRHinDRAM}, as can be seen from the \cref{fig:hammering-techniques}a. 
+    \\
+    In contrast, a 
     \textbf{double-sided} attack repeatedly hammers two rows located on opposite sides of a victim row, 
     effectively sandwiching it (see \cref{fig:hammering-techniques}b)~\cite{paperAnotherFlip}. This increases the likelihood of inducing bit flips but requires
     partial knowledge of virtual-to-physical address mappings to correctly position the aggressor 
-    rows~\cite{paperRHinDRAM, paperAnotherFlip,paperDrammer}. In \cref{fig:hammering-techniques}c, the \textbf{many-sided} attack extends this concept by employing multiple aggressor 
+    rows~\cite{paperRHinDRAM, paperAnotherFlip,paperDrammer}. 
+    \\
+    In \cref{fig:hammering-techniques}c, the \textbf{many-sided} attack extends this concept by employing multiple aggressor 
     rows and distributed access patterns to evade \gls{trr} mitigation mechanisms 
-    that monitor only limited access behaviors~\cite{paperTRRespass, paperHalfDouble}. Finally, the \textbf{one-location} attack is a 
+    that monitor only limited access behaviors~\cite{paperTRRespass, paperHalfDouble}. 
+    \\
+    Finally, the \textbf{one-location} attack is a 
     technique in which the attacker repeatedly accesses a single \gls{dram} row at high frequency, as seen in \cref{fig:hammering-techniques}d. 
     Unlike traditional attacks that hammer multiple rows, this approach relies on modern memory 
     controllers that preemptively close rows instead of strictly following an open-page policy. 

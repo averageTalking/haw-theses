@@ -151,7 +151,7 @@
         the distribution of row hits and row conflicts are generated, which helps reduce measurement noise.
         \\
         We implemented the measurement at different temporal resolutions. In the low-resolution 
-        approach, as demonstrated in \texttt{bank-timing-probe.c}, we used the POSIX function \texttt{clock\_gettime()} to record 
+        approach, as demonstrated in \texttt{bank-timing-probe.c}, we used a POSIX function to record 
         the elapsed time between events with nanosecond precision. However, the limited temporal resolution 
         of \texttt{clock\_gettime()} makes it unreliable for distinguishing the short latency differences between row hits 
         and row conflicts (see~\cref{fig:lowRes}). 

@@ -158,10 +158,10 @@
         64 KB, 2 MB, and 32 MB, can be allocated at runtime. Therefore, the kernel command line was 
         extended to pre-allocate a single 1 GB HugeTLB page.
         \\
-        After enabling HugePages, their availability was verified using 
-        \texttt{ls /sys/kernel/mm/hugepages/}, which reports the supported HugePage sizes. On the 
+        After enabling HugePages, we verified their availability. On the 
         Raspberry Pi 4, the available sizes were 64 KB, 2 MB, 32 MB, and 1 GB, whereas on the 
-        Raspberry Pi 5 only 2 MB, 32 MB, and 1 GB HugePages were supported. To ensure deterministic 
+        Raspberry Pi 5 only 2 MB, 32 MB, and 1 GB HugePages were supported. \\
+        To ensure deterministic 
         HugeTLB behavior, Transparent HugePages were explicitly disabled via a privileged write to 
         \texttt{/sys/kernel/mm/transparent\_hugepage/enabled}. Following kernel command line 
         configuration and a system reboot, the kernel message buffer was filtered using 

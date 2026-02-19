@@ -172,8 +172,10 @@
         how addresses are indexed to cache sets. The parameters \texttt{LINE\_LENGTH\_LOG2} and \texttt{LINE\_LENGTH} 
         define the cache line size of 64~bytes and its base-2 logarithm, which are required for address calculations. 
         The parameter \texttt{ES\_EVICTION\_COUNTER} determines the number of addresses in an eviction set that are 
-        accessed per iteration in order to reliably evict a target cache line. The parameter 
+        accessed per iteration in order to reliably evict a target cache line. \\
+        The parameter 
         \texttt{ES\_NUMBER\_OF\_ACCESSES\_IN\_LOOP} specifies how often the eviction loop is repeated to ensure eviction 
-        under noisy conditions. Finally, \texttt{ES\_DIFFERENT\_ADDRESSES\_IN\_LOOP} defines the number of distinct 
+        under noisy conditions. \\
+        Finally, \texttt{ES\_DIFFERENT\_ADDRESSES\_IN\_LOOP} defines the number of distinct 
         addresses accessed in each inner iteration of the eviction loop, thereby distributing accesses across the 
         cache set to achieve robust eviction behavior.

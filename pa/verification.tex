@@ -28,7 +28,6 @@
         considerations are based on the cases that the system can encounter - specifically bank misses, row hits, 
         and row conflicts, as defined in the reverse engineering process. Each of these scenarios 
         exhibits distinct access latencies, which can be exploited to verify the underlying \gls{dram} mapping.
-        \\
         The verification procedure involves several steps. First, it identifies memory addresses that 
         reside within the same or different \gls{dram} rows and banks, as shown in~\cref{lst:find-related-addresses}.
         Next, we measure access latencies after flushing the relevant cache lines to ensure that the 
@@ -37,7 +36,6 @@
         serve to calibrate a latency threshold, enabling the verification of the \gls{dram} mapping. Specifically, 
         addresses predicted to reside within the same row should exhibit low access latencies, while 
         addresses predicted to be located in different rows are expected to show higher latencies.
-        \\
         This workflow faces challenges similar to those encountered in the previous 
         \hyperref[subsubsec:bank-function-derivation]{DRAMA-based reverse engineering process}. 
         Key difficulties include ensuring portability across ARM architectures and 
@@ -55,7 +53,6 @@
         memory, specified by \texttt{MEMORY\_IN\_PERCENT}. Then the \gls{mmu} translated the virtual to physical 
         addresses using pagemap. We grouped all of our physical addresses that correspond to the 
         same \gls{dram} bank into lists according to our reverse-engineered \gls{dram} mapping.
-        \\
         The hammering procedure iterates until a predefined number of cycles is reached, as denoted as
         \texttt{TIMES}. In each iteration, two physical addresses from the same bank are 
         selected randomly. These addresses are repeatedly accessed hammered for a defined number of 
@@ -77,10 +74,7 @@
         one bank and repeatedly toogle between both in sequence, flushing the cache lines after each access, as illustrated in~\cref{lst:hammer_mechanism}. We repeated this process 
         for a large number of cycles.
         \input{listings/hammer-mechanism.tex}
-        
-        % Related Work Mappings
-        The tested mappings, including those from related work, were visually represented and compared 
-        (see~\cref{tab:mappings}).
+
         \begin{table}[ht]
             \centering
             \begin{tabular}{lll}
@@ -98,12 +92,11 @@
         \end{table}
 
         % Reverse-Engineered Mappings
-        Multiple attacks were conducted to evaluate both the mappings proposed in related work and the 
+        Multiple attacks were conducted to evaluate both the mappings proposed in related work, as seen in~\cref{tab:mappings}, and the 
         reverse-engineered mappings, with each Raspberry Pi device tested for approximately five hours.
         Across all tests, no bit flips were observed. The resulting mapping is likely correct, as it 
         closely resembles mappings reported in other studies for the Raspberry Pi 4 and older models. 
         Repeated measurements consistently produced the same mapping.
-        \\
         The absence of bit flips indicates that either hardware or software mitigations effectively 
         prevent Rowhammer-induced errors, or the \gls{dram} modules under test are inherently resistant. 
         Therefore, based on the obtained results, no definitive conclusions regarding Rowhammer 

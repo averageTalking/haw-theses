@@ -1,8 +1,7 @@
 \section{Overview of Challenges} \label{sec:overview-of-challenges}
   For Rowhammer attacks to be feasible, three fundamental prerequisites must be satisfied, commonly referred
   to as attack primitive~\cite{presRHAttacksWalkthrough, toolRowhammering}. These primitives define the necessary properties of memory accesses that 
-  enable the electrical disturbance of \gls{dram} cells required for inducing bit flips.
-  
+  \vspace{1em}
   \begin{tcolorbox}[challengebox={\hyperref[sec:uncached]{C1. Direct DRAM Activation}}] \label{ch:uncached}
     Bypass the \gls{cpu} cache to achieve direct \gls{dram} access.
   \end{tcolorbox}
@@ -16,7 +15,7 @@
   the hammering speed is reduced by orders of magnitude and falls far below the threshold necessary to discharge 
   adjacent cells. Consequently, forcing cache misses or using uncached memory regions is mandatory to generate 
   the required activation frequency.
-
+  \vspace{1em}
   \begin{tcolorbox}[challengebox={\hyperref[sec:targeted]{C2. Address Mapping Reconstruction}}] \label{ch:targeted}
     Use DRAM address functions to map virtual addresses to physical rows and precisely target aggressor rows.
   \end{tcolorbox}
@@ -28,6 +27,7 @@
   mapping can hammering be focused such that specific adjacent rows are repeatedly activated. Without correct 
   targeting, hammering becomes largely probabilistic and rarely, if ever, results in disturbances of victim data.
 
+  \newpage
   \begin{tcolorbox}[challengebox={\hyperref[sec:fast]{C3. Outpacing DRAM Refresh}}] \label{ch:fast}
     Bypass mitigation mechanisms to achieve sufficiently rapid memory accesses for reliable Rowhammer activation.
   \end{tcolorbox}

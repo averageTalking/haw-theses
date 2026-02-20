@@ -27,8 +27,8 @@
         memory instructions~\cite{paperANewApproach}. \gls{nt} accesses are intended for data with low temporal locality, i.e., 
         data that is unlikely to be reused in the near future and therefore should not occupy cache space, 
         such as streaming data. By design, these accesses can reduce or avoid cache involvement, which has 
-        been shown to significantly facilitate Rowhammer attacks on x86 systems~\cite{paperANewApproach}. On ARMv8 architecture, 
-        however, \gls{nt} load and store instructions (e.g., \texttt{LDNP} and \texttt{STNP}) merely act as advisory hints to the memory 
+        been shown to significantly facilitate Rowhammer attacks on x86 systems~\cite{paperANewApproach}. In contrast, on ARMv8 architecture
+        \gls{nt} load and store instructions (e.g., \texttt{LDNP} and \texttt{STNP}) merely act as advisory hints to the memory 
         system rather than enforcing uncached behavior~\cite{paperDrammer}. Empirical results indicate that accessed data 
         may still be cached in practice~\cite{paperTriggeringRHHardwareFault}. Moreover, multiple consecutive writes to the same address are 
         collected within a single write-combining buffer, with only the last write being committed to \gls{dram}~\cite{toolRowhammering}.

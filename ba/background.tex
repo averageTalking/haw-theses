@@ -137,14 +137,14 @@
     prior work has proposed three possible underlying mechanisms to explain the 
     phenomenon~\cite{paperFlippingBits, paperRHinDRAM, paperRHARetrospective}.
     First, fluctuations in the voltage of a wordline may introduce interference into 
-    a neighboring wordline due to \textbf{electromagnetic coupling} 
+    a neighboring wordline due to \textit{\textbf{electromagnetic coupling}}
     effects~\cite{paperCrosstalkNoise, paperCouplingNoise, paperFaultModels}. 
     This disturbance can momentarily activate the access transistors of the adjacent 
-    row, thereby promoting charge leakage~\cite{paperFlippingBits}. Second, \textbf{bridging faults} in \gls{dram} 
+    row, thereby promoting charge leakage~\cite{paperFlippingBits}. Second, \textit{\textbf{bridging faults}} in \gls{dram} 
     occur when conductive channels form between unrelated wires and/or 
     capacitors~\cite{paperFaultAnalysis, paperDRAMSpecificSpace}, and frequent 
     toggling of a wordline can accelerate charge transfer between these bridged 
-    cells~\cite{paperFlippingBits, paperRHinDRAM}. Third, \textbf{hot-carrier injection} occurs when prolonged wordline 
+    cells~\cite{paperFlippingBits, paperRHinDRAM}. Third, \textit{\textbf{hot-carrier injection}} occurs when prolonged wordline 
     toggling damages cells~\cite{paperDRAMHCI}, potentially injecting 
     hot-carriers into neighboring rows and increasing their charge 
     leakage~\cite{paperFlippingBits, paperRHinDRAM}.
@@ -154,22 +154,22 @@
     have emerged. These techniques primarily differ in the number of neighboring rows they target 
     and in their ability to bypass modern mitigation mechanisms.
     \\
-    A \textbf{single-sided} attack performs frequent accesses, or hammering, to only one row adjacent to a 
+    A \textit{\textbf{single-sided}} attack performs frequent accesses, or hammering, to only one row adjacent to a 
     victim row. This approach is often combined with accesses to other rows within the same bank 
     to induce bit flips in the neighboring victim 
     row~\cite{webAnotherFlip, paperAnotherFlip,paperDrammer, paperRHinDRAM}, as can be seen from the \cref{fig:hammering-techniques}a. 
     \\
     In contrast, a 
-    \textbf{double-sided} attack repeatedly hammers two rows located on opposite sides of a victim row, 
+    \textit{\textbf{double-sided}} attack repeatedly hammers two rows located on opposite sides of a victim row, 
     effectively sandwiching it (see \cref{fig:hammering-techniques}b)~\cite{paperAnotherFlip}. This increases the likelihood of inducing bit flips but requires
     partial knowledge of virtual-to-physical address mappings to correctly position the aggressor 
     rows~\cite{paperRHinDRAM, paperAnotherFlip,paperDrammer}. 
     \\
-    In \cref{fig:hammering-techniques}c, the \textbf{many-sided} attack extends this concept by employing multiple aggressor 
+    In \cref{fig:hammering-techniques}c, the \textit{\textbf{many-sided}} attack extends this concept by employing multiple aggressor 
     rows and distributed access patterns to evade \gls{trr} mitigation mechanisms 
     that monitor only limited access behaviors~\cite{paperTRRespass, paperHalfDouble}. 
     \\
-    Finally, the \textbf{one-location} attack is a 
+    Finally, the \textit{\textbf{one-location}} attack is a 
     technique in which the attacker repeatedly accesses a single \gls{dram} row at high frequency, as seen in \cref{fig:hammering-techniques}d. 
     Unlike traditional attacks that hammer multiple rows, this approach relies on modern memory 
     controllers that preemptively close rows instead of strictly following an open-page policy. 

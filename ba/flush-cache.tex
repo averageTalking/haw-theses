@@ -10,21 +10,21 @@
     In ARM terminology, the word flush is often used in descriptions of clean and invalidate 
     operations, although the architecture specification generally uses only the terms clean and invalidate~\cite{thesisCacheAttacksandRH}.
     \\
-    \textbf{Invalidating} a cache or cache line means clearing it of data by clearing the valid bit of one 
+    \textit{\textbf{Invalidating}} a cache or cache line means clearing it of data by clearing the valid bit of one 
     or more cache lines. The cache must always be invalidated after reset because its contents are undefined. 
     If the cache contains dirty data, simple invalidation is generally incorrect, since updated data from 
     write-back cacheable regions would be lost~\cite{datasheetCortexASeries}.
     \\
-    \textbf{Cleaning} a cache or cache line refers to writing the contents of dirty cache lines back to main memory 
+    \textit{\textbf{Cleaning}} a cache or cache line refers to writing the contents of dirty cache lines back to main memory 
     and clearing the dirty bits, which makes the contents of the cache and main memory coherent with each 
     other~\cite{datasheetCortexASeries, thesisCacheAttacksandRH}. This operation is only applicable to data caches that use a write-back policy. Cache 
     clean and invalidate operations can be performed by cache set or way, or by virtual address.
     \\
-    The \textbf{\gls{poc}} is defined as the point at which all blocks that can access memory, such 
+    The \textit{\textbf{\gls{poc}}} is defined as the point at which all blocks that can access memory, such 
     as processor cores or DMA engines, are guaranteed to observe the same copy of a given address~\cite{datasheetCortexASeries}. 
     Commonly, this point corresponds to the main external system memory, as illustrated in~\cref{fig:poc-pou}b. 
     \\
-    Closely related is the \textbf{\gls{pou}}, which denotes the point in the memory hierarchy at which the instruction cache, 
+    Closely related is the \textit{\textbf{\gls{pou}}}, which denotes the point in the memory hierarchy at which the instruction cache, 
     data cache, and translation table walks of a core are guaranteed to observe the same copy of a memory location~\cite{datasheetCortexASeries, thesisCacheAttacksandRH}. 
     In a system with Harvard L1 caches and a \gls{tlb} for caching translation table entries, a unified L2 cache represents 
     the Point of Unification~\cite{datasheetCortexASeries}. If no external cache is present, the main memory itself serves as the \gls{pou}~\cite{thesisCacheAttacksandRH}, as 
@@ -39,7 +39,7 @@
     \subsubsection{Instruction Types} \label{subsubsec:instruction-types}
         The original Rowhammer study by Kim et al.~\cite{paperFlippingBits} employed the \texttt{clflush} instruction to force cache lines 
         out of the cache hierarchy. \texttt{clflush} ensures that each memory access reaches physical \gls{dram}, thereby 
-        enabling the high-frequency row activations required for Rowhammer. Raspberry Pi devices, however, 
+        enabling the high-frequency row activations required for Rowhammer. However, Raspberry Pi devices 
         use ARM CPUs, which do not provide \texttt{clflush} or a direct equivalent. Instead, these systems rely on 
         ARM cache maintenance instructions to control the cache state. Although architecturally different, 
         these instructions fulfill the same fundamental requirement by bypassing or invalidating caches so 

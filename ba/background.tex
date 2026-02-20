@@ -187,7 +187,7 @@
   \subsection{CPU Caches} \label{subsec:-caches}
     \gls{dram} requires regular refreshing because it stores each bit 
     as an electrical charge, which gradually leaks over time. This leakage necessitates refresh 
-    cycles, resulting in slower access times; however, \gls{dram} provides high storage density at a 
+    cycles, resulting in slower access times. However, \gls{dram} provides high storage density at a 
     relatively low cost~\cite{webCache}. In contrast, Static Random-Access Memory (\gls{sram}) maintains each bit 
     in a stable flip-flop circuit, eliminating the need for refresh operations. This 
     characteristic makes \gls{sram} faster and allows it to be physically located closer to the \gls{cpu}, 
@@ -199,7 +199,7 @@
     serve as a buffer between the \gls{cpu} and main memory, significantly reducing the time required 
     for repeated data accesses~\cite{webWhatsACache-1, webCPUCache}. Cached data typically mirrors the contents of slower 
     storage devices such as \gls{ram} or disks~\cite{webCache}. Common types of caches include \gls{cpu} caches, memory 
-    caches, and browser caches~\cite{webCache}; however, only \gls{cpu} caches are relevant in the context of the 
+    caches, and browser caches~\cite{webCache}. However, only \gls{cpu} caches are relevant in the context of the 
     Rowhammer attack. \\
     Cache performance is characterized by hits and misses. A cache hit occurs when the \gls{cpu} 
     requests data already present in one of its cache levels. In this case, the cache provides 

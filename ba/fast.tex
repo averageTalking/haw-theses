@@ -1,11 +1,11 @@
 \section{Outpacing DRAM Refresh} \label{sec:fast}
-    To achieve \hyperref[ch:fast]{C3. Outpacing DRAM Refresh}, memory accesses must be issued at a rate that 
+    To achieve "\textit{\hyperref[ch:fast]{C3. Outpacing DRAM Refresh}}", memory accesses must be issued at a rate that 
     exceeds the \gls{dram} refresh behavior, ensuring sufficiently frequent activation's of the same \gls{dram} rows. 
     This section therefore analyzes access and refresh characteristics, examines the impact of existing 
     mitigation mechanisms and the extent to which they must be bypassed to support effective hammering 
     on ARM-based systems such as the Raspberry Pi devices.
 
-    \subsection{Mitigation's} \label{subsec:mitigations}
+    \subsection{Mitigations} \label{subsec:mitigations}
         % In General
         The Rowhammer vulnerability has been demonstrated in a wide range of environments, including sandboxed 
         systems, native platforms, virtual machines, JavaScript contexts, mobile devices, and even across 
@@ -57,7 +57,7 @@
             disturbance errors~\cite{paperTRRScope, paperTRRespass}. Nonetheless, \textit{\gls{trr}} is vendor-specific and non-mandatory, and it is vulnerable to bypasses such 
             as \textit{TRRespass}~\cite{paperTRRespass,toolTRRespass} and \textit{Halfdouble}~\cite{paperHalfDouble,toolHalfDouble} due to imperfect identification of victim rows.
         
-        \subsubsection{Limitations} \label{subsubsec:limitations-outspacing-refresh}
+        \subsubsection{Constraints} \label{subsubsec:limitations-outspacing-refresh}
             Several limitations affect mitigation strategies across both software and hardware approaches. Certain hammering 
             techniques can avoid cache misses, rendering detection ineffective. Detection heuristics frequently generate high 
             false-positive rates in real workloads. Mitigations may restrict system functionality or break compatibility with 

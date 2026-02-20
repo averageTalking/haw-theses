@@ -2,7 +2,7 @@
     Even after eleminating cache effects, a fundamental challenge in memory access remains: the 
     fixed mapping between physical addresses and the underlying \gls{dram} layout. It is insufficient 
     to merely perform \gls{dram} accesses. Rather, precise access to specific \gls{dram} rows is required to
-    induce bit flips in adjacent victim rows, denoted as \hyperref[ch:targeted]{C2. Address Mapping Reconstruction}. The physical address is 
+    induce bit flips in adjacent victim rows, denoted as "\textit{\hyperref[ch:targeted]{C2. Address Mapping Reconstruction}}". The physical address is 
     composed of bits that are partitioned into rank, channel, bank, row, and column, which 
     collectively determine the location where the data is stored~\cite{paperReliableReverseEngineering}.
     However, just like on Intel systems, details of this mapping are not publicly disclosed, unlike the 
@@ -121,7 +121,7 @@
             \label{fig:row-hit-conflict}
         \end{figure}
 
-        \cref{fig:row-hit-conflict} illustrates the resulting 
+        \Cref{fig:row-hit-conflict} illustrates the resulting 
         histograms across all test devices. On the Raspberry Pi 4, 
         We observe Row Hits in the range of approximately 210-260 CPU cycles, while Row Conflicts 
         occur shortly before or after 300 CPU cycles, demonstrating a clear separation. For the 
@@ -170,7 +170,7 @@
 
         In this work, not only the original DRAMA ARM port without Hugepages was used, 
         but also the TRRespass DRAMA ARM port, which supports Hugepages.
-        \cref{fig:combinations-rpi4} and \cref{fig:combinations-rpi5} depict the 
+        \Cref{fig:combinations-rpi4} and \cref{fig:combinations-rpi5} depict the 
         distribution of detected XOR combinations with the original DRAMA port for the Raspberry Pi 4 
         and Raspberry Pi 5 devices, respectively. In some cases, the analysis yields multiple 
         candidate functions, including rare additional simple bank bits and, in certain instances,

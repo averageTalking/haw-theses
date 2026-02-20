@@ -36,7 +36,7 @@
             The root cause of Rowhammer stems from disturbance errors arising from physical interactions between multiple 
             cells in highly scaled \gls{dram}. Increased integration density and smaller cell geometries reduce noise margins 
             and exacerbate charge leakage effects. A straightforward hardware-based remedy would involve reducing \gls{dram} 
-            cell density or increasing the physical cell size. However, this would require higher voltages and larger 
+            cell density or increasing the physical cell size. Even so, this would require higher voltages and larger 
             charge reservoirs, resulting in unacceptable power and performance costs. Lowering integration density to 
             mitigate interference also significantly reduces memory capacity, creating a fundamental trade-off between 
             security and storage density. Since commercial \gls{dram} must maximize usable capacity, the underlying physical 
@@ -49,7 +49,7 @@
             \\
             \textbf{Increasing the \gls{dram} refresh rate} represents another mitigation strategy. \gls{dram} cells are volatile and 
             require refreshing at standard intervals of 32 ms to 64 ms~\cite{paperTriggeringRHHardwareFault}. The simplest approach is to increase 
-            the refresh rate by two to four times~\cite{paperRHARetrospective, webTenYearsOfRH}, which reduces charge leakage exposure. However, higher refresh 
+            the refresh rate by two to four times~\cite{paperRHARetrospective, webTenYearsOfRH}, which reduces charge leakage exposure. Nonetheless, higher refresh 
             frequencies delay data access, negatively impacting system performance~\cite{webTenYearsOfRH}. While this strategy makes Rowhammer 
             attacks more difficult, it is often unacceptable due to its detrimental effects on performance and energy efficiency~\cite{paperTriggeringRHHardwareFault}.
             \\

@@ -62,7 +62,7 @@
         by relying on the execution time of the flush instruction, which differs depending on whether the 
         targeted data is cached or not~\cite{paperFlushFlush}. The attack setup is similar to \textit{Flush+Reload}. A shared or binary object 
         file is mapped into the attacker's address space, an address is flushed from the cache, and the victim program 
-        is scheduled. However, after the victim executes, the attacker flushes the address again instead of reloading 
+        is scheduled. Yet, after the victim executes, the attacker flushes the address again instead of reloading 
         it. This second flush does not generate cache misses, unlike \textit{Flush+Reload} or \textit{Prime+Probe}.
         \\
         Gruss et al.~\cite{paperFlushFlush} demonstrated the effectiveness of \textit{Flush+Flush} by constructing a covert channel with a 
@@ -74,10 +74,10 @@
         Initially, the execution time of the victim is measured. Subsequently, a specific cache set is evicted, and the victim 
         program is measured again to observe changes in execution time.
         \\
-        The results can be taken from~\cref{fig:result_evictandtime}
-        On the Raspberry Pi 4, experimental results show a clear separation between cache-resident execution at 
+        The results can be taken from~\cref{fig:result_evictandtime}.
+        On the one hand, the Raspberry Pi 4, experimental results show a clear separation between cache-resident execution at 
         approximately 175 \gls{cpu} cycles and memory-resident execution at around 349 \gls{cpu} cycles, resulting in a meaningful threshold 
-        of about 259 \gls{cpu} cycles. On the Raspberry Pi 5, however, cache and memory access times nearly coincide at roughly 
+        of about 259 \gls{cpu} cycles. On the other hand, the Raspberry Pi 5's cache and memory access times nearly coincide at roughly 
         110 and 115 \gls{cpu} cycles, respectively, yielding no observable timing gap. The absence of a distinct memory-access 
         peak on the Raspberry Pi 5 indicates that the eviction step fails to force victim data out of the effective 
         cache hierarchy. Due to the non-inclusive and dynamically allocated L3 cache, evicted lines may remain in L2 or 
@@ -158,7 +158,7 @@
         Raspberry Pi 4 and Raspberry Pi 5. Cache eviction can serve as an alternative to, or a workaround for, 
         privileged cache maintenance instructions on ARM systems. Some of the presented cache eviction methods 
         can achieve sufficiently high eviction rates comparable to cache maintenance instructions, making 
-        side-channel attacks or Rowhammer exploits theoretically feasible. In practice, however, the execution
+        side-channel attacks or Rowhammer exploits theoretically feasible. In practice, the execution
         time of cache eviction is significantly slower than cache flushing, as it requires repeated accesses to a 
         large number of congruent addresses and is affected by noise introduced by pseudo-random cache replacement 
         policies~\cite{thesisCacheAttacksandRH}. This increased noise exceeds that of cache flushing, thereby increasing the number of 

@@ -43,7 +43,7 @@
         be subject to caching in practice~\cite{toolRowhammering}. A key advantage of this technique is that it operates entirely 
         in unprivileged user space and does not require special permissions. Prior work describes how 
         user-accessible \gls{dma} buffers exposed by the Android ION memory management interface can be leveraged to 
-        bypass \gls{cpu} caches, thereby enabling Rowhammer triggering from user space~\cite{paperDrammer, paperTriggeringRHHardwareFault}. However, subsequent 
+        bypass \gls{cpu} caches, thereby enabling Rowhammer triggering from user space~\cite{paperDrammer, paperTriggeringRHHardwareFault}. Even so, subsequent 
         defenses, such as~\cite{paperGuardION}, have rendered Rowhammer bugs triggered in this way non-exploitable. 
         Importantly, this technique is not applicable to Raspberry Pi systems, as the Android-specific ION framework 
         is not available in standard Linux-based Raspberry Pi environments, which prevents the allocation or control 

@@ -70,7 +70,7 @@
         It zeroes a naturally aligned block of N bytes, and is 
         likewise a 64-bit system instruction~\cite{docDCZVA, datasheetCortexASeries}. The ability to preload the data cache with zero 
         values using \texttt{DC ZVA} is new in ARMv8-A. Cache line zeroing behaves similarly to a prefetch by hinting 
-        that certain addresses are likely to be used in the future. However, zeroing can be significantly 
+        that certain addresses are likely to be used in the future. Nonetheless, zeroing can be significantly 
         faster because it does not require waiting for external memory accesses to complete~\cite{paperTriggeringRHHardwareFault, paperRHonRi3B+}.
     
     \subsubsection{Cache Behavior} \label{subsubsec:cache-behavior}

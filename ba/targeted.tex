@@ -5,7 +5,7 @@
     induce bit flips in adjacent victim rows, denoted as "\textit{\hyperref[ch:targeted]{C2. Address Mapping Reconstruction}}". The physical address is 
     composed of bits that are partitioned into rank, channel, bank, row, and column, which 
     collectively determine the location where the data is stored~\cite{paperReliableReverseEngineering}.
-    However, just like on Intel systems, details of this mapping are not publicly disclosed, unlike the 
+    Notably, just like on Intel systems, details of this mapping are not publicly disclosed, unlike the 
     mappings for older CPU models from AMD after they ceased to publish this information with the beginning 
     of microarchitecture 17h~\cite{webZenCPU, webAMDDeveloperCentral, paperREBankAddressing}.
     Knowledge of the \gls{dram} 
@@ -175,7 +175,7 @@
         and Raspberry Pi 5 devices, respectively. In some cases, the analysis yields multiple 
         candidate functions, including rare additional simple bank bits and, in certain instances,
         more complex XOR combinations. We observe these occurrences more often on 
-        Raspberry Pi 5 devices than on Raspberry Pi 4 devices. However, prior work on 
+        Raspberry Pi 5 devices than on Raspberry Pi 4 devices. Prior work on 
         reverse-engineering \gls{dram} address mappings consistently reports that ARM platforms rely 
         exclusively on simple XOR functions, which are typically composed of one or two address bits~\cite{paperDRAMA, paperDRAMMaUT}.
         Consequently, this work assumes that the sporadically observed more complex XOR 
@@ -206,7 +206,7 @@
         \end{table}
 
     \subsection{Verification} \label{subsec:verification}
-        For each test device, a \gls{dram} address mapping has been derived. However, the completeness and 
+        For each test device, a \gls{dram} address mapping has been derived. Whereas, the completeness and 
         correctness of the recovered mappings cannot be guaranteed. To assess the validity of the inferred 
         \gls{dram} addressing functions, several verification approaches can be employed.
         \\
@@ -219,7 +219,7 @@
         % Rowhammer
         Another verification approach is to use \textbf{Rowhammer} experiments to validate the addressing functions. 
         If the inferred functions are correct, their application should increase the bit flip rate 
-        proportionally to the number of identified sets~\cite{paperDRAMA}. However, this method is often impractical due 
+        proportionally to the number of identified sets~\cite{paperDRAMA}. Nevertheless, this method is often impractical due 
         to potentially long execution times, the presence of mitigation mechanisms, or limited susceptibility 
         of the system to Rowhammer. Even on systems previously identified as vulnerable, the distribution 
         and occurrence of vulnerable memory regions vary across \gls{dram} chips, and not every device of the 

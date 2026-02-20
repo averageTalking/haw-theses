@@ -59,8 +59,8 @@
         test devices used in this work.
         \\
         The workflow requires activation of the \gls{pmu} via a kernel module.
-        However, both the automatic and manual workflows failed to 
-        recover any valid mapping. In all cases, the execution terminated with the warning “\textit{Threshold 
+        No matter how the workflows were executed, both the automatic and manual approaches failed to recover any valid mapping.
+        In all cases, the execution terminated with the warning “\textit{Threshold 
         quality check failed: Valley between peaks not pronounced enough.}” Multiple mitigation attempts 
         were undertaken, including manual threshold selection, parameter tuning for noisy systems, and 
         high-precision measurement runs. Nevertheless, all attempts resulted in an insufficient number 
@@ -97,7 +97,7 @@
         \gls{dram} address mappings, because access latency directly reflects the internal organization of 
         banks and rows. By correlating timing differences with chosen address pairs, one can infer which 
         physical address bits select the bank and which select the row, without vendor documentation.
-        However, based on the issues encountered in the previous part - most notably the insufficiently 
+        Based on the issues encountered in the previous part - most notably the insufficiently 
         pronounced valley between latency peaks - it remains 
         unclear whether a reliable distinction between row hits and row conflicts is feasible in practice.
         \\

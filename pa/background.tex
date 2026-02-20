@@ -125,7 +125,7 @@
 
       %% Set-Associative Caches
       If the replacement policy can choose any entry in the cache to hold the data, the
-      cache is referred to as fully associative~\cite{thesisCacheAttacksandRH}. Modern processors, however, typically employ 
+      cache is referred to as fully associative~\cite{thesisCacheAttacksandRH}. Nevertheless, modern processors typically employ 
       set-associative caches, which organize cache lines into multiple sets~\cite{thesisCacheAttacksandRH}. In an N-way set-associative 
       cache, each memory block can be placed in any one of N cache lines within a specific set.
       \\
@@ -149,7 +149,7 @@
       \\
       In \textbf{\gls{vivt}} caches, both the index and the tag are derived from the 
       virtual address. Such caches are generally faster because no address translation is required before 
-      lookup. However, the virtual tag is not unique, and shared memory may appear multiple times in the cache.
+      lookup. Yet, the virtual tag is not unique, and shared memory may appear multiple times in the cache.
       \\
       \textbf{\gls{pipt}} caches use the physical address for both index and tag. 
       This approach avoids duplication of shared memory in the cache, but it is slower because address 

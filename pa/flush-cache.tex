@@ -5,7 +5,7 @@
     targeting individual cache lines, this approach provides deterministic cache-line invalidation, which 
     guarantees predictable behavior whereby every subsequent access is fetched from \gls{dram}. 
     It should be noted that these instructions are no longer available in an unprivileged context but require 
-    privileged execution. However, this restriction is acceptable for our project. Overall, this technique 
+    privileged execution. Even so, this restriction is acceptable for our project. Overall, this technique 
     avoids reliance on undocumented cache-replacement policies, thereby increasing experimental reliability, and 
     simplifies the setup by eliminating the need for eviction-set construction and timing-based profiling that 
     are typical of cache eviction based approaches.

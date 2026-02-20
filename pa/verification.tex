@@ -1,11 +1,11 @@
 \subsection{Verification} \label{subsec:verification}
-    A \gls{dram} mapping has been obtained for each test device. However, it remains uncertain whether 
+    A \gls{dram} mapping has been obtained for each test device. Nevertheless, it remains uncertain whether 
     the reverse-engineered mapping is entirely correct (as seen in the
     \hyperref[subsubsec:bank-function-derivation]{previous part}). Several methods can be employed 
     to verify the correctness of the derived \gls{dram} addressing functions.
     \\
     One approach is \textbf{physical probing}, which involves comparing the determined functions with results 
-    obtained through direct hardware measurements, as described in~\cite{paperDRAMA}. This method, however, faces 
+    obtained through direct hardware measurements, as described in~\cite{paperDRAMA}. Nonetheless, this method faces 
     significant practical limitations. Embedded systems often incorporate small chips and 
     multi-layered circuit boards~\cite{thesisDRAMA}, making direct probing difficult. In particular, verification 
     via hardware probing is not feasible on devices such as Raspberry Pi's due to the presence of 

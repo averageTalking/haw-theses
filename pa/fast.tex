@@ -150,7 +150,7 @@
         inspection of the kernel configuration using \texttt{/boot/config-\$(uname -r)} revealed that 
         while the architecture fundamentally supports HugePages, the kernel was compiled without 
         enabling either Transparent HugePages or HugeTLBFS. As a result, HugePages were enabled by 
-        natively rebuilding the Linux kernel, as described in~\cref{sec:lab-setup}.
+        natively rebuilding the Linux kernel, as described in~\cref{subsec:lab-setup}.
         \\
         According to the Debian arm64 kernel documentation, HugeTLB page sizes of 2 MB and 1 GB are 
         supported, but 1 GB HugeTLB pages must be pre-allocated at boot time via kernel command line 

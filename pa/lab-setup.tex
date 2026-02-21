@@ -1,9 +1,9 @@
-\section{Lab Setup} \label{sec:lab-setup}
+\subsection{Lab Setup} \label{subsec:lab-setup}
   The laboratory setup was designed by us to establish a consistent and reproducible environment for both system 
   configuration and experimental execution, ensuring all devices, software, and development workflows were properly 
   prepared prior to conducting experiments.
 
-  \subsection{System Setup} \label{subsec:system-setup}
+  \subsubsection{System Setup} \label{subsubsec:system-setup}
     % Pi Setup
     For the Raspberry Pi systems, we generated public and private keys for WireGuard and SSH, 
     distributed the public keys to enable secure access, and verified connectivity on all devices. 
@@ -91,7 +91,7 @@
     several additional advantages. It ensures improved comparability of experimental results, as all Raspberry Pi devices 
     run on an identical software stack.
 
-  \subsection{Experiment Setup} \label{subsec:experiment-setup}
+  \subsubsection{Experiment Setup} \label{subsubsec:experiment-setup}
     For long-term experiments, the \gls{tmux} tool was installed to address the challenge of maintaining continuous processes on the 
     Raspberry Pi systems while allowing the user to disconnect from the \gls{ssh} session. \gls{tmux} is a terminal multiplexer that enables 
     multiple terminal sessions to be created, accessed, and controlled independently within a single \gls{ssh} connection. New 
@@ -100,7 +100,7 @@
     sessions that were no longer needed could be terminated. This setup ensured reliable 
     and uninterrupted execution of long-duration experiments while maintaining full control over multiple concurrent tasks.
   
-  \subsection{Automated Scripts} \label{subsec:automated-scripts}
+  \subsubsection{Automated Scripts} \label{subsubsec:automated-scripts}
     Automated scripts were developed to streamline experiment management. They check host reachability, verify connectivity, 
     and manage terminal sessions. Some scripts open terminals and initiate \gls{ssh} connections to reachable hosts, 
     while others create, list, attach, or terminate \gls{tmux} sessions, skipping hosts that are unreachable or 

@@ -13,7 +13,7 @@
     \\
     Another verification method leverages \textbf{Rowhammer} testing. In this approach, correctness is 
     assessed by evaluating whether the use of the addressing functions in Rowhammer experiments 
-    increases the number of bit flips per second proportionally to the number of sets identified~\cite{paperDRAMA}. 
+    increases the number of bitflips per second proportionally to the number of sets identified~\cite{paperDRAMA}. 
     This method is often impractical because tests may require excessively long durations, the systems 
     under study may not be vulnerable, or mitigations may interfere with the results.
     \\
@@ -46,7 +46,7 @@
     \subsubsection{Rowhammer} \label{subsubsec:rowhammer}
         A secondary approach was tested to verify the \gls{dram} mapping using the Rowhammer technique. This 
         method aims to validate the addressing functions by observing whether their application leads 
-        to an increased rate of bit flips in memory.
+        to an increased rate of bitflips in memory.
         \\
         % Workflow, Problems, and Solutions
         We performed memory allocation \texttt{mmap}, based on a predefined percentage of available system 
@@ -57,8 +57,8 @@
         \texttt{TIMES}. In each iteration, two physical addresses from the same bank are 
         selected randomly. These addresses are repeatedly accessed hammered for a defined number of 
         times while explicitly flushing the cache between accesses. After each 
-        iteration, the system checks for resulting bit flips. Once the procedure completes, the total 
-        number of detected bit flips is verified and reported.
+        iteration, the system checks for resulting bitflips. Once the procedure completes, the total 
+        number of detected bitflips is verified and reported.
         \\
         % Grouping Physical Addresses into DRAM Banks
         The grouping of physical addresses follows the goal of assigning physical addresses to \gls{dram} banks 
@@ -70,7 +70,7 @@
         
         During the hammering phase, two addresses from the same bank are repeatedly accessed while 
         the cache is explicitly flushed after each access. This maximizes \gls{dram} row activations and is 
-        intended to induce bit flips. The core idea is to randomly select two distinct addresses within 
+        intended to induce bitflips. The core idea is to randomly select two distinct addresses within 
         one bank and repeatedly toogle between both in sequence, flushing the cache lines after each access, as illustrated in~\cref{lst:hammer_mechanism}. We repeated this process 
         for a large number of cycles.
         \input{listings/hammer-mechanism.tex}
@@ -94,10 +94,10 @@
         % Reverse-Engineered Mappings
         Multiple attacks were conducted to evaluate both the mappings proposed in related work, as seen in~\cref{tab:mappings}, and the 
         reverse-engineered mappings, with each Raspberry Pi device tested for approximately five hours.
-        Across all tests, no bit flips were observed. The resulting mapping is likely correct, as it 
+        Across all tests, no bitflips were observed. The resulting mapping is likely correct, as it 
         closely resembles mappings reported in other studies for the Raspberry Pi 4 and older models. 
         Repeated measurements consistently produced the same mapping.
-        The absence of bit flips indicates that either hardware or software mitigations effectively 
+        The absence of bitflips indicates that either hardware or software mitigations effectively 
         prevent Rowhammer-induced errors, or the \gls{dram} modules under test are inherently resistant. 
         Therefore, based on the obtained results, no definitive conclusions regarding Rowhammer 
         susceptibility can be drawn for these devices.

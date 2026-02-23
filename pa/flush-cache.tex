@@ -63,7 +63,7 @@
         \texttt{DC CIVAC}, and cache line zeroing using \texttt{DC ZVA}. We further evaluate each of these modes with and without 
         explicit synchronization, thereby intentionally exposing different ordering and completion behaviors. 
         In the context of \texttt{CLFLUSH} based Rowhammer attacks on x86 architectures, Xiao et al.~\cite{paperOneBitFlipsOneCouldFlops} observed 
-        that the exclusion of memory barrier instructions, such as \gls{dsb} and \gls{isb}, leads to a higher effectiveness in triggering bit flips~\cite{paperTriggeringRHHardwareFault}. 
+        that the exclusion of memory barrier instructions, such as \gls{dsb} and \gls{isb}, leads to a higher effectiveness in triggering bitflips~\cite{paperTriggeringRHHardwareFault}. 
         Consistent with these findings, \cite{paperTriggeringRHHardwareFault} reports similar observations when conducting comparable experiments 
         on ARM-based systems. Therefore not all evaluated modes enforce full memory barrier instructions
         after memory operations. This design choice in our experiment enables an analysis of the latency 

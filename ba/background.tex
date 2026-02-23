@@ -156,12 +156,12 @@
     \\
     A \textit{\textbf{single-sided}} attack performs frequent accesses, or hammering, to only one row adjacent to a 
     victim row. This approach is often combined with accesses to other rows within the same bank 
-    to induce bit flips in the neighboring victim 
+    to induce bitflips in the neighboring victim 
     row~\cite{webAnotherFlip, paperAnotherFlip,paperDrammer, paperRHinDRAM}, as can be seen from the \cref{fig:hammering-techniques}a. 
     \\
     In contrast, a 
     \textit{\textbf{double-sided}} attack repeatedly hammers two rows located on opposite sides of a victim row, 
-    effectively sandwiching it (see \cref{fig:hammering-techniques}b)~\cite{paperAnotherFlip}. This increases the likelihood of inducing bit flips but requires
+    effectively sandwiching it (see \cref{fig:hammering-techniques}b)~\cite{paperAnotherFlip}. This increases the likelihood of inducing bitflips but requires
     partial knowledge of virtual-to-physical address mappings to correctly position the aggressor 
     rows~\cite{paperRHinDRAM, paperAnotherFlip,paperDrammer}. 
     \\
@@ -174,7 +174,7 @@
     Unlike traditional attacks that hammer multiple rows, this approach relies on modern memory 
     controllers that preemptively close rows instead of strictly following an open-page policy. 
     By continuously re-opening the same row, the attacker induces repeated row activations and 
-    conflicts, which can lead to bit flips in rows adjacent to the hammered location, despite 
+    conflicts, which can lead to bitflips in rows adjacent to the hammered location, despite 
     only targeting a single row~\cite{paperAnotherFlip, paperNethammer}.
 
     \begin{figure}[htbp]

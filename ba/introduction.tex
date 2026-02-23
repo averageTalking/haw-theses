@@ -21,7 +21,7 @@
     of other memory locations~\cite{paperRHARetrospective}. As memory technologies continue to scale toward smaller physical 
     dimensions, \gls{dram} chips become increasingly susceptible to disturbance effects, in which the behavior 
     of a memory cell can unintentionally influence adjacent cells~\cite{paperRHARetrospective}, causing the stored value of a 
-    \gls{dram} cell to change without explicit modification, a phenomenon known as a bit flip~\cite{paperAnotherFlip}.
+    \gls{dram} cell to change without explicit modification, a phenomenon known as a bitflip~\cite{paperAnotherFlip}.
 
   % Conflict [Rowhammer]
     In 2014, Kim et al.~\cite{paperFlippingBits} demonstrated that \gls{dram} is vulnerable to disturbance errors, showing that 
@@ -33,7 +33,7 @@
     Later studies extended these attacks to native x86 systems as well as ARM-based platforms~\cite{paperRowhammeronaRPi}. 
     Early speculation suggested that Rowhammer attacks on ARM devices might be infeasible, largely due 
     to the presumed slower response of ARM memory controllers. Nonetheless, this assumption was later disproven 
-    when bit flips were successfully observed on ARM hardware~\cite{paperDrammer}.
+    when bitflips were successfully observed on ARM hardware~\cite{paperDrammer}.
 
   % Research Question
     Previous studies primarily focused on mobile phones or Chromebooks~\cite{paperHalfDouble, paperDrammer, paperDRAMA, paperBlacksmith}. Subsequently 
@@ -41,7 +41,7 @@
     vulnerabilities. This uncertainty is further compounded by the differences in \gls{lpddr} memory, which 
     due to power and die area constraints, behaves differently from standard \gls{ddr} memory~\cite{paperBlacksmith}. In the 
     context of this Bachelor thesis, we want to analyze to what extent modern Raspberry Pi platforms, 
-    specifically the Raspberry Pi 4B and Raspberry Pi 5, are susceptible to bit flips when subjected to 
+    specifically the Raspberry Pi 4B and Raspberry Pi 5, are susceptible to bitflips when subjected to 
     Rowhammer access patterns.
     \\
 

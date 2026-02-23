@@ -2,7 +2,7 @@
     Even after eleminating cache effects, a fundamental challenge in memory access remains: the 
     fixed mapping between physical addresses and the underlying \gls{dram} layout. It is insufficient 
     to merely perform \gls{dram} accesses. Rather, precise access to specific \gls{dram} rows is required to
-    induce bit flips in adjacent victim rows, denoted as "\textit{\hyperref[ch:targeted]{C2. Address Mapping Reconstruction}}". The physical address is 
+    induce bitflips in adjacent victim rows, denoted as "\textit{\hyperref[ch:targeted]{C2. Address Mapping Reconstruction}}". The physical address is 
     composed of bits that are partitioned into rank, channel, bank, row, and column, which 
     collectively determine the location where the data is stored~\cite{paperReliableReverseEngineering}.
     Notably, just like on Intel systems, details of this mapping are not publicly disclosed, unlike the 
@@ -15,7 +15,7 @@
     \gls{dram} layout-aware memory allocators~\cite{paperReliableReverseEngineering}.
     \\
     When the \gls{dram} mapping is known, memory systems become more susceptible to attacks, leading 
-    to higher pressure and an increased likelihood of bit flips. The addressing scheme can vary 
+    to higher pressure and an increased likelihood of bitflips. The addressing scheme can vary 
     for each system, as it depends on multiple factors such as the processor model, DIMM 
     population on the motherboard, and BIOS settings, according to~\cite{paperReliableReverseEngineering}. Therefore, 
     it is necessary to reverse-engineer the \gls{dram} address mapping for all test devices. This 
@@ -70,7 +70,7 @@
         policy~\cite{paperAnotherFlip, paperNethammer}. These findings indicate that triggering Rowhammer does not fundamentally depend on 
         an open-page policy or precise knowledge of the physical \gls{dram} address mapping. For the evaluation,
         we focused on testing one-location hammering using the \cite{toolFlipfloyd} tool, which we have ported onto our ARM-based platform. 
-        Despite multiple measurement runs exceeding 20 hours in total, we did not observe any bit flips. The 
+        Despite multiple measurement runs exceeding 20 hours in total, we did not observe any bitflips. The 
         most plausible explanations are the presence of \gls{trr} or that the deployed 
         \gls{dram} modules are simply not susceptible to Rowhammer-induced disturbances.
 
@@ -218,12 +218,12 @@
         \\
         % Rowhammer
         Another verification approach is to use \textbf{Rowhammer} experiments to validate the addressing functions. 
-        If the inferred functions are correct, their application should increase the bit flip rate 
+        If the inferred functions are correct, their application should increase the bitflip rate 
         proportionally to the number of identified sets~\cite{paperDRAMA}. Nevertheless, this method is often impractical due 
         to potentially long execution times, the presence of mitigation mechanisms, or limited susceptibility 
         of the system to Rowhammer. Even on systems previously identified as vulnerable, the distribution 
         and occurrence of vulnerable memory regions vary across \gls{dram} chips, and not every device of the 
-        same model exhibits Rowhammer bit flips~\cite{paperDrammer,thesisCacheAttacksandRH}.
+        same model exhibits Rowhammer bitflips~\cite{paperDrammer,thesisCacheAttacksandRH}.
         \\
         % Software-based Verification
         A purely \textbf{software-based} evaluation constitutes an alternative approach, which verifies timing 

@@ -129,13 +129,13 @@
     \subsection{Bypass Techniques} \label{subsec:bypass-techniques}
         Given the inability to conclusively determine whether \gls{trr} is implemented on the test devices, \gls{trr} 
         must be assumed to be present. This assumption is further supported by the fact that previous 
-        Rowhammer tests failed to induce bit flips, even though the official Micron documentation suggests 
+        Rowhammer tests failed to induce bitflips, even though the official Micron documentation suggests 
         that \gls{trr} is disabled by default~\cite{datasheetLPDDR4}. To address this, established \gls{trr} bypass techniques were 
         considered, including Rowhammer fuzzers such as Blacksmith~\cite{toolBlacksmith} and TRRespass~\cite{toolTRRespass}.
         \\
         Blacksmith~\cite{paperBlacksmith} is a scalable Rowhammer fuzzer primarily designed for x86 systems. Introduced 
         in 2022, it constructs novel non-uniform hammering patterns based on frequency, phase, and 
-        amplitude to bypass modern in-\gls{dram} \gls{trr} mitigations and successfully induce bit flips. TRRespass~\cite{paperTRRespass},
+        amplitude to bypass modern in-\gls{dram} \gls{trr} mitigations and successfully induce bitflips. TRRespass~\cite{paperTRRespass},
         introduced in 2020, is another Rowhammer fuzzer for x86 systems that automatically 
         identifies \gls{trr}-bypassing access patterns. It generates a wide range of effective Rowhammer patterns 
         on \gls{trr}-protected \gls{dram} modules by varying two parameters, namely cardinality and location, and by 

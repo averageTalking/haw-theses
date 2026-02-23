@@ -28,7 +28,7 @@
             \\
             \textbf{Detection approaches} focus on identifying behaviors indicative of Rowhammer activity. This includes monitoring 
             abnormal activation frequencies or microarchitectural patterns so that countermeasures can be triggered before 
-            bit flips occur. Rowhammer attacks are characterized by a significantly higher number of cache misses and hits 
+            bitflips occur. Rowhammer attacks are characterized by a significantly higher number of cache misses and hits 
             compared to other attack types. Detection systems also aim to identify hammering patterns, frequent row 
             activations, high cache-miss rates (as in \textit{ANVIL}~\cite{paperANVIL}), and other suspicious instruction sequences.
         
@@ -44,7 +44,7 @@
             approaches may introduce additional latency, increase energy consumption, or raise implementation complexity.
             \\
             \textbf{\gls{ecc}} can correct single-bit errors using stored parity information~\cite{paperRHARetrospective, webTenYearsOfRH, paperECC}. However, 
-            \gls{ecc} can only detect and correct single-bit flips and is insufficient for addressing multi-bit flips, which 
+            \gls{ecc} can only detect and correct single-bitflips and is insufficient for addressing multi-bitflips, which 
             have become increasingly common~\cite{paperTriggeringRHHardwareFault}.
             \\
             \textbf{Increasing the \gls{dram} refresh rate} represents another mitigation strategy. \gls{dram} cells are volatile and 
@@ -61,7 +61,7 @@
             Several limitations affect mitigation strategies across both software and hardware approaches. Certain hammering 
             techniques can avoid cache misses, rendering detection ineffective. Detection heuristics frequently generate high 
             false-positive rates in real workloads. Mitigations may restrict system functionality or break compatibility with 
-            existing software. Single-error correction remains insufficient, leaving multi-bit flips exploitable. Hardware 
+            existing software. Single-error correction remains insufficient, leaving multi-bitflips exploitable. Hardware 
             protections are often manufacturer-dependent (e.g., \textit{\gls{trr}}) and may degrade performance, increase energy consumption, 
             or be difficult to deploy on existing platforms, such as ARM architectures~\cite{paperTriggeringRHHardwareFault}. Software-based approaches 
             generally provide only partial workarounds and cannot fully overcome the physical limitations of \gls{dram}, often remaining 
@@ -75,7 +75,7 @@
             any victim cell close to its disturbance threshold.
 
     \subsection{TRR Bypass} \label{subsec:trr-bypass}
-        Although the absence of observed bit flips points toward effective mitigation on Raspberry Pi platforms, 
+        Although the absence of observed bitflips points toward effective mitigation on Raspberry Pi platforms, 
         these devices were produced recently in 2020 and likely deploy an improved mitigation scheme, as noted in~\cite{paperBlacksmith}.
         Prior work research~\cite{paperHalfDouble, paperTRRespass, paperBlacksmith, paperTRRScope} 
         has demonstrated that protection mechanisms such as \gls{trr} can 
@@ -113,10 +113,10 @@
         not discussed. On the devices where hugepages were functional, TRRespass was executed with varying 
         parameters, access patterns, and \gls{dram} mappings, including reverse-engineered mappings as well as 
         those provided by DRAMA~\cite{paperDRAMA}, Memory Aware~\cite{paperMemoryAware}, and DRAM MaUT~\cite{paperDRAMMaUT}. 
-        Across all evaluated devices, we did not observe any effective access pattern capable of inducing bit flips.
+        Across all evaluated devices, we did not observe any effective access pattern capable of inducing bitflips.
         Even after multiple experiments varying in runtime length of 5 to 10 and in some cases also over 20 hours 
         all tested access patterns, including N-sided, 2-sided, and 3-sided, results in no observable or reproducible 
-        bit flips on any of our test devices
+        bitflips on any of our test devices
         \\
         These findings suggest that the Raspberry Pi 4 and 5 models 
         are either not vulnerable to Rowhammer attacks or exhibit the same limitations observed in certain 

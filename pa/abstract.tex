@@ -20,13 +20,13 @@
         may be corrupted, potentially facilitating privilege escalation and other 
         critical security impacts.
         % Experiments
-        In this work, a Rowhammer proof-of-concept was developed for the Raspberry 
-        Pi 4 and 5. Cache bypass methods were implemented via eviction strategies 
-        and ARM cache maintenance instructions, enabling direct \gls{dram} access. \gls{dram} 
-        address mapping was reconstructed by ported ARM-compatible DRAMA tool to 
-        allow targeted row accesses.
+        In this work, we develop a Rowhammer proof-of-concept for the Raspberry 
+        Pi 4 and 5. the implementation enables direct \gls{dram} access by employing cache-bypass 
+        techniques based on eviction strategies and ARM cache maintenance instructions.
+        To facilitate targeted row accesses, \gls{dram} address mapping was reconstructed by ported 
+        ARM-compatible DRAMA tool.
         % Climax Experiment
-        Additionally, TRRespass was adapted to ARM to test effective access patterns 
+        Additionally, TRRespass was adapted to ARM to evaluate effective access patterns 
         for hammering designed to induce bitflips.
         % Validate Climax Experiment
         The proof-of-concept integrates all functional components, ranging from 

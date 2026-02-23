@@ -94,18 +94,24 @@
     reproducible, and meaningful.
 
     \subsubsection{Functional requirements} \label{subsubsec:functional-requirements}
-      The experimental setup must support a configurable system with adjustable parameters, including the 
-      selection of different hammering techniques such as single-sided, double-sided, one-location, and if feasible 
-      many-sided hammering. It must allow configuration of the number of iterations and hammer cycles, automatically detect 
-      the memory page size, and support configurable initialization patterns, for example using \texttt{0} or \texttt{1}. The amount 
-      of allocated \gls{ram} must be adjustable as a percentage of the available memory, and the framework must 
-      incorporate bit masks and bank addressing functions. The system has to automatically detect hardware characteristics, 
-      including the Raspberry Pi model, \gls{ram} size, and architecture. Furthermore, the system must 
-      support cache bypass mechanisms, virtual-to-physical-to-\gls{dram} address mapping, and, if feasible, mitigation 
-      bypass techniques. Hammering operations must include bitflip detection and classification, such as 
-      distinguishing between \texttt{0→1} and \texttt{1→0} transitions, as well as verification of detected bitflips. Experimental 
-      output must be logged to the terminal, with all measurements recorded in JSON format and individual 
-      measurements additionally stored in \texttt{.log} files.
+      The developed system must support the usage of different hammering techniques, including 
+      double-sided, many-sided, and one-location approaches. 
+      Furthermore, for precise control over the hammering process, the configuration of the 
+      number of iterations and hammer cycles must be adjustable. In addition, the system must 
+      automatically detect the pagesize of the underlying environment to ensure correct 
+      memory allocation and mapping behavior. An input mechanism for bank addressing functions must be 
+      provided. This enables the integration of experimentally 
+      derived \gls{dram} addressing schemes into the hammering process. 
+      To guarantee direct DRAM access patterns, 
+      the system must implement cache bypass mechanisms. Additionally, it must support 
+      virtual-to-physical-to-DRAM mapping to accurately translate memory addresses 
+      across the entire address translation hierarchy. The system must further incorporate mitigation bypass 
+      capabilities, such as the circumvention of \gls{trr} mechanisms. 
+      Hammering must be combined with bitflip detection, including for example, transitions 
+      from 0→1 and from 1→0, in order to reliably identify memory disturbances.
+      Finally, the system must provide comprehensive logging capabilities, supporting 
+      output in terminal format as well as structured formats such as JSON, CSV, and 
+      \texttt{.log} files.  
       
     \subsubsection{Non-functional requirements} \label{subsubsec:non-functional-requirements}
       The implementation requires root privileges in user space to execute privileged instructions.

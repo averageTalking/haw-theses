@@ -21,10 +21,25 @@
     supporting inductive elements informed by empirical findings.
     \\
     % Test Devices
-    The experimental evaluation is conducted on multiple Raspberry Pi devices. 
+    The experimental evaluation is conducted on multiple Raspberry Pi devices, see \cref{tab:overview-of-test-devices}. 
     The tested hardware includes Raspberry Pi 4 models with 4~GB and 8~GB of 
     RAM, as well as Raspberry Pi 5 models with 4~GB, 8~GB, and 16~GB of RAM.
-    \\
+    
+    \begin{table}[h!]
+      \centering
+      \caption{Overview of the Test Devices and Memory Configurations}
+      \label{tab:overview-of-test-devices}
+      \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \textbf{Platform} & \textbf{Processor} & \textbf{Architecture} & \textbf{SoC} & \textbf{DRAM} \\ \hline
+        Raspberry Pi 4B & ARMv8 & aarch64 & Broadcom BCM2711 & 4~GB LPDDR4 \\ \hline
+        Raspberry Pi 4B & ARMv8 & aarch64 & Broadcom BCM2711 & 8~GB LPDDR4 \\ \hline
+        Raspberry Pi 5 & ARMv8 & aarch64 & Broadcom BCM2712 & 4~GB LPDDR4x \\ \hline
+        Raspberry Pi 5 & ARMv8 & aarch64 & Broadcom BCM2712 & 8~GB LPDDR4x \\ \hline
+        Raspberry Pi 5 & ARMv8 & aarch64 & Broadcom BCM2712 & 16~GB LPDDR4x \\ \hline
+      \end{tabular}
+    \end{table}
+
     The Raspberry Pi 4 is based on a quad-core ARMv8 Cortex-A72 CPU clocked at 1.8~GHz. Each core is equipped
     with an L1 cache consisting of 32 KB data cache and 48~KB instruction cache, and all cores share a 1~MB 
     L2 cache. This configuration makes the Raspberry Pi 4 approximately 50~\% faster than the Raspberry Pi 3B~\cite{webProcessors}.

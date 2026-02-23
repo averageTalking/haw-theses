@@ -4,6 +4,7 @@
     fault to flip bits soley with increased pressure caused by frequent reads 
     to selected memory rows.
     \\
+    An overview of the Rowhammer attack workflow is provided in~\cref{fig:overview-of-rowhammer-attack}.
     From a technical perspective, the Rowhammer workflow begins with the attacker 
     placing data in memory through arbitrary memory allocation. Subsequently, 
     specific \gls{dram} rows are filtered and addressed together in a targeted manner 
@@ -19,6 +20,13 @@
     repeated gate-induced drain and subthreshold leakage~\cite{paperFlippingBits, paperRHinDRAM}. This leads to 
     sufficient charge loss~\cite{paperTriggeringRHHardwareFault} and electrical disturbance~\cite{paperRowhammerOnSteroids}, ultimately 
     causing memory cells to flip from 0 to 1 or vice versa.
+    
+    \begin{figure}[htbp]
+      \centering
+      \frame{\includegraphics[width=\linewidth]{img/ablauf.png}}
+      \caption{Overview of the Rowhammer Attack Procedure}
+      \label{fig:overview-of-rowhammer-attack}
+    \end{figure}
 
   \subsection{Memory Addressing} \label{subsec:memory-addressing}
     Building on the preceding explanation of how Rowhammer is executed, it is essential to

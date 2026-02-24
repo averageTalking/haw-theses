@@ -35,11 +35,11 @@
         properties by performing exhaustive testing of linear addressing functions with an 
         increasing number of coefficients.
         \\
-        Helm et al.~\cite{paperReliableReverseEngineering} in 2020, extends DRAMA by integrating 
+        Helm et al.~\cite{paperReliableReverseEngineering} in 2020, extends~\cite{paperDRAMA} by integrating 
         performance counters, which identifies row hits and misses more reliable 
         during the reverse-engineering process.
         \\
-        Wang et al.~\cite{paperDRAMDig} in 2020, builds upon DRAMA by incorporating 
+        Wang et al.~\cite{paperDRAMDig} in 2020, builds upon~\cite{paperDRAMA} by incorporating 
         detailed knowledge of specific \gls{dram} chip geometries and processor microarchitecture, thereby 
         reducing the search space of the exponential-time~\cite{paperKnockKnock}. For example, \cite{paperDRAMMaUT} applies this method.
         \\
@@ -60,7 +60,7 @@
 
     \subsubsection{Knock-Knock Approach} \label{subsec:knock-knock-approach}
         For inferring physical-to-\gls{dram} mappings employs the algebraic framework proposed in~\cite{paperKnockKnock} 
-        as described in the Methods section, the Knock-Knock approach formulates parity mask identification 
+        as described in the Methods section. This approach formulates parity mask identification 
         as a linear algebra problem. By computing the nullspace of conflicting address sets, it directly 
         derives bank and row functions without iterative function validation. We quickly realized that this 
         approach is not applicable to our systems because, as described in~\cite{paperKnockKnock}, a closed page policy prevents 
@@ -259,7 +259,7 @@
         
         \begin{figure}[htbp]
             \centering
-            \frame{\includegraphics[width=0.7\linewidth]{img/calibration.pdf}}
+            \frame{\includegraphics[width=0.55\linewidth]{img/calibration.pdf}}
             \caption{Timing Histogram of Raspberry Pi 4 mapping}
             \label{fig:calibrate}
         \end{figure}

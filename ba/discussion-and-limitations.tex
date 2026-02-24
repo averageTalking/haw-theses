@@ -22,14 +22,14 @@
   \\
   Based on the measurements conducted in this work, the most likely 
   explanation for the observed behavior is not the presence of a closed page 
-  policy, but rather an unclear limitation of the Knock-Knock methodology on 
+  policy, but rather an unclear limitation of the~\cite{paperKnockKnock} methodology on 
   the evaluated platforms. Although the tool fails with the error message, the measurements 
   demonstrate that row hits and row conflicts can, in principle, be 
   distinguished, indicating that the row buffer is not always closed. This 
   apparent contradiction is further supported by other studies~\cite{paperDRAMMaUT, paperMemoryAware}, which 
   evaluated the same device, namely the Raspberry Pi 4. Consequently, this 
   limitation does not arise from the \gls{dram} configuration itself, but from the 
-  constraints of the Knock-Knock methodology. While the underlying memory behavior 
+  constraints of the~\cite{paperKnockKnock} methodology. While the underlying memory behavior 
   allows distinguishing row hits from row conflicts, the tool fails to recover the 
   mapping due to its thresholding and peak-detection assumptions.
 

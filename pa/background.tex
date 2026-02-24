@@ -33,12 +33,10 @@
     examine how software running on a system is able to access hardware components 
     such as \gls{dram}. This interaction fundamentally relies on the use of memory 
     addresses.
-    \\
     It requires memory addresses as they uniquely identify and locate data, 
     allowing systems to store and later retrieve the same information reliably, 
     independent of its physical realization. In this context, 
     two types of memory addresses can be distinguished.
-    \\
     Virtual addresses are generated and used by processes and define a per-process 
     virtual address space that is independent of the underlying physical 
     memory~\cite{webVirtualAddress}. The size of this virtual address space depends on the system 
@@ -47,35 +45,29 @@
     locations in main memory and constitute the system-wide physical address 
     space corresponding to the installed \gls{ram}~\cite{blogVirtToPhys}. Physical addresses are globally 
     unique within the system~\cite{blogVirtualMemory}.
-    \\
     Processors employ virtual memory systems that translate virtual addresses into 
     physical addresses~\cite{toolRPI3}. The system achieves these memory translations, also 
     referred to as mappings, by resolving the physical memory 
     address corresponding to a given virtual address~\cite{blogVirtToPhys}. Page tables play a 
     central role in defining and managing these virtual-to-physical address mappings.
-    \\
     A page table consists of numerous \gls{pte}s~\cite{blogVirtToPhys}. Page tables 
     store the mapping between virtual and physical addresses, including associated 
     attributes. The \gls{tlb} uses these entries
     as a fast cache to accelerate address translation~\cite{blogVirtualMemory, docPageTables}.
-    \\
     The kernel provides an interface exposed via \texttt{/proc/pagemap}, which returns a 
     64-bit value containing page table-related information. This information 
     includes whether and how a page is located in \gls{ram} or swap, as well as which 
     physical memory area it maps to~\cite{docExaminingPageTables}.
-    \\
     Page tables are typically managed by the \gls{mmu}~\cite{webVirtualMemoryTranslation, blogVirtToPhys}. 
     The \gls{mmu} is a hardware component responsible for translating virtual addresses 
     into physical addresses~\cite{blogVirtToPhys}. When the \gls{cpu} attempts to access a memory location, 
     it supplies a virtual address to the \gls{mmu}, which then verifies if a corresponding 
     translation already exists in the \gls{tlb}~\cite{docPageTables}.
-    \\
     On a memory access, the \gls{cpu} supplies a virtual address to the \gls{mmu}, which first 
     consults the \gls{tlb}, a cache of recent address translations integrated into the 
     \gls{mmu}~\cite{webVirtualMemoryTranslation}, to quickly resolve the corresponding physical address~\cite{docPageTables}. By avoiding 
     frequent page table lookups in main memory, the \gls{tlb} significantly reduces the 
     latency of address translation~\cite{webVirtualMemoryTranslation, blogVirtToPhys}.
-    \\
     Functionally, the virtual address is first divided into a virtual page number 
     and a page offset~\cite{blogVirtToPhys}. The page offset is passed through unchanged, as it does 
     not require translation. The virtual page number is then looked up in the \gls{tlb} by 
@@ -130,7 +122,7 @@
       the relevant word from the cache line. If the tags do not match or the valid bit is not set, indicating 
       that the cache entry does not contain valid data, a cache miss occurs, and the cache line is replaced 
       with data fetched from the requested memory address.
-
+      \\
       %% Set-Associative Caches
       If the replacement policy can choose any entry in the cache to hold the data, the
       cache is referred to as fully associative~\cite{thesisCacheAttacksandRH}. Nevertheless, modern processors typically employ 

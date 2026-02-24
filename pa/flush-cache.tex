@@ -83,13 +83,21 @@
         % System Control Register on EL1 (SCTLR\_EL1)
         In contrast to the ARMv7 architecture, ARMv8 defines the \texttt{SCTLR\_EL1} system control register, which includes 
         a bit denoted as \texttt{UCI}. If this bit is set, userspace access is enabled for a specific set of cache and 
-        instruction maintenance operations, as illustrated in Figure~\ref{fig:sctlr}~\cite{thesisCacheAttacksandRH, datasheetARMReferenceManual}.
-        \begin{figure}[htbp]
+        instruction maintenance operations, as illustrated in~\cref{tab:sctlr}~\cite{thesisCacheAttacksandRH, datasheetARMReferenceManual}.
+        
+        \begin{table}[h!]
             \centering
-            \frame{\includegraphics[width=\linewidth]{img/sctlr.pdf}}
             \caption{Instructions affected by the \gls{uci} bit in SCTLR\_EL1}
-            \label{fig:sctlr}
-        \end{figure}
+            \label{tab:sctlr}
+            \begin{tabular}{l l}
+                \hline
+                \textbf{Instruction} & \textbf{Description} \\ \hline
+                DC CVAU & Data or Unified Cache line Clean by VA to PoU \\
+                DC CIVAC & Data or Unified Cache line Clean and Invalidate by VA to PoC \\
+                DC CVAC & Data or Unified Cache line Clean by VA to PoC \\
+                IC IVAU & Instruction Cache line Invalidate by VA to PoU \\ \hline
+            \end{tabular}
+        \end{table}
 
         The \texttt{SCTLR\_EL1} register is a 64-bit system control register that provides top-level control of the system, 
         including its memory system, at both EL1 and EL0~\cite{docSCTLREL1, docCortexA72}. The \texttt{\gls{uci}} field is located at bit position \texttt{26}~\cite{docSCTLREL1, docSystemControlRegister} 
